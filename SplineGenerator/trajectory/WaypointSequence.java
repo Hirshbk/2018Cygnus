@@ -13,10 +13,25 @@ public class WaypointSequence {
 
   public static class Waypoint {
 
-    public Waypoint(double x, double y, double theta) {
-      this.x = x;
-      this.y = y;
-      this.theta = theta;
+	    private double x;
+	    private double y;
+	    private double theta;
+	  
+	  /**
+	   * 
+	   * @param horizontal left/right in feet, 
+	   * @param vertical forward/backward in feet
+	   * @param angle in radians counterclockwise to horizontal
+	   */
+    public Waypoint(double horizontal, double vertical, double angle) {
+    	
+    	//OKAY SO it's switched where y is horizontal and x is vertical because 254 is weird and they had it
+    	//turned 90 degrees but I didn't like that so I changed it (extremely inelegantly but listen it works)
+    	//also angles are in degrees now because radians are hard for freshmen
+    	
+    	y = horizontal;
+    	x = vertical;
+    	theta = -angle * Math.PI / 180;
     }
     
     public Waypoint(Waypoint tocopy) {
@@ -25,9 +40,17 @@ public class WaypointSequence {
       this.theta = tocopy.theta;
     }
 
-    public double x;
-    public double y;
-    public double theta;
+    public double getX(){
+    	return x;
+    }
+    
+    public double getY(){
+    	return y;
+    }
+    
+    public double getTheta() {
+    	return theta;
+    }
   }
 
   Waypoint[] waypoints_;

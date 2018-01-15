@@ -58,8 +58,8 @@ public class Spline {
 
   public static boolean reticulateSplines(WaypointSequence.Waypoint start,
           WaypointSequence.Waypoint goal, Spline result, Type type) {
-    return reticulateSplines(start.x, start.y, start.theta, goal.x, goal.y,
-            goal.theta, result, type);
+    return reticulateSplines(start.getX(), start.getY(), start.getTheta(), goal.getX(), goal.getY(),
+            goal.getTheta(), result, type);
   }
 
   public static boolean reticulateSplines(double x0, double y0, double theta0,

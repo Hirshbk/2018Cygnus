@@ -1,23 +1,41 @@
 package trajectory;
 
+import trajectory.io.JavaSerializer;
+import trajectory.io.JavaStringSerializer;
 import trajectory.io.TextFileSerializer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-
+/**
+ *
+ * @author Jared341
+ */
 public class Main {
-  public static String joinPath(String path1, String path2)
+	
+	/**
+	 * Joins two build paths
+	 * @param directoryPath1 the first path to be joined, usually directory
+	 * @param directoryPath2 the second path to be joined, usually file name
+	 * @return file2.getPath(), the end address, the file name inside the directory
+	 */
+  public static String joinPath(String directoryPath1, String directoryPath2)
   {
-      File file1 = new File(path1);
-      File file2 = new File(file1, path2);
+      File file1 = new File(directoryPath1);
+      File file2 = new File(file1, directoryPath2);
       return file2.getPath();
   }
   
-  private static boolean writeFile(String path, String data) {
+  /**
+   * Tries to write a path to a directory
+   * @param directoryPath the place in the directory to write to
+   * @param data the serialized motor values to be given
+   * @return true if it successfully writes, false otherwise
+   */
+  private static boolean writeFile(String directoryPath, String data) {
     try {
-      File file = new File(path);
+      File file = new File(directoryPath);
 
       // if file doesn't exists, then create it
       if (!file.exists()) {
@@ -34,36 +52,20 @@ public class Main {
     
     return true;
   }
-  
-  public static void main(String[] args) {
-    String directory = "./auto_paths";
-    if (args.length >= 1) {
-      directory = args[0];
-    }
-    
-    TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
-    config.dt = .01;
-    config.max_acc = 80.0;
-    config.max_jerk = 60.0;
-    config.max_vel = 10.0;
-    
-    final double kWheelbaseWidth = 27.0/12; //correct
-    {
-      config.dt = .01;
-      config.max_acc = 80.0;
-      config.max_jerk = 60.0;
-      config.max_vel = 10.0;
-      
-      final String path_name = "Straight";
-      
-      WaypointSequence p = new WaypointSequence(10);
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(-8.0, 0, 0));
-
-      Path path = PathGenerator.makePath(p, config,
-          kWheelbaseWidth, path_name);
-
-      // Outputs to the directory supplied as the first argument.
+  /**
+   * Serializes the data then tries to write it
+   * @param path the spline path to be written
+   * @param path_name The name of the file in the directory
+   * 
+   * For written file: 
+   * Each segment is in the format:
+   *   pos vel acc jerk heading dt x y
+   * 
+   */
+  public static void serializeAndWrite(Path path, String path_name) {
+	  String directory = "./";
+	  
+	  // Outputs to the directory supplied as the first argument.
       TextFileSerializer js = new TextFileSerializer();
       String serialized = js.serialize(path);
       //System.out.print(serialized);
@@ -74,6 +76,81 @@ public class Main {
       } else {
         System.out.println("Wrote " + fullpath);
       }
+  }
+  
+  
+  /**
+   * configures trajectory and creates splines
+   * waypoint format: (y, -x, -theta)
+   * @param args
+   */
+  public static void main(String[] args) {
+   
+    
+    TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+    config.dt = .01;
+    config.max_acc = 80.0;
+    config.max_jerk = 60.0;
+    config.max_vel = 10.0;
+    
+    final double kWheelbaseWidth = 27.0/12; //correct
+   
+    //drive straight for 8 feet, gear side first
+    {
+      final String path_name = "Straight";
+      
+      WaypointSequence p = new WaypointSequence(10);
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, -8.0, 0));
+
+      Path path = PathGenerator.makePath(p, config,
+          kWheelbaseWidth, path_name);
+
+      serializeAndWrite(path, path_name);
     }
+    
+    //side gear turning right
+    {
+        final String path_name = "Gear_Red";
+        
+        WaypointSequence p = new WaypointSequence(10);
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 5.5, 60));
+        p.addWaypoint(new WaypointSequence.Waypoint(-1.75, 6.25, 60));
+ 
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    
+    //side gear turning left
+    {
+        final String path_name = "Gear_Blue";
+        
+        WaypointSequence p = new WaypointSequence(10);
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 5.5, -60));
+        p.addWaypoint(new WaypointSequence.Waypoint(1.75, 6.25, -60));
+
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    
+    //drives forward 7.25 feet, gear forward
+    {
+        final String path_name = "Gear_Center_Drive";
+        
+        WaypointSequence p = new WaypointSequence(10);
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 7.25, 0));
+
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      } 
   }
 }
