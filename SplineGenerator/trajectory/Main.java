@@ -1,7 +1,5 @@
 package trajectory;
 
-import trajectory.io.JavaSerializer;
-import trajectory.io.JavaStringSerializer;
 import trajectory.io.TextFileSerializer;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -101,7 +99,7 @@ public class Main {
       
       WaypointSequence p = new WaypointSequence(10);
       p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(0, -8.0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 8.0, 0));
 
       Path path = PathGenerator.makePath(p, config,
           kWheelbaseWidth, path_name);
@@ -111,46 +109,16 @@ public class Main {
     
     //side gear turning right
     {
-        final String path_name = "Gear_Red";
+        final String path_name = "Turn";
         
         WaypointSequence p = new WaypointSequence(10);
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 5.5, 60));
-        p.addWaypoint(new WaypointSequence.Waypoint(-1.75, 6.25, 60));
+        p.addWaypoint(new WaypointSequence.Waypoint(1.75, 6.25, 60));
  
         Path path = PathGenerator.makePath(p, config,
             kWheelbaseWidth, path_name);
 
         serializeAndWrite(path, path_name);
       }
-    
-    //side gear turning left
-    {
-        final String path_name = "Gear_Blue";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 5.5, -60));
-        p.addWaypoint(new WaypointSequence.Waypoint(1.75, 6.25, -60));
-
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    
-    //drives forward 7.25 feet, gear forward
-    {
-        final String path_name = "Gear_Center_Drive";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 7.25, 0));
-
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      } 
   }
 }
