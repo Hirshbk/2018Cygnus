@@ -3,12 +3,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+//needed for tuning
 public class Instrum {
 
 	private static int _loops = 0;
 	private static int _timesInMotionMagic = 0;
 	
-	public static void Process(TalonSRX tal, StringBuilder sb)
+	public static void Process(TalonSRX tal)
 	{
 		/* smart dash plots */
     	SmartDashboard.putNumber("SensorVel", tal.getSelectedSensorVelocity(Constants.kPIDLoopIdx));
@@ -32,9 +33,6 @@ public class Instrum {
     	/* periodically print to console */
         if(++_loops >= 10) {
         	_loops = 0;
-        	System.out.println(sb.toString());
         }
-        /* clear line cache */
-        sb.setLength(0);
 	}
 }

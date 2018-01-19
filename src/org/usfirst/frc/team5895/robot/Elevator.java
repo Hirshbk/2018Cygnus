@@ -12,9 +12,11 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 public class Elevator {
-	TalonSRX talon = new TalonSRX(0);
-	Joystick joystick = new Joystick(0);
-	StringBuilder sb = new StringBuilder();
+	private TalonSRX talon;
+	
+	public void Elevator() {
+		talon = new TalonSRX(0);
+	}
 
 	public void setTalonSRX() {
 		
@@ -48,57 +50,26 @@ public class Elevator {
 		talon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 	}
 
-	/**
-	 * This function is called periodically during operator control
-	 */
+	//receives joystick data (percent voltage)
+	public void driverControl(double percent) {
+		talon.set(ControlMode.PercentOutput, percent);
+	}
+	
 	public void update() {
-		/* get gamepad axis - forward stick is positive */
-		double leftYstick = -1.0 * joystick.getY();
+		
 		/* calculate the percent motor output */
 		double motorOutput = talon.getMotorOutputPercent();
-		/* prepare line to print */
-		sb.append("\tOut%:");
-		sb.append(motorOutput);
-		sb.append("\tVel:");
-		sb.append(talon.getSelectedSensorVelocity(Constants.kPIDLoopIdx));
-
-		if(joystick.getRawButton(1)) {
-		setTargetPosition(0);
-		}
-		else if(joystick.getRawButton(2)) {
-			setTargetPosition(30);
-		}
-		else if(joystick.getRawButton(3)) {
-			setTargetPosition(45);
-		}
-		else if(joystick.getRawButton(4)) {
-			setTargetPosition(60);
-		}
-		else {
-			/* Percent voltage mode */
-			talon.set(ControlMode.PercentOutput, leftYstick);
-		}
 		
 		/* instrumentation */
-		Instrum.Process(talon, sb);
+		Instrum.Process(talon);
 		try { TimeUnit.MILLISECONDS.sleep(10); } catch(Exception e) {}
 		
 	}
 	
+	/* Motion Magic */
 	public void setTargetPosition(double targetAngle) {
-		
-			/* Motion Magic */
-			double targetPos = targetAngle / 360.0 * 13.0 * 4096; /* 45 degrees  4096 ticks/rev */
-			
-			talon.set(ControlMode.MotionMagic, targetPos); 
-
-			/* append more signals to print when in speed mode. */
-			sb.append("\terr:");
-			sb.append(talon.getClosedLoopError(Constants.kPIDLoopIdx));
-			sb.append("\tpos:");
-			sb.append(talon.getSelectedSensorPosition(Constants.kPIDLoopIdx));
-			sb.append("\ttrg:");
-			sb.append(targetPos);
+		double targetPos = targetAngle / 360.0 * 13.0 * 4096; /* 45 degrees  4096 ticks/rev */
+		talon.set(ControlMode.MotionMagic, targetPos); 
 
 	}
 }
