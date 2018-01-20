@@ -31,7 +31,7 @@ public class WaypointSequence {
     	
     	y = horizontal;
     	x = vertical;
-    	theta = -angle * Math.PI / 180;
+    	theta = angle * Math.PI / 180;
     }
     
     public Waypoint(Waypoint tocopy) {
