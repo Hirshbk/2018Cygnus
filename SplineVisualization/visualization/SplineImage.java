@@ -30,7 +30,7 @@ public class SplineImage {
 	public void generate(String splineName, double startX, double startY) {
 		
 		//change directory name to 2018Competition github once spline files are on github
-		String directoryName = "C:/Users/cphillips-19/workspace/SplineGeneratorEdited/" + splineName + ".txt";
+		String directoryName = "Splines/" + splineName + ".txt";
 		TextFileReader reader = new TextFileReader(directoryName);
 		TextFileDeserializer deserializer = new TextFileDeserializer();
 		deserializer.deserialize(reader.readWholeFile());
