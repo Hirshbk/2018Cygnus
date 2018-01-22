@@ -60,6 +60,8 @@ public class Elevator {
 		/* calculate the percent motor output */
 		double motorOutput = talon.getMotorOutputPercent();
 		
+		talon.set(ControlMode.PercentOutput, motorOutput);
+		
 		/* instrumentation */
 		Instrum.Process(talon);
 		try { TimeUnit.MILLISECONDS.sleep(10); } catch(Exception e) {}
