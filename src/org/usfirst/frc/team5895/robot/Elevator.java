@@ -3,6 +3,7 @@
  */
 package org.usfirst.frc.team5895.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.concurrent.TimeUnit;
@@ -13,9 +14,12 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 public class Elevator {
 	private TalonSRX talon;
+	private DigitalInput forwardLimitSwitch, reverseLimitSwitch;
 	
 	public void Elevator() {
 		talon = new TalonSRX(0);
+		forwardLimitSwitch = new DigitalInput(1);
+		reverseLimitSwitch = new DigitalInput(2);
 	}
 
 	public void setTalonSRX() {
@@ -50,17 +54,24 @@ public class Elevator {
 		talon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 	}
 
-	//receives joystick data (percent voltage)
+/*	//receives joystick data (percent voltage)
 	public void driverControl(double percent) {
 		talon.set(ControlMode.PercentOutput, percent);
 	}
+*/
 	
 	public void update() {
 		
 		/* calculate the percent motor output */
 		double motorOutput = talon.getMotorOutputPercent();
-		
 		talon.set(ControlMode.PercentOutput, motorOutput);
+
+		if(forwardLimitSwitch.get()) {
+			talon.configPeakOutputForward(0, Constants.kTimeoutMs);	
+		}
+		else if (reverseLimitSwitch.get()) {
+			talon.configPeakOutputReverse(0, Constants.kTimeoutMs);	
+		}
 		
 		/* instrumentation */
 		Instrum.Process(talon);

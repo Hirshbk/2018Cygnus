@@ -1,9 +1,7 @@
 package org.usfirst.frc.team5895.robot;
 
 import org.usfirst.frc.team5895.robot.framework.Looper;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 
@@ -36,7 +34,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		
 		//elevator motion magic
-		double leftYstick = -1.0 * joystick.getRawAxis(1);
+		double leftYstick = -1.0 * rjoystick.getRawAxis(1);
 		
 		if(rjoystick.getRawButton(1)) {
 			elevator.setTargetPosition(0);
@@ -50,10 +48,11 @@ public class Robot extends IterativeRobot {
 			else if(rjoystick.getRawButton(4)) {
 				elevator.setTargetPosition(60);
 			}
-			else {
-				/* Percent voltage mode */
+			
+			/*else {
+				//Percent voltage mode
 				elevator.driverControl(leftYstick);
-			}
+			}*/
 			
 		if(ljoystick.getRawButton(1)) {
 			intake.eject();
