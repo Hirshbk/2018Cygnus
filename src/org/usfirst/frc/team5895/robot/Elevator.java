@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.concurrent.TimeUnit;
+
+import org.usfirst.frc.team5895.robot.lib.BetterDigitalInput;
 import org.usfirst.frc.team5895.robot.lib.Constants;
 import org.usfirst.frc.team5895.robot.lib.Instrum;
 import com.ctre.phoenix.motorcontrol.*;
@@ -14,12 +16,12 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 public class Elevator {
 	private TalonSRX talon;
-	private DigitalInput forwardLimitSwitch, reverseLimitSwitch;
+	private BetterDigitalInput forwardLimitSwitch, reverseLimitSwitch;
 	
 	public void Elevator() {
 		talon = new TalonSRX(0);
-		forwardLimitSwitch = new DigitalInput(1);
-		reverseLimitSwitch = new DigitalInput(2);
+		forwardLimitSwitch = new BetterDigitalInput(1);
+		reverseLimitSwitch = new BetterDigitalInput(2);
 	}
 
 	public void setTalonSRX() {
