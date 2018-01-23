@@ -44,7 +44,7 @@ public class CubeIntake {
 			break;
 		
 		case HOLDING:
-			motorspeed = .25;
+			motorspeed = 0;
 			solenoidState = true; //* solenoid used to clamp cube while holding 
 			break;
 		
