@@ -51,9 +51,9 @@ public class CubeIntake {
 		     x2 = sensor2.getDistance();
 		     
 		     if(x1 < 5 || x2 < 5) {
-		    	 haveCube = true; //once the cube is close enough, it is stable enough to hold
+		    	 haveCube = true; //once the cube is close enough to claw sensor, it is stable enough to hold
 		     }
-		     else if ( (x1 < 20 && x1>= 5)|| (x2 < 20 && x2>=5)) {
+		     else if ( (x1 < 20 && x1>= 5)|| (x2 < 20 && x2>=5)) { // if 5<distance<20
 		            
 		            avgDist = (x1+x2)/2;
 		            speed = 16.316*Math.pow(avgDist+20, -0.844367);
@@ -61,10 +61,11 @@ public class CubeIntake {
 		            
 		            motorspeed1 =  speed/4 + x1/45;
 		            motorspeed2 = speed/4 + x2/45;    
-		          //if one side of the box is closer, rollers on that side of the claw go slower to even them out
+		          //if one side of the box is closer, or it is tilted, rollers on that side of the claw go slower to even them out
 		      }
 		     else {
-		            motorspeed1 = 1.0;
+		    	 //if the box is far from our claw, rollers go full speed 
+		            motorspeed1 = 1.0; 
 		            motorspeed2 = 1.0;        
 		      }
 			
@@ -73,7 +74,7 @@ public class CubeIntake {
 			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
 			 }
 			
-			solenoidState = false;
+			solenoidState = false; //solenoid only clamps once it is holding 
 			break;
 			
 		case WAITING:
@@ -96,7 +97,7 @@ public class CubeIntake {
             	}
             }
             
-            solenoidState=false;
+            solenoidState=false; 
 			break;
 		
 		case HOLDING:
