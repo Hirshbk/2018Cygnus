@@ -51,15 +51,17 @@ public class CubeIntake {
 		     x2 = sensor2.getDistance();
 		     
 		     if(x1 < 5 || x2 < 5) {
-		    	 haveCube = true;
+		    	 haveCube = true; //once the cube is close enough, it is stable enough to hold
 		     }
 		     else if ( (x1 < 20 && x1>= 5)|| (x2 < 20 && x2>=5)) {
 		            
 		            avgDist = (x1+x2)/2;
 		            speed = 16.316*Math.pow(avgDist+20, -0.844367);
+		         // output speed generated w/ points and regression(using calculator)
 		            
 		            motorspeed1 =  speed/4 + x1/45;
 		            motorspeed2 = speed/4 + x2/45;    
+		          //if one side of the box is closer, rollers on that side of the claw go slower to even them out
 		      }
 		     else {
 		            motorspeed1 = 1.0;
@@ -67,8 +69,8 @@ public class CubeIntake {
 		      }
 			
 			 if (haveCube){
-				lastTime = timer.getFPGATimestamp();
-			 	mode = Mode_Type.WAITING;
+				lastTime = timer.getFPGATimestamp(); //stamp the time we start waiting 
+			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
 			 }
 			
 			solenoidState = false;
@@ -80,17 +82,17 @@ public class CubeIntake {
 		    x2 = sensor2.getDistance();
 		    
 			avgDist = (x1+x2)/2;
-            speed = 16.316*Math.pow(avgDist+20, -0.844367);
+            speed = 16.316*Math.pow(avgDist+20, -0.844367); 
             
-            motorspeed1 =  speed/4 + x1/45;
+            motorspeed1 =  speed/4 + x1/45; 
             motorspeed2 = speed/4 + x2/45;
             
-        	double curTime = timer.getFPGATimestamp();
-            if (curTime - lastTime > 0.2) {
+        	double curTime = timer.getFPGATimestamp(); //stamps current time 
+            if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
             	if (haveCube) {
-            		mode = Mode_Type.HOLDING;
+            		mode = Mode_Type.HOLDING; //if it has been waiting for 200ms, it begins to hold
             	}else {
-            		mode = Mode_Type.WAITING;
+            		mode = Mode_Type.WAITING; //if not, it keeps holding
             	}
             }
             
