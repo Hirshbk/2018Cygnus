@@ -3,11 +3,7 @@
  */
 package org.usfirst.frc.team5895.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.concurrent.TimeUnit;
-
 import org.usfirst.frc.team5895.robot.lib.BetterDigitalInput;
 import org.usfirst.frc.team5895.robot.lib.Constants;
 import org.usfirst.frc.team5895.robot.lib.Instrum;
@@ -18,7 +14,7 @@ public class Elevator {
 	private TalonSRX talon;
 	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
 	
-	public void Elevator() {
+	public Elevator() {
 		talon = new TalonSRX(0);
 		topLimitSwitch = new BetterDigitalInput(1);
 		bottomLimitSwitch = new BetterDigitalInput(2);
@@ -62,6 +58,41 @@ public class Elevator {
 	}
 */
 	
+	/* Motion Magic */
+	public void setTargetPosition(double targetHeight) {
+		double targetPos = targetHeight / 360.0 * 13.0 * 4096;
+		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	
+	/**
+	 * NOTE:
+	 * The below 5 methods have "double targetPos =" and some number
+	 * These are dummy numbers, in feet, based LOOSELY on the height of each target.
+	 * 
+	 * @param targetHeight
+	 */
+	
+	public void highScale(double targetHeight) {
+		double targetPos = 6.5;
+		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	public void midScale(double targetHeight) {
+		double targetPos = 6;
+		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	public void lowScale(double targetHeight) {
+		double targetPos = 5.5;
+		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	public void switch1(double targetHeight) { //must be "switch1" because just "switch" doesn't work
+		double targetPos = 2;
+		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	public void floor(double targetHeight) {
+		double targetPos = 0;
+		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	
 	public void update() {
 		
 		/* calculate the percent motor output */
@@ -86,12 +117,5 @@ public class Elevator {
 		Instrum.Process(talon);
 		try { TimeUnit.MILLISECONDS.sleep(10); } catch(Exception e) {}
 		
-	}
-	
-	/* Motion Magic */
-	public void setTargetPosition(double targetAngle) {
-		double targetPos = targetAngle / 360.0 * 13.0 * 4096; /* 45 degrees  4096 ticks/rev */
-		talon.set(ControlMode.MotionMagic, targetPos); 
-
 	}
 }
