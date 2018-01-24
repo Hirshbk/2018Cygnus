@@ -16,12 +16,12 @@ import com.ctre.phoenix.motorcontrol.can.*;
 
 public class Elevator {
 	private TalonSRX talon;
-	private BetterDigitalInput forwardLimitSwitch, reverseLimitSwitch;
+	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
 	
 	public void Elevator() {
 		talon = new TalonSRX(0);
-		forwardLimitSwitch = new BetterDigitalInput(1);
-		reverseLimitSwitch = new BetterDigitalInput(2);
+		topLimitSwitch = new BetterDigitalInput(1);
+		bottomLimitSwitch = new BetterDigitalInput(2);
 	}
 
 	public void setTalonSRX() {
@@ -68,11 +68,18 @@ public class Elevator {
 		double motorOutput = talon.getMotorOutputPercent();
 		talon.set(ControlMode.PercentOutput, motorOutput);
 
-		if(forwardLimitSwitch.get()) {
+		if(topLimitSwitch.getRisingEdge()) {
 			talon.configPeakOutputForward(0, Constants.kTimeoutMs);	
 		}
-		else if (reverseLimitSwitch.get()) {
+		else if(topLimitSwitch.getFallingEdge()) {
+			talon.configPeakOutputForward(0.15, Constants.kTimeoutMs);
+		}
+		
+		if (bottomLimitSwitch.getRisingEdge()) {
 			talon.configPeakOutputReverse(0, Constants.kTimeoutMs);	
+		}
+		else if (bottomLimitSwitch.getFallingEdge()) {
+			talon.configPeakOutputReverse(-0.15, Constants.kTimeoutMs);
 		}
 		
 		/* instrumentation */
