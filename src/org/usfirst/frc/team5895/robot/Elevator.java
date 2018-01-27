@@ -6,6 +6,7 @@ package org.usfirst.frc.team5895.robot;
 import java.util.concurrent.TimeUnit;
 import org.usfirst.frc.team5895.robot.lib.BetterDigitalInput;
 import org.usfirst.frc.team5895.robot.lib.Constants;
+import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
 import org.usfirst.frc.team5895.robot.lib.Instrum;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
@@ -13,11 +14,14 @@ import com.ctre.phoenix.motorcontrol.can.*;
 public class Elevator {
 	private TalonSRX talon;
 	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
+	private DistanceSensor distSensor;
+	boolean aboveScale;
 	
 	public Elevator() {
 		talon = new TalonSRX(0);
 		topLimitSwitch = new BetterDigitalInput(1);
 		bottomLimitSwitch = new BetterDigitalInput(2);
+		distSensor = new DistanceSensor();
 	}
 
 	public void setTalonSRX() {
@@ -51,12 +55,6 @@ public class Elevator {
 		/* zero the sensor */
 		talon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 	}
-
-/*	//receives joystick data (percent voltage)
-	public void driverControl(double percent) {
-		talon.set(ControlMode.PercentOutput, percent);
-	}
-*/
 	
 	/* Motion Magic */
 	public void setTargetPosition(double targetHeight) {
@@ -91,6 +89,25 @@ public class Elevator {
 	public void floor(double targetHeight) {
 		double targetPos = 0;
 		talon.set(ControlMode.MotionMagic, targetPos); 
+	}
+	
+	// uses the analog distance sensor to detect whether the claw is above the scale
+	public boolean aboveScale() {	
+		if(distSensor.getDistance() < 3) {
+			aboveScale = true;
+		}
+		else {
+			aboveScale = false;
+		}
+		return aboveScale;
+	}
+	
+	// elevator automatically falls to the bottom after detecting no scale
+	public void autoDrop() {
+		if(!aboveScale) {
+			double targetPos = 0;
+			talon.set(ControlMode.MotionMagic, targetPos);
+		}
 	}
 	
 	public void update() {
