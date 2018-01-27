@@ -39,6 +39,29 @@ public class CubeIntake {
 		mode = Mode_Type.WAITING; 
 	}
 	
+	public double setSpeed1() {
+		x1 = sensor1.getDistance();
+	    x2 = sensor2.getDistance();
+	    
+		avgDist = (x1+x2)/2;
+        speed = 16.316*Math.pow(avgDist+20, -0.844367); 
+        
+        motorspeed1 =  speed/4 + x1/45; 
+        
+        return motorspeed1;
+	}
+	
+	public double setSpeed2() {
+		x1 = sensor1.getDistance();
+	    x2 = sensor2.getDistance();
+	    
+		avgDist = (x1+x2)/2;
+        speed = 16.316*Math.pow(avgDist+20, -0.844367); 
+        
+        motorspeed2 = speed/4 + x2/45;
+        
+        return motorspeed2;
+	}
 	public void update(){
 		
 		motorspeed1 = 0;
@@ -55,14 +78,9 @@ public class CubeIntake {
 		     }
 		     else if ( (x1 < 20 && x1>= 5)|| (x2 < 20 && x2>=5)) { // if 5<distance<20
 		            
-		            avgDist = (x1+x2)/2;
-		            speed = 16.316*Math.pow(avgDist+20, -0.844367);
-		         // output speed generated w/ points and regression(using calculator)
-		            
-		            motorspeed1 =  speed/4 + x1/45;
-		            motorspeed2 = speed/4 + x2/45;    
-		          //if one side of the box is closer, or it is tilted, rollers on that side of the claw go slower to even them out
-		      }
+		            setSpeed1();
+		            setSpeed2();
+		     }
 		     else {
 		    	 //if the box is far from our claw, rollers go full speed 
 		            motorspeed1 = 1.0; 
@@ -79,14 +97,8 @@ public class CubeIntake {
 			
 		case WAITING:
 		
-			x1 = sensor1.getDistance();
-		    x2 = sensor2.getDistance();
-		    
-			avgDist = (x1+x2)/2;
-            speed = 16.316*Math.pow(avgDist+20, -0.844367); 
-            
-            motorspeed1 =  speed/4 + x1/45; 
-            motorspeed2 = speed/4 + x2/45;
+			setSpeed1();
+			setSpeed2();
             
         	double curTime = timer.getFPGATimestamp(); //stamps current time 
             if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
