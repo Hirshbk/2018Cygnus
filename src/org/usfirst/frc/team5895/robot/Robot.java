@@ -38,7 +38,6 @@ public class Robot extends IterativeRobot {
 		
 	}
 
-
 	public void teleopPeriodic() {
 		
 		//elevator motion magic
@@ -59,10 +58,6 @@ public class Robot extends IterativeRobot {
 			else if(ljoystick.getRisingEdge(4)) {
 				elevator.setTargetPosition(20);
 			
-			/*else {
-				//Percent voltage mode
-				elevator.driverControl(leftYstick);
-			}*/
 		
 			if (ljoystick.getRisingEdge(3)){
 				hatMode = ! hatMode; 
@@ -82,14 +77,12 @@ public class Robot extends IterativeRobot {
 						claw.up();
 					}else{
 						claw.down();
-					}
-					
+					}	
 				}
 				if(rjoystick.getRisingEdge(1)) {
 					intake.eject(); 
 				}
 			}
-
+		}
 	}
-
 }
