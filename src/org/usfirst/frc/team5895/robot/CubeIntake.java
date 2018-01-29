@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 
 public class CubeIntake {
-	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING};
+	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, OFF};
 	private Mode_Type mode = Mode_Type.EJECTING;
 	private Talon motor1, motor2;
 	private Solenoid solenoid;
@@ -37,6 +37,10 @@ public class CubeIntake {
 	
 	public void waiting(){
 		mode = Mode_Type.WAITING; 
+		}
+	
+	public void off(){
+		mode = Mode_Type.OFF;
 	}
 	
 	public void update(){
@@ -85,7 +89,11 @@ public class CubeIntake {
 			motorspeed2 = -.5;
 			solenoidState = false; 
 			break; 
-			}
+		
+		case OFF:
+			motorspeed1 = 0;
+			motorspeed2 = 0;
+			solenoidState = false;
 	
 		motor1.set(motorspeed1);
 		motor2.set(motorspeed2);

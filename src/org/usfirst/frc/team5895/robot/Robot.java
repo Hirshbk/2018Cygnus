@@ -65,9 +65,11 @@ public class Robot extends IterativeRobot {
 			if (hatMode) {
 				if(ljoystick.getRisingEdge(1)){
 					hat.leftExtend(); 
+					intake.off();
 				}
 				if(rjoystick.getRisingEdge(1)) {
 					hat.rightExtend();
+					intake.off();
 				}
 			}
 			else {
