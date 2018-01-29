@@ -27,10 +27,14 @@ public class HatHatHat {
 		mode = Mode_Type.HOLDING;
 	}
 	public void leftExtend() {
+		if(mode == Mode_Type.HOLDING){
 		mode = Mode_Type.LEFT_EXTEND;
+		}
 	}
 	public void rightExtend() {
+		if(mode == Mode_Type.HOLDING){
 		mode = Mode_Type.RIGHT_EXTEND;
+		}
 	}
 	public void update() {
 		if(hatSensor.get()) { //assume no cube = true
