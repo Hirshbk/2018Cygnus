@@ -2,6 +2,8 @@ package org.usfirst.frc.team5895.robot;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Timer;
+
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
 public class HatHatHat {
@@ -9,6 +11,8 @@ public class HatHatHat {
 	private DigitalInput hatSensor;
 	private enum Mode_Type {LEFT_EXTEND,RIGHT_EXTEND,HOLDING}; //create states
 	private Mode_Type mode = Mode_Type.HOLDING;
+	private Timer timer;
+	private double lastTime;
 	private boolean leftSolenoidState = false, rightSolenoidState = false; //assume false = down, true = up 
 	
 	public HatHatHat() {
@@ -33,6 +37,13 @@ public class HatHatHat {
 			mode = Mode_Type.HOLDING;
 		}
 		
+		if(mode == Mode_Type.LEFT_EXTEND || mode == Mode_Type.RIGHT_EXTEND) {
+			double curTime = timer.getFPGATimestamp();
+            if (curTime - lastTime > 0.2) {
+            	mode = Mode_Type.HOLDING; 
+            }
+		}
+		
 		switch(mode) {
 			case HOLDING:
 				leftSolenoidState = false;
@@ -41,10 +52,12 @@ public class HatHatHat {
 			case LEFT_EXTEND:
 				leftSolenoidState = true;
 				rightSolenoidState = false;
+				lastTime = timer.getFPGATimestamp();
 				break;
 			case RIGHT_EXTEND:
 				leftSolenoidState = false;
 				rightSolenoidState = true;
+				lastTime = timer.getFPGATimestamp();
 				break;	
 			default:
 				mode = Mode_Type.HOLDING; //if incorrect mode happens, change to holding.
@@ -54,8 +67,6 @@ public class HatHatHat {
 		rightSolenoid1.set(rightSolenoidState);
 		rightSolenoid2.set(rightSolenoidState);
 		
-		if(mode == Mode_Type.LEFT_EXTEND || mode == Mode_Type.RIGHT_EXTEND) {
-			Waiter.waitFor(2000); //wait for 2 seconds while the arm is extending
 		}
 		
 	}
