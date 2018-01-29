@@ -37,7 +37,11 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		
 	}
-
+	
+	public void autonomousPeriodic() {
+		
+	}
+	
 	public void teleopPeriodic() {
 		
 		//elevator motion magic
