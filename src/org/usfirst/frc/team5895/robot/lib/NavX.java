@@ -1,7 +1,7 @@
 package org.usfirst.frc.team5895.robot.lib;
 
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
 
 public class NavX {
 
@@ -13,7 +13,7 @@ public class NavX {
 	 * Constructs a new NavX object plugged into the serial MXP port
 	 */
 	public NavX() {
-		ahrs = new AHRS(SerialPort.Port.kMXP);
+		ahrs = new AHRS(SPI.Port.kMXP);
 		lastRawAngle = ahrs.getAngle();
 		offset = 0;
 	}
