@@ -2,6 +2,9 @@ package org.usfirst.frc.team5895.robot;
 
 import org.usfirst.frc.team5895.robot.lib.TrajectoryDriveController;
 import org.usfirst.frc.team5895.robot.lib.NavX;
+
+import java.awt.geom.Point2D;
+
 import org.usfirst.frc.team5895.robot.lib.BetterEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
@@ -19,6 +22,10 @@ public class DriveTrain {
 	private TrajectoryDriveController p_in_use;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
+	
+	// tracking
+	private double posX, posY; // feet
+	private double lastDistance = 0d; // distance traveled the last time update() was called
 	
 	public DriveTrain() {
 		leftMotor = new Talon(0);
@@ -99,6 +106,15 @@ public class DriveTrain {
 	
 	public void update() {
 		
+		// position
+		double angle = navX.getAngle();
+		double distanceTraveled = (leftEncoder.getDistance()+rightEncoder.getDistance())/2;
+		double distance = distanceTraveled-lastDistance;
+		
+		posX += distance*Math.cos(Math.toRadians(angle));
+		posY += distance*Math.sin(Math.toRadians(angle));
+		
+		distance = distanceTraveled;
 		
 		switch(mode) {
 		
