@@ -57,18 +57,17 @@ public class Recorder {
     			
     			f= new Formatter("/home/lvuser/logs/" + filename);
     			StringBuilder titles = new StringBuilder();
-    			StringBuilder format = new StringBuilder();
     			boolean first = true;
     			for (String name : names) {
-    				if (!first) {
+    				if (first) {
     					first = false;
-    					titles.append(",");
-    					format.append("%f");
-    				} else {
     					titles.append(name);
+    				} else {
+    					titles.append("," + name);
     				}
     			}
     			titles.append("\r\n");
+    			DriverStation.reportError(titles.toString(), false);
     			f.format(titles.toString());
     			recordFile=true;
     		}
@@ -99,15 +98,17 @@ public class Recorder {
     private void record() {
     	if (recordFile==true) {
     		boolean first = true;
+    		StringBuilder line = new StringBuilder();
     		for (Gettable g : methods) {
     			if (first) {
     				first = false;
-    				f.format("%f", g.get());
+    				line.append("" + g.get());
     			} else {
-    				f.format(",%f", g.get());
+    				line.append("," + g.get());
     			}
     		}
-    		f.format("\r\n");
+    		line.append("\r\n");
+    		f.format(line.toString());
     	}
     }
     
