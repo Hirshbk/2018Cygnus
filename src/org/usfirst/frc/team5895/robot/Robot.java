@@ -1,11 +1,13 @@
 package org.usfirst.frc.team5895.robot;
 
 import org.usfirst.frc.team5895.robot.framework.Looper;
+import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 
 
 public class Robot extends IterativeRobot {
@@ -21,6 +23,8 @@ public class Robot extends IterativeRobot {
 	boolean hatMode;
 	boolean clawUp;
 	
+	Recorder r;
+	
 	public void robotInit() {
 		intake = new CubeIntake();
 		elevator = new Elevator();
@@ -35,9 +39,16 @@ public class Robot extends IterativeRobot {
 		loop.add(intake::update);
 		loop.add(driveT::update);
 		loop.start();
+		
+		r = new Recorder(100);
+		r.add("Time", Timer::getFPGATimestamp);
+		r.add("Heading", driveT::getAngle);
+		
 	}
 
 	public void autonomousInit() {
+		
+		r.startRecording();
 		
 	}
 
@@ -90,4 +101,9 @@ public class Robot extends IterativeRobot {
 			}
 		}
 	}
+	
+	public void disabledInit() {
+		r.stopRecording();
+	}
+	
 }
