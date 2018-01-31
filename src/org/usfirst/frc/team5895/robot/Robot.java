@@ -18,7 +18,6 @@ public class Robot extends IterativeRobot {
 	BetterJoystick rjoystick;
 	CubeIntake intake;
 	HatHatHat hat;
-	Claw claw;
 	DriveTrain driveT;
 	boolean hatMode;
 	boolean clawUp;
@@ -31,7 +30,6 @@ public class Robot extends IterativeRobot {
 		ljoystick = new BetterJoystick(0);
 		rjoystick = new BetterJoystick(1);
 		hat = new HatHatHat();
-		claw = new Claw();
 		driveT = new DriveTrain();
 		
 		loop = new Looper(10);
@@ -42,7 +40,11 @@ public class Robot extends IterativeRobot {
 		
 		r = new Recorder(100);
 		r.add("Time", Timer::getFPGATimestamp);
-		r.add("Heading", driveT::getAngle);
+		r.add("time", Timer::getFPGATimestamp);
+		r.add("x", driveT::getXPosition);
+		r.add("y", driveT::getYPosition);
+		r.add("velocity", driveT::getVelocity);
+		r.add("distance", driveT::getDistanceTraveled);
 		
 	}
 
@@ -90,9 +92,9 @@ public class Robot extends IterativeRobot {
 				if(ljoystick.getRisingEdge(1)) {
 					clawUp = !clawUp;
 					if(clawUp){
-						claw.up();
+						intake.up();
 					}else{
-						claw.down();
+						intake.down();
 					}	
 				}
 				if(rjoystick.getRisingEdge(1)) {

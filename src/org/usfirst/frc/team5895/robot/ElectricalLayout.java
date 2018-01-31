@@ -22,4 +22,10 @@ public class ElectricalLayout {
     public static final int SENSOR_ELEVATOR_BOTTOM = 0;
     public static final int SENSOR_ELEVATOR_DISTANCE = 0;
     
+    // Encoders
+    public static final int ENCODER_DRIVE_LEFT_1 = 0;
+    public static final int ENCODER_DRIVE_LEFT_2 = 1;
+    public static final int ENCODER_DRIVE_RIGHT_1 = 2;
+    public static final int ENCODER_DRIVE_RIGHT_2 = 3;
+    
 }

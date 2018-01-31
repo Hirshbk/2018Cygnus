@@ -5,10 +5,12 @@ import org.usfirst.frc.team5895.robot.lib.NavX;
 
 import java.awt.geom.Point2D;
 
+import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 
 //all parameters are tested using Basan 
 
@@ -28,11 +30,12 @@ public class DriveTrain {
 	private double lastDistance = 0d; // distance traveled the last time update() was called
 	
 	public DriveTrain() {
-		leftMotor = new Talon(0);
-		rightMotor = new Talon(1);
 		
-		leftEncoder = new BetterEncoder(0,1, true, Encoder.EncodingType.k4X);
-		rightEncoder = new BetterEncoder(2,3, false, Encoder.EncodingType.k4X);
+		leftMotor = new Talon(ElectricalLayout.MOTOR_DRIVE_LEFT);
+		rightMotor = new Talon(ElectricalLayout.MOTOR_DRIVE_RIGHT);
+		
+		leftEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_LEFT_1, ElectricalLayout.ENCODER_DRIVE_LEFT_2, true, Encoder.EncodingType.k4X);
+		rightEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_RIGHT_1, ElectricalLayout.ENCODER_DRIVE_RIGHT_2, false, Encoder.EncodingType.k4X);
 		
 		leftEncoder.setDistancePerPulse(4/12.0*Math.PI/360);
 		rightEncoder.setDistancePerPulse(4/12.0*Math.PI/360);
@@ -40,12 +43,12 @@ public class DriveTrain {
 		navX = new NavX();
 		
 		try { // check back everything. generate missing spline
-		p_switch_near = new TrajectoryDriveController("/home/lvuser/Test/NearSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-		p_switch_far = new TrajectoryDriveController("/home/lvuser/Test/FarSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.006);
-		p_scale_near = new TrajectoryDriveController("/home/lvuser/Test/NearScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-		p_scale_far = new TrajectoryDriveController("/home/lvuser/Test/FarScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.0065);
-		p_straight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-		p_back_straight = new TrajectoryDriveController("/home/lvuser/Test/Backwards.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			p_switch_near = new TrajectoryDriveController("/home/lvuser/Test/NearSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			p_switch_far = new TrajectoryDriveController("/home/lvuser/Test/FarSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.006);
+			p_scale_near = new TrajectoryDriveController("/home/lvuser/Test/NearScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			p_scale_far = new TrajectoryDriveController("/home/lvuser/Test/FarScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.0065);
+			p_straight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			p_back_straight = new TrajectoryDriveController("/home/lvuser/Test/Backwards.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 	
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
@@ -104,17 +107,37 @@ public class DriveTrain {
 		mode = Mode_Type.TELEOP;
 	}
 	
+	/**
+	 * @return the average velocity in feet per second from the left and right encoders.
+	 */
+	public double getVelocity() {
+		return (leftEncoder.getRate()+rightEncoder.getRate())/2;
+	}
+	
+	/**
+	 * @return the average distance traveled in feet from the left and right encoders.
+	 */
+	public double getDistanceTraveled() {
+		return (leftEncoder.getDistance()+rightEncoder.getDistance())/2;
+	}
+	
+	public double getXPosition() {
+		return posX;
+	}
+	
+	public double getYPosition() {
+		return posY;
+	}
+	
 	public void update() {
 		
 		// position
-		double angle = navX.getAngle();
-		double distanceTraveled = (leftEncoder.getDistance()+rightEncoder.getDistance())/2;
-		double distance = distanceTraveled-lastDistance;
+		double distance = getDistanceTraveled()-lastDistance;
 		
-		posX += distance*Math.cos(Math.toRadians(angle));
-		posY += distance*Math.sin(Math.toRadians(angle));
+		posX += distance*Math.cos(Math.toRadians(getAngle()));
+		posY += distance*Math.sin(Math.toRadians(getAngle()));
 		
-		distance = distanceTraveled;
+		distance = getDistanceTraveled();
 		
 		switch(mode) {
 		
