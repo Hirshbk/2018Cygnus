@@ -21,6 +21,10 @@ public class Limelight {
 	private CamMode cam = CamMode.VISION_PROCESSING; // operation mode
 	private double pipeline = 0; // current pipeline
 	
+	/**
+	 * Sets enum types of LED mode: ON, OFF, BLINKING
+	 * 
+	 */
 	public enum LedMode {
 		ON(0),OFF(1),BLINKING(2);
 		
@@ -35,6 +39,10 @@ public class Limelight {
 		}
 	}
 	
+	/**
+	 * Sets enum types of Camera mode: VISION_PROCESSING (Vision mode), Driver_Camera (Raw Image)
+	 *
+	 */
 	public enum CamMode {
 		VISION_PROCESSING(0),DRIVER_CAMERA(1);
 		
@@ -48,12 +56,20 @@ public class Limelight {
 			return value;
 		}
 	}
-	
+	/**
+	 * Start NetworkTable
+	 * Initialize NetworkTable of Limelight
+	 * 
+	 */
 	public Limelight() {
-		NetworkTableInstance.getDefault().startClient();
+		NetworkTableInstance.getDefault().startClient(); //
         table = NetworkTableInstance.getDefault().getTable("limelight");
 	}
 	
+	/**
+	 * Update all methods in need of routine refreshing
+	 * 
+	 */
 	public void update() {
 		updateHasTarget();
 		updateHorizontalOffset();
@@ -63,14 +79,16 @@ public class Limelight {
 		updateLatency();
 		updateLedMode();
 		updateCamMode();
-		updatePipeline();
 	}
 	
+	/**
+	 * Update boolean hasTarget
+	 */
 	public void updateHasTarget() {
 		double val = table.getEntry("tv").getDouble(-1);
-		if (val==0d) {
+		if (val == 0d) {
 			hasTarget = false;
-		} else if (val==1d) {
+		} else if (val == 1d) {
 			hasTarget = true;
 		} 
 	}
@@ -83,6 +101,7 @@ public class Limelight {
 		verticalOffset = table.getEntry("ty").getDouble(-1);
 	}
 	
+	
 	public void updateTargetArea() {
 		area = table.getEntry("ta").getDouble(-1);
 	}
@@ -90,11 +109,11 @@ public class Limelight {
 	public void updateRotation() {
 		rotation = table.getEntry("ts").getDouble(-1);
 	}
-	
+
 	public void updateLatency() {
 		latency = table.getEntry("tl").getDouble(-1);
 	}
-	
+
 	public void updateLedMode() {
 		table.getEntry("ledMode").setDouble(led.getValue());
 	}
