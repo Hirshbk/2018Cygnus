@@ -106,7 +106,18 @@ public class Main {
 
       serializeAndWrite(path, path_name);
     }
-    
+    {
+        final String path_name = "Backwards";
+        
+        WaypointSequence p = new WaypointSequence(10);
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(1.0, 8.0, 0));
+
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
     //side gear turning right
     {
         final String path_name = "Turn";
