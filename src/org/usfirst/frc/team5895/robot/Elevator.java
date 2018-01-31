@@ -5,7 +5,6 @@ package org.usfirst.frc.team5895.robot;
 
 import java.util.concurrent.TimeUnit;
 import org.usfirst.frc.team5895.robot.lib.BetterDigitalInput;
-import org.usfirst.frc.team5895.robot.lib.Constants;
 import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
 import org.usfirst.frc.team5895.robot.lib.Instrum;
 import com.ctre.phoenix.motorcontrol.*;
@@ -17,6 +16,10 @@ public class Elevator {
 	private DistanceSensor distSensor;
 	boolean aboveScale;
 	
+	public static final int kSlotIdx = 0;
+	public static final int kPIDLoopIdx = 0;
+	public static final int kTimeoutMs = 10;
+	
 	public Elevator() {
 		talon = new TalonSRX(0);
 		topLimitSwitch = new BetterDigitalInput(1);
@@ -27,33 +30,33 @@ public class Elevator {
 	public void setTalonSRX() {
 		
 		/* first choose the sensor */
-		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 		talon.setSensorPhase(true);
 		talon.setInverted(false);
 		
 		/* Set relevant frame periods to be at least as fast as periodic rate*/
-		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, kTimeoutMs);
+		talon.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, kTimeoutMs);
 
 		/* set the peak and nominal outputs, 12V means full */
-		talon.configNominalOutputForward(0, Constants.kTimeoutMs);
-		talon.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		talon.configPeakOutputForward(0.15, Constants.kTimeoutMs);
-		talon.configPeakOutputReverse(-0.15, Constants.kTimeoutMs);
+		talon.configNominalOutputForward(0, kTimeoutMs);
+		talon.configNominalOutputReverse(0, kTimeoutMs);
+		talon.configPeakOutputForward(0.15, kTimeoutMs);
+		talon.configPeakOutputReverse(-0.15, kTimeoutMs);
 		
 		/* set closed loop gains in slot0 - see documentation */
-		talon.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-		talon.config_kF(0, 0.2, Constants.kTimeoutMs);
-		talon.config_kP(0, 0.6, Constants.kTimeoutMs);
-		talon.config_kI(0, 0, Constants.kTimeoutMs);
-		talon.config_kD(0, 0, Constants.kTimeoutMs);
+		talon.selectProfileSlot(kSlotIdx, kPIDLoopIdx);
+		talon.config_kF(0, 0.2, kTimeoutMs);
+		talon.config_kP(0, 0.6, kTimeoutMs);
+		talon.config_kI(0, 0, kTimeoutMs);
+		talon.config_kD(0, 0, kTimeoutMs);
 		
 		/* set acceleration and vcruise velocity - see documentation */
-		talon.configMotionCruiseVelocity(2662, Constants.kTimeoutMs);
-		talon.configMotionAcceleration(5000, Constants.kTimeoutMs);
+		talon.configMotionCruiseVelocity(2662, kTimeoutMs);
+		talon.configMotionAcceleration(5000, kTimeoutMs);
 		
 		/* zero the sensor */
-		talon.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		talon.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 	}
 	
 	/* Motion Magic */
@@ -117,17 +120,17 @@ public class Elevator {
 		talon.set(ControlMode.PercentOutput, motorOutput);
 
 		if(topLimitSwitch.getRisingEdge()) {
-			talon.configPeakOutputForward(0, Constants.kTimeoutMs);	
+			talon.configPeakOutputForward(0, kTimeoutMs);	
 		}
 		else if(topLimitSwitch.getFallingEdge()) {
-			talon.configPeakOutputForward(0.15, Constants.kTimeoutMs);
+			talon.configPeakOutputForward(0.15, kTimeoutMs);
 		}
 		
 		if (bottomLimitSwitch.getRisingEdge()) {
-			talon.configPeakOutputReverse(0, Constants.kTimeoutMs);	
+			talon.configPeakOutputReverse(0, kTimeoutMs);	
 		}
 		else if (bottomLimitSwitch.getFallingEdge()) {
-			talon.configPeakOutputReverse(-0.15, Constants.kTimeoutMs);
+			talon.configPeakOutputReverse(-0.15, kTimeoutMs);
 		}
 		
 		/* instrumentation */

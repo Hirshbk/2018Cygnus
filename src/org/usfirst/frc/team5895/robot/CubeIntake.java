@@ -12,7 +12,6 @@ public class CubeIntake {
 	private Mode_Type mode = Mode_Type.EJECTING;
 	private Talon motor1, motor2;
 	private Solenoid solenoid;
-	private Timer timer;
 	private DigitalInput sensor;
 	double motorspeed1, motorspeed2, lastTime;
 	private boolean solenoidState;
@@ -25,19 +24,19 @@ public class CubeIntake {
 		solenoid = new Solenoid (0);
 		sensor = new DigitalInput(5);
 		lastHasCube=false;
-		}
+	}
 
 	public void intake(){
 		mode = Mode_Type.INTAKING;
-		}
+	}
 	
 	public void eject(){
 		mode= Mode_Type.EJECTING;
-		}
+	}
 	
 	public void waiting(){
 		mode = Mode_Type.WAITING; 
-		}
+	}
 	
 	public void off(){
 		mode = Mode_Type.OFF;
@@ -58,7 +57,7 @@ public class CubeIntake {
 		     motorspeed2=.5;
 		     
 		     if((lastHasCube == false) && (hasCube)) {
-				lastTime = timer.getFPGATimestamp(); //stamp the time we start waiting 
+				lastTime = Timer.getFPGATimestamp(); //stamp the time we start waiting 
 			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
 			 }
 			solenoidState = false; //solenoid only clamps once it is holding 
@@ -69,7 +68,7 @@ public class CubeIntake {
 			motorspeed1=.5;
 			motorspeed2=.5;
 			
-        	double curTime = timer.getFPGATimestamp(); //stamps current time 
+        	double curTime = Timer.getFPGATimestamp(); //stamps current time 
             if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
             	mode = Mode_Type.HOLDING; //if it has been waiting for 200ms, it begins to hold
             } else {
@@ -94,10 +93,11 @@ public class CubeIntake {
 			motorspeed1 = 0;
 			motorspeed2 = 0;
 			solenoidState = false;
-	
+			break;
+		}
+		
 		motor1.set(motorspeed1);
 		motor2.set(motorspeed2);
 		solenoid.set(solenoidState);
-		
 	}
 }
