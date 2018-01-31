@@ -6,6 +6,7 @@ package org.usfirst.frc.team5895.robot;
 import java.util.concurrent.TimeUnit;
 import org.usfirst.frc.team5895.robot.lib.BetterDigitalInput;
 import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
+import org.usfirst.frc.team5895.robot.lib.Instrum;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
@@ -131,5 +132,10 @@ public class Elevator {
 		else if (bottomLimitSwitch.getFallingEdge()) {
 			talon.configPeakOutputReverse(-0.15, kTimeoutMs);
 		}
+		
+		/* instrumentation */
+		Instrum.Process(talon);
+		try { TimeUnit.MILLISECONDS.sleep(10); } catch(Exception e) {}
+		
 	}
 }
