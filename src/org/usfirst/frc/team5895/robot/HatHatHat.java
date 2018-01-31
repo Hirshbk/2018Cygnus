@@ -14,11 +14,11 @@ public class HatHatHat {
 	
 	public HatHatHat() {
 		//re-enter port when we know!
-		leftSolenoid1 = new Solenoid(1); 
-		leftSolenoid2 = new Solenoid(2);
-		rightSolenoid1 = new Solenoid(3);
-		rightSolenoid2 = new Solenoid(4);
-		hatSensor = new DigitalInput(5);
+		leftSolenoid1 = new Solenoid(ElectricalLayout.SOLENOID_HAT_LEFT_1); 
+		leftSolenoid2 = new Solenoid(ElectricalLayout.SOLENOID_HAT_LEFT_2);
+		rightSolenoid1 = new Solenoid(ElectricalLayout.SOLENOID_HAT_RIGHT_1);
+		rightSolenoid2 = new Solenoid(ElectricalLayout.SOLENOID_HAT_RIGHT_2);
+		hatSensor = new DigitalInput(SENSOR_HAT);
 	}
 	
 	public void hold() {

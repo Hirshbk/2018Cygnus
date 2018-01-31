@@ -21,9 +21,9 @@ public class Elevator {
 	public static final int kTimeoutMs = 10;
 	
 	public Elevator() {
-		talon = new TalonSRX(0);
-		topLimitSwitch = new BetterDigitalInput(1);
-		bottomLimitSwitch = new BetterDigitalInput(2);
+		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR);
+		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
+		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
 		distSensor = new DistanceSensor();
 	}
 

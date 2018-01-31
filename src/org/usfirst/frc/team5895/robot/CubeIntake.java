@@ -22,11 +22,11 @@ public class CubeIntake {
 	
 	
 	public CubeIntake (){
-		motor1 = new Talon(3);
-		motor2 = new Talon(4);
-		solenoidClamp = new Solenoid (0);
-		solenoidClaw = new Solenoid(1);
-		sensor = new DigitalInput(5);
+		motor1 = new Talon(ElectricalLayout.MOTOR_DRIVE_LEFT);
+		motor2 = new Talon(ElectricalLayout.MOTOR_DRIVE_RIGHT);
+		solenoidClamp = new Solenoid (ElectricalLayout.SOLENOID_INTAKE_CLAMP);
+		solenoidClaw = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
+		sensor = new DigitalInput(ElectricalLayout.SENSOR_INTAKE);
 		lastHasCube=false;
 	    isDown = false;
 	    
