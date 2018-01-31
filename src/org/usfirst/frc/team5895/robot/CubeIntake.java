@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5895.robot;
 
 import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
+import org.usfirst.frc.team5895.robot.src.org.usfirst.frc.team5895.robot.CubeIntake.Mode_Type;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -11,39 +12,56 @@ public class CubeIntake {
 	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, OFF};
 	private Mode_Type mode = Mode_Type.EJECTING;
 	private Talon motor1, motor2;
-	private Solenoid solenoid;
+	private Solenoid solenoidClamp, solenoidClaw;
+	private Timer timer;
 	private DigitalInput sensor;
 	double motorspeed1, motorspeed2, lastTime;
 	private boolean solenoidState;
 	boolean lastHasCube;
+	private boolean isDown;
 	
 	
 	public CubeIntake (){
 		motor1 = new Talon(3);
 		motor2 = new Talon(4);
-		solenoid = new Solenoid (0);
+		solenoidClamp = new Solenoid (0);
+		solenoidClaw = new Solenoid(1);
 		sensor = new DigitalInput(5);
 		lastHasCube=false;
-	}
+	    isDown = false;
+	    
+		}
 
 	public void intake(){
 		mode = Mode_Type.INTAKING;
-	}
+		}
 	
 	public void eject(){
 		mode= Mode_Type.EJECTING;
-	}
+		}
 	
 	public void waiting(){
 		mode = Mode_Type.WAITING; 
-	}
+		}
 	
 	public void off(){
 		mode = Mode_Type.OFF;
 	}
 	
+	public void up() {
+		isDown = false;	
+	}
+	
+	public void down (){
+		isDown = true;
+	}
+	
 	public void update(){
-
+		
+		if (solenoidClaw.get() != isDown) {
+			   solenoidClaw.set(isDown);
+			}
+		
 		boolean hasCube = !sensor.get();
 		
 		motorspeed1 = 0;
@@ -57,7 +75,7 @@ public class CubeIntake {
 		     motorspeed2=.5;
 		     
 		     if((lastHasCube == false) && (hasCube)) {
-				lastTime = Timer.getFPGATimestamp(); //stamp the time we start waiting 
+				lastTime = timer.getFPGATimestamp(); //stamp the time we start waiting 
 			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
 			 }
 			solenoidState = false; //solenoid only clamps once it is holding 
@@ -68,7 +86,7 @@ public class CubeIntake {
 			motorspeed1=.5;
 			motorspeed2=.5;
 			
-        	double curTime = Timer.getFPGATimestamp(); //stamps current time 
+        	double curTime = timer.getFPGATimestamp(); //stamps current time 
             if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
             	mode = Mode_Type.HOLDING; //if it has been waiting for 200ms, it begins to hold
             } else {
@@ -93,11 +111,11 @@ public class CubeIntake {
 			motorspeed1 = 0;
 			motorspeed2 = 0;
 			solenoidState = false;
-			break;
-		}
-		
+	
 		motor1.set(motorspeed1);
 		motor2.set(motorspeed2);
-		solenoid.set(solenoidState);
+		solenoidClamp.set(solenoidState);
+		
+		}
 	}
 }
