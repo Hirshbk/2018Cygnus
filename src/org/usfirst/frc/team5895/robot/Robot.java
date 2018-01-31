@@ -17,6 +17,7 @@ public class Robot extends IterativeRobot {
 	CubeIntake intake;
 	HatHatHat hat;
 	Claw claw;
+	DriveTrain driveT;
 	boolean hatMode;
 	boolean clawUp;
 	
@@ -27,10 +28,12 @@ public class Robot extends IterativeRobot {
 		rjoystick = new BetterJoystick(1);
 		hat = new HatHatHat();
 		claw = new Claw();
+		driveT = new DriveTrain();
 		
 		loop = new Looper(10);
 		loop.add(elevator::update);
 		loop.add(intake::update);
+		loop.add(driveT::update);
 		loop.start();
 	}
 
