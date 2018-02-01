@@ -40,7 +40,7 @@ public class Limelight {
 	}
 	
 	/**
-	 * Sets enum types of Camera mode: VISION_PROCESSING (Vision mode), Driver_Camera (Raw Image)
+	 * Sets enum types of Camera mode: VISION_PROCESSING (Vision mode), DRIVER_CAMERA (Raw Image)
 	 *
 	 */
 	public enum CamMode {

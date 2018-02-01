@@ -37,6 +37,19 @@ public class HatHatHat {
 		}
 	}
 	
+	public int getState() {
+		switch (mode) {
+		case HOLDING:
+			return 0;
+		case LEFT_EXTEND:
+			return -1;
+		case RIGHT_EXTEND:
+			return 1;
+		default:
+			return Integer.MAX_VALUE; //no state
+		}
+	}
+	
 	public void update() {
 		if(hatSensor.get()) { //assume no cube = true
 			mode = Mode_Type.HOLDING;
