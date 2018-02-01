@@ -1,8 +1,5 @@
 package org.usfirst.frc.team5895.robot;
 
-import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
-import org.usfirst.frc.team5895.robot.src.org.usfirst.frc.team5895.robot.CubeIntake.Mode_Type;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
@@ -13,7 +10,6 @@ public class CubeIntake {
 	private Mode_Type mode = Mode_Type.EJECTING;
 	private Talon motor1, motor2;
 	private Solenoid solenoidClamp, solenoidClaw;
-	private Timer timer;
 	private DigitalInput sensor;
 	double motorspeed1, motorspeed2, lastTime;
 	private boolean solenoidState;
@@ -92,7 +88,7 @@ public class CubeIntake {
 		     motorspeed2=.5;
 		     
 		     if((lastHasCube == false) && (hasCube)) {
-				lastTime = timer.getFPGATimestamp(); //stamp the time we start waiting 
+				lastTime = Timer.getFPGATimestamp(); //stamp the time we start waiting 
 			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
 			 }
 			solenoidState = false; //solenoid only clamps once it is holding 
@@ -103,7 +99,7 @@ public class CubeIntake {
 			motorspeed1=.5;
 			motorspeed2=.5;
 			
-        	double curTime = timer.getFPGATimestamp(); //stamps current time 
+        	double curTime = Timer.getFPGATimestamp(); //stamps current time 
             if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
             	mode = Mode_Type.HOLDING; //if it has been waiting for 200ms, it begins to hold
             } else {
