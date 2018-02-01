@@ -19,8 +19,7 @@ public class Elevator {
 	public static final int kSlotIdx = 0;
 	public static final int kPIDLoopIdx = 0;
 	public static final int kTimeoutMs = 10;
-	double height;
-	
+		
 	public Elevator() {
 		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR);
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
@@ -112,14 +111,6 @@ public class Elevator {
 			double targetPos = 0;
 			talon.set(ControlMode.MotionMagic, targetPos);
 		}
-	}
-	
-	public void setHeight(double targetHeight) {
-		height = targetHeight;
-	}
-	
-	public double getHeight() {
-		return height;
 	}
 	
 	public void update() {

@@ -37,16 +37,16 @@ public class HatHatHat {
 		}
 	}
 	
-	public int getState() {
+	public double getState() {
 		switch (mode) {
 		case HOLDING:
 			return 0;
 		case LEFT_EXTEND:
-			return -1;
-		case RIGHT_EXTEND:
 			return 1;
+		case RIGHT_EXTEND:
+			return 2;
 		default:
-			return Integer.MAX_VALUE; //no state
+			return -1;
 		}
 	}
 	

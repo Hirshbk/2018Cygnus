@@ -56,6 +56,23 @@ public class CubeIntake {
 		isDown = true;
 	}
 	
+	public double getState() {
+		switch (mode) {
+			case OFF:
+				return 0;
+			case INTAKING:
+				return 1;
+			case EJECTING:
+				return 2;
+			case HOLDING:
+				return 3;
+			case WAITING:
+				return 4;
+			default:
+				return -1;
+		}
+	}
+	
 	public void update(){
 		
 		if (solenoidClaw.get() != isDown) {
