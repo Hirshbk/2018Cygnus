@@ -19,7 +19,7 @@ public class Elevator {
 	public static final int kSlotIdx = 0;
 	public static final int kPIDLoopIdx = 0;
 	public static final int kTimeoutMs = 10;
-		
+	
 	public Elevator() {
 		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR);
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
@@ -55,8 +55,19 @@ public class Elevator {
 		talon.configMotionCruiseVelocity(2662, kTimeoutMs);
 		talon.configMotionAcceleration(5000, kTimeoutMs);
 		
-		/* zero the sensor */
+		/* zero the distance sensor */
 		talon.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+		
+		/*set up the encoder */
+		talon.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+		talon.setSelectedSensorPosition(0, 0, 10);
+	}
+	
+	public double getHeight() {
+		
+		double height = talon.getSelectedSensorPosition(0)/2048.*1.432/12.0; // 2048 ticks per rev, pitch diameter: 1.432in
+		
+		return height;
 	}
 	
 	/* Motion Magic */
