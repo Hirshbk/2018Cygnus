@@ -1,12 +1,10 @@
 package org.usfirst.frc.team5895.robot;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
 public class HatHatHat {
 	private Solenoid leftSolenoid1,leftSolenoid2,rightSolenoid1,rightSolenoid2;
-	private DigitalInput hatSensor;
 	private enum Mode_Type {LEFT_EXTEND,RIGHT_EXTEND,HOLDING}; //create states
 	private Mode_Type mode = Mode_Type.HOLDING;
 	private double lastTime;
@@ -18,7 +16,6 @@ public class HatHatHat {
 		leftSolenoid2 = new Solenoid(ElectricalLayout.SOLENOID_HAT_LEFT_2);
 		rightSolenoid1 = new Solenoid(ElectricalLayout.SOLENOID_HAT_RIGHT_1);
 		rightSolenoid2 = new Solenoid(ElectricalLayout.SOLENOID_HAT_RIGHT_2);
-		hatSensor = new DigitalInput(SENSOR_HAT);
 	}
 	
 	public void hold() {
@@ -51,9 +48,6 @@ public class HatHatHat {
 	}
 	
 	public void update() {
-		if(hatSensor.get()) { //assume no cube = true
-			mode = Mode_Type.HOLDING;
-		}
 		
 		if(mode == Mode_Type.LEFT_EXTEND || mode == Mode_Type.RIGHT_EXTEND) {
 			double curTime = Timer.getFPGATimestamp();
