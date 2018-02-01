@@ -93,54 +93,39 @@ public class Main {
     
     final double kWheelbaseWidth = 27.0/12; //correct
    
-    //drive straight for 8 feet, gear side first
+    //drive straight for 10 feet
     {
       final String path_name = "Straight";
       
       WaypointSequence p = new WaypointSequence(10);
       p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 8.0, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 10.0, 0));
 
       Path path = PathGenerator.makePath(p, config,
           kWheelbaseWidth, path_name);
 
       serializeAndWrite(path, path_name);
-    }
+     }
     {
-        final String path_name = "Backwards";
+        final String path_name = "SwitchRR";
         
         WaypointSequence p = new WaypointSequence(10);
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(1.0, 8.0, 0));
-
+        p.addWaypoint(new WaypointSequence.Waypoint(-0.5667, 12.9167, 0));
+        
         Path path = PathGenerator.makePath(p, config,
             kWheelbaseWidth, path_name);
 
         serializeAndWrite(path, path_name);
       }
-    //side gear turning right
     {
-        final String path_name = "Turn";
+        final String path_name = "CubeIntakeRR";
         
         WaypointSequence p = new WaypointSequence(10);
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(1.0, 8.0, 0));
- 
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "Path1";
-        
-        WaypointSequence p = new WaypointSequence(10);        
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 2, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0.0, 17.0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-4.0, 20.0, -89.9));
-        p.addWaypoint(new WaypointSequence.Waypoint(-16, 20.0, -89.9));
-        p.addWaypoint(new WaypointSequence.Waypoint(-18.5, 22.0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-18.5, 27.0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0.1, 3, 0));
+        //p.addWaypoint(new WaypointSequence.Waypoint(0.4, 5, 30));
+        p.addWaypoint(new WaypointSequence.Waypoint(1, 6, 60));
         
         Path path = PathGenerator.makePath(p, config,
             kWheelbaseWidth, path_name);
@@ -148,56 +133,12 @@ public class Main {
         serializeAndWrite(path, path_name);
       }
     {
-        final String path_name = "Path2";
+        final String path_name = "ScaleRR";
         
         WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 2, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 27, 0));
- 
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "Path3";
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 45));
+        p.addWaypoint(new WaypointSequence.Waypoint(-0.5667, 9.6051, 0));
         
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 2, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-1, 14.0, 0));
- 
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "Path4";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 2, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0.5, 16.0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2.5, 20.0, -89.9));
-        p.addWaypoint(new WaypointSequence.Waypoint(-9.5, 20.0, -89.9));
-        p.addWaypoint(new WaypointSequence.Waypoint(-14.5, 20.0, -89.9));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "Path4wTurn";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 2, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0.5, 16.0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2.5, 20.0, -89.9));
-        p.addWaypoint(new WaypointSequence.Waypoint(-9.5, 20.0, -89.9));
-        p.addWaypoint(new WaypointSequence.Waypoint(-12.5, 19.0, -135.0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-14.5, 18.0, -89.9));
-        
- 
         Path path = PathGenerator.makePath(p, config,
             kWheelbaseWidth, path_name);
 
