@@ -19,6 +19,7 @@ public class Robot extends IterativeRobot {
 	CubeIntake intake;
 	HatHatHat hat;
 	DriveTrain driveT;
+	Blinkin blinkin;
 	boolean hatMode;
 	boolean clawUp;
 	
@@ -31,6 +32,7 @@ public class Robot extends IterativeRobot {
 		rjoystick = new BetterJoystick(1);
 		hat = new HatHatHat();
 		driveT = new DriveTrain();
+		blinkin = new Blinkin();
 		
 		loop = new Looper(10);
 		loop.add(elevator::update);
@@ -79,6 +81,8 @@ public class Robot extends IterativeRobot {
 				hatMode = ! hatMode; 
 			}
 			if (hatMode) {
+				blinkin.lightsHatmode();
+				
 				if(ljoystick.getRisingEdge(1)){
 					hat.leftExtend(); 
 					intake.off();
@@ -89,6 +93,13 @@ public class Robot extends IterativeRobot {
 				}
 			}
 			else {
+				if(intake.lastHasCube) {
+					blinkin.lightsHasCube();
+				}
+				else {
+					blinkin.lightsNormalDrive();
+				}
+				
 				if(ljoystick.getRisingEdge(1)) {
 					clawUp = !clawUp;
 					if(clawUp){
