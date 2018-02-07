@@ -24,8 +24,8 @@ public class DriveTrain {
 	private BetterEncoder leftEncoder,rightEncoder;
 	private double leftspeed, rightspeed;
 	private NavX navX;
-	private TrajectoryDriveController p_switch_near,p_switch_far,p_scale_near,p_scale_far,p_straight,p_back_straight;
-	private TrajectoryDriveController p_in_use;
+	private TrajectoryDriveController pSwitchNear,pSwitchFar,pScaleNear,pScaleFar,pStraight,pBackStraight;
+	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
 	
@@ -52,12 +52,12 @@ public class DriveTrain {
 		navX = new NavX();
 		
 		try { // check back everything. generate missing spline
-			p_switch_near = new TrajectoryDriveController("/home/lvuser/Test/NearSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			p_switch_far = new TrajectoryDriveController("/home/lvuser/Test/FarSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.006);
-			p_scale_near = new TrajectoryDriveController("/home/lvuser/Test/NearScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			p_scale_far = new TrajectoryDriveController("/home/lvuser/Test/FarScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.0065);
-			p_straight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			p_back_straight = new TrajectoryDriveController("/home/lvuser/Test/Backwards.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pSwitchNear = new TrajectoryDriveController("/home/lvuser/Test/NearSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pSwitchFar = new TrajectoryDriveController("/home/lvuser/Test/FarSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.006);
+			pScaleNear = new TrajectoryDriveController("/home/lvuser/Test/NearScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pScaleFar = new TrajectoryDriveController("/home/lvuser/Test/FarScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.0065);
+			pStraight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pBackStraight = new TrajectoryDriveController("/home/lvuser/Test/Backwards.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 	
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
@@ -74,39 +74,39 @@ public class DriveTrain {
 		return navX.getAngle(); // navX reads angle in degree
 	}
 	
-	public void auto_switch_near() {
+	public void autoSwitchNear() {
 		resetEncoderAndNavX();
-		p_in_use = p_switch_near;
+		pInUse = pSwitchNear;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void auto_switch_far() {
+	public void autoSwitchFar() {
 		resetEncoderAndNavX();
-		p_in_use = p_switch_far;
+		pInUse = pSwitchFar;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void auto_scale_near() {
+	public void autoScaleNear() {
 		resetEncoderAndNavX();
-		p_in_use = p_scale_near;
+		pInUse = pScaleNear;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void auto_scale_far() {
+	public void autoScaleFar() {
 		resetEncoderAndNavX();
-		p_in_use = p_scale_far;
+		pInUse = pScaleFar;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void auto_straight() {
+	public void autoStraight() {
 		resetEncoderAndNavX();
-		p_in_use = p_straight;
+		pInUse = pStraight;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void auto_back_straight() {
+	public void autoBackStraight() {
 		resetEncoderAndNavX();
-		p_in_use = p_back_straight;
+		pInUse = pBackStraight;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
@@ -152,7 +152,7 @@ public class DriveTrain {
 		
 			case AUTO_SPLINE:
 				double[] m = new double[2];
-				m = p_in_use.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // change navX angle to radian
+				m = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // change navX angle to radian
 
 				leftDriveMaster.set(ControlMode.PercentOutput, -m[0]);
 				rightDriveMaster.set(ControlMode.PercentOutput, m[1]);
@@ -162,7 +162,7 @@ public class DriveTrain {
 				DriverStation.reportError("updating", false);
 				
 				double[] m_back = new double[2];
-				m_back = p_in_use.getOutput(-leftEncoder.getDistance(), -rightEncoder.getDistance(), getAngle()*3.14/180); // driving backwards
+				m_back = pInUse.getOutput(-leftEncoder.getDistance(), -rightEncoder.getDistance(), getAngle()*3.14/180); // driving backwards
 
 				leftDriveMaster.set(ControlMode.PercentOutput, m_back[0]);
 				rightDriveMaster.set(ControlMode.PercentOutput, -m_back[1]);
