@@ -13,7 +13,7 @@ public class GameData {
 		leftScale = true;
 	}
 	
-		
+	public GameData() {
 		side = SmartDashboard.getString("DB/String 0", "nothing");
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(0) == 'L'){
