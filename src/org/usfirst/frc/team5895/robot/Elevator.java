@@ -23,7 +23,7 @@ public class Elevator {
 	public static final int kTimeoutMs = 10;
 	
 	public Elevator() {
-		brake = new Solenoid(ElectricalLayout.SOLENOID_ELEVATOR_HALT);//port ?
+		brake = new Solenoid(ElectricalLayout.SOLENOID_ELEVATOR_BRAKE);//port ?
 		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR);
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
 		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
