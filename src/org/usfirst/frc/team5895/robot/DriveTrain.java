@@ -1,6 +1,10 @@
 package org.usfirst.frc.team5895.robot;
 
 import org.usfirst.frc.team5895.robot.lib.TrajectoryDriveController;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import org.usfirst.frc.team5895.robot.lib.NavX;
 
 import java.awt.geom.Point2D;
@@ -16,7 +20,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class DriveTrain {
 
-	private Talon rightMotor,leftMotor;
+	private TalonSRX leftDriveMaster, leftDriveFollower, rightDriveMaster, rightDriveFollower;
 	private BetterEncoder leftEncoder,rightEncoder;
 	private double leftspeed, rightspeed;
 	private NavX navX;
@@ -31,8 +35,13 @@ public class DriveTrain {
 	
 	public DriveTrain() {
 		
-		leftMotor = new Talon(ElectricalLayout.MOTOR_DRIVE_LEFT);
-		rightMotor = new Talon(ElectricalLayout.MOTOR_DRIVE_RIGHT);
+		leftDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
+		leftDriveFollower = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER);
+		rightDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
+		rightDriveFollower = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER);
+		
+		leftDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
+		rightDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
 		
 		leftEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_LEFT_1, ElectricalLayout.ENCODER_DRIVE_LEFT_2, true, Encoder.EncodingType.k4X);
 		rightEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_RIGHT_1, ElectricalLayout.ENCODER_DRIVE_RIGHT_2, false, Encoder.EncodingType.k4X);
@@ -145,8 +154,8 @@ public class DriveTrain {
 				double[] m = new double[2];
 				m = p_in_use.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // change navX angle to radian
 
-				leftMotor.set(-m[0]);
-				rightMotor.set(m[1]);
+				leftDriveMaster.set(ControlMode.PercentOutput, -m[0]);
+				rightDriveMaster.set(ControlMode.PercentOutput, m[1]);
 				break;
 				
 			case AUTO_BACKWARDS_SPLINE:
@@ -155,14 +164,14 @@ public class DriveTrain {
 				double[] m_back = new double[2];
 				m_back = p_in_use.getOutput(-leftEncoder.getDistance(), -rightEncoder.getDistance(), getAngle()*3.14/180); // driving backwards
 
-				leftMotor.set(m_back[0]);
-				rightMotor.set(-m_back[1]);
+				leftDriveMaster.set(ControlMode.PercentOutput, m_back[0]);
+				rightDriveMaster.set(ControlMode.PercentOutput, -m_back[1]);
 				
 				break;
 			
 			case TELEOP: 
-				leftMotor.set(leftspeed);
-				rightMotor.set(-rightspeed);
+				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
+				rightDriveMaster.set(ControlMode.PercentOutput, -rightspeed);
 				break;
 				
 			

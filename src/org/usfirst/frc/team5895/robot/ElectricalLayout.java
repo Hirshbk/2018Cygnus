@@ -3,9 +3,15 @@ package org.usfirst.frc.team5895.robot;
 public class ElectricalLayout {
     
     // Motors
-    public static final int MOTOR_DRIVE_LEFT = 0;
-    public static final int MOTOR_DRIVE_RIGHT = 1;
-    public static final int MOTOR_ELEVATOR = 1;
+    public static final int MOTOR_DRIVE_LEFT_MASTER = 1;
+    public static final int MOTOR_DRIVE_LEFT_FOLLOWER = 2;
+    public static final int MOTOR_DRIVE_RIGHT_MASTER = 3;
+    public static final int MOTOR_DRIVE_RIGHT_FOLLOWER = 4;
+    public static final int MOTOR_ELEVATOR_MASTER = 5;
+    public static final int MOTOR_ELEVATOR_FOLLOWER_1 = 6;
+    public static final int MOTOR_ELEVATOR_FOLLOWER_2 = 7;
+    public static final int MOTOR_CLAW_1 = 8;
+    public static final int MOTOR_CLAW_2 = 9;
     
     // Solenoids
     public static final int SOLENOID_HAT_LEFT_1 = 0;
