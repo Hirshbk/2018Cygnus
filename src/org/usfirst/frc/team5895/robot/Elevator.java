@@ -9,17 +9,21 @@ import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
+import edu.wpi.first.wpilibj.Solenoid;
+
 public class Elevator {
 	private TalonSRX talon;
 	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
 	private DistanceSensor distSensor;
 	boolean aboveScale;
+	private Solenoid brake;
 	
 	public static final int kSlotIdx = 0;
 	public static final int kPIDLoopIdx = 0;
 	public static final int kTimeoutMs = 10;
 	
 	public Elevator() {
+		brake = new Solenoid(ElectricalLayout.SOLENOID_ELEVATOR_HALT);//port ?
 		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR);
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
 		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
@@ -103,7 +107,12 @@ public class Elevator {
 		double targetPos = 0;
 		talon.set(ControlMode.MotionMagic, targetPos); 
 	}
-	
+	public void brake() {
+		brake.set(true);
+	}
+	public void unBrake() {
+		brake.set(false);
+	}
 	// uses the analog distance sensor to detect whether the claw is above the scale
 	public boolean aboveScale() {	
 		if(distSensor.getDistance() < 3) {
