@@ -14,7 +14,7 @@ public class ElectricalLayout {
     public static final int SOLENOID_HAT_RIGHT_2 = 0;
     public static final int SOLENOID_INTAKE_CLAMP = 0;
     public static final int SOLENOID_INTAKE_CLAW = 0;
-    public static final int SOLENOID_ELEVATOR_HALT = 0;
+    public static final int SOLENOID_ELEVATOR_BRAKE = 0;
     
     // Digital Inputs
     public static final int SENSOR_HAT = 0;
