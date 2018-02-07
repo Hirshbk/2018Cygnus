@@ -7,12 +7,17 @@ import org.usfirst.frc.team5895.robot.Elevator;
 import org.usfirst.frc.team5895.robot.HatHatHat;
 import org.usfirst.frc.team5895.robot.Limelight;
 
-public class LRL implements Auto{
+/**
+ * Left side of field, right switch, & left scale.
+ * @author lalewis-19
+ */
+public class LRL {
 	
-	@Override
-	public void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake,
+	public static final void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake,
 			Blinkin blinkin) {
-		// TODO Auto-generated method stub
+		
+		// switch > far
+		// scale > near
 		
 	}
 
