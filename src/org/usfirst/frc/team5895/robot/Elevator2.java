@@ -23,7 +23,7 @@ public class Elevator2 {
 	
 	public static final int kSlotIdx = 0;
 	public static final int kPIDLoopIdx = 0;
-	public static final int kTimeoutMs = 10;
+	public static final int kTimeoutMs = 0;
 	
 	private double targetPos;
 	private double footConversion = 1.0 / 2048.0 * 1.432 / 12.0;

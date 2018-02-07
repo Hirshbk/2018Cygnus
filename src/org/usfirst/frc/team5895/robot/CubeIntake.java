@@ -1,5 +1,8 @@
 package org.usfirst.frc.team5895.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
@@ -8,7 +11,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class CubeIntake {
 	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, OFF};
 	private Mode_Type mode = Mode_Type.EJECTING;
-	private Talon motor1, motor2;
+	private TalonSRX motor1, motor2;
 	private Solenoid solenoidClamp, solenoidClaw;
 	private DigitalInput sensor;
 	double motorspeed1, motorspeed2, lastTime;
@@ -18,8 +21,8 @@ public class CubeIntake {
 	
 	
 	public CubeIntake (){
-		motor1 = new Talon(ElectricalLayout.MOTOR_DRIVE_LEFT);
-		motor2 = new Talon(ElectricalLayout.MOTOR_DRIVE_RIGHT);
+		motor1 = new TalonSRX(ElectricalLayout.MOTOR_CLAW_1);
+		motor2 = new TalonSRX(ElectricalLayout.MOTOR_CLAW_2);
 		solenoidClamp = new Solenoid (ElectricalLayout.SOLENOID_INTAKE_CLAMP);
 		solenoidClaw = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
 		sensor = new DigitalInput(ElectricalLayout.SENSOR_INTAKE);
@@ -125,8 +128,8 @@ public class CubeIntake {
 			motorspeed2 = 0;
 			solenoidState = false;
 	
-		motor1.set(motorspeed1);
-		motor2.set(motorspeed2);
+		motor1.set(ControlMode.PercentOutput, motorspeed1);
+		motor2.set(ControlMode.PercentOutput, motorspeed2);
 		solenoidClamp.set(solenoidState);
 		
 		}
