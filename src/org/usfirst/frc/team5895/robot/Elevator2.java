@@ -130,21 +130,12 @@ public class Elevator2 {
 	
 	// uses the analog distance sensor to detect whether the claw is above the scale
 	public boolean aboveScale() {	
-		if(distSensor.getDistance() < 3) {
-			aboveScale = true;
-		}
-		else {
-			aboveScale = false;
-		}
-		return aboveScale;
+		return (distSensor.getDistance() < 3);
 	}
-	
+	//checks if it's at target and moving slowly
 	public boolean atTarget() {
-		if((elevatorMaster.getSelectedSensorPosition(0) / footConversion) - targetPos < 1.0/12.0) {
-			return true;
-		} else {
-			return false;
-		}
+		return (((elevatorMaster.getSelectedSensorPosition(0) / footConversion) - targetPos < 1.0/12.0) 
+				&& (elevatorMaster.getSelectedSensorVelocity(0) / footConversion < 1));
 	}
 	
 	// elevator automatically falls to the bottom after detecting no scale
@@ -174,7 +165,7 @@ public class Elevator2 {
 			
 		//automatically brakes if it's at target and not moving quickly
 		//I have no idea what the velocity units are so I just put 1, change when we actually have a robot
-		if(atTarget() && (elevatorMaster.getSelectedSensorVelocity(0) / footConversion < 1)) {
+		if(atTarget()) {
 			mode = Mode_Type.BRAKING;
 		}
 		
