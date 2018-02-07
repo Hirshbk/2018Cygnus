@@ -13,7 +13,7 @@ import org.usfirst.frc.team5895.robot.Limelight;
  */
 public class LLL {
 	
-	public void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake,
+	public static final void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake,
 			Blinkin blinkin) {
 		
 		// switch > near

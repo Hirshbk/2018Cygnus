@@ -1,10 +1,13 @@
 package org.usfirst.frc.team5895.robot;
 
+import org.usfirst.frc.team5895.robot.auto.*;
 import org.usfirst.frc.team5895.robot.framework.Looper;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,10 +21,12 @@ public class Robot extends IterativeRobot {
 	BetterJoystick rjoystick;
 	CubeIntake intake;
 	HatHatHat hat;
-	DriveTrain driveT;
+	DriveTrain drive;
 	Blinkin blinkin;
 	boolean hatMode;
 	boolean clawUp;
+	GameData gameData;
+	Limelight lime;
 	
 	Recorder r;
 	
@@ -31,29 +36,56 @@ public class Robot extends IterativeRobot {
 		ljoystick = new BetterJoystick(0);
 		rjoystick = new BetterJoystick(1);
 		hat = new HatHatHat();
-		driveT = new DriveTrain();
+		drive = new DriveTrain();
 		blinkin = new Blinkin();
+		gameData = new GameData();
+		lime = new Limelight();
 		
 		loop = new Looper(10);
 		loop.add(elevator::update);
 		loop.add(intake::update);
-		loop.add(driveT::update);
+		loop.add(drive::update);
 		loop.start();
 		
 		r = new Recorder(100);
 		r.add("Time", Timer::getFPGATimestamp);
 		r.add("time", Timer::getFPGATimestamp);
-		r.add("x", driveT::getXPosition);
-		r.add("y", driveT::getYPosition);
-		r.add("velocity", driveT::getVelocity);
-		r.add("distance", driveT::getDistanceTraveled);
+		r.add("x", drive::getXPosition);
+		r.add("y", drive::getYPosition);
+		r.add("velocity", drive::getVelocity);
+		r.add("distance", drive::getDistanceTraveled);
 		
 	}
 
 	public void autonomousInit() {
 		
 		r.startRecording();
-		
+		if (gameData.RRR()) {
+			LLL.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.RRL()) {
+			RRL.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.RLR()) {
+			RLR.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.RLL()) {
+			RLL.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.LLL()) {
+			LLL.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.LLR()) {
+			LLR.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.LRL()) {
+			LRL.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.LRR()) {
+			LRR.run(drive, hat, elevator, lime, intake, blinkin);
+		}
+		else
+			DriverStation.reportError("Auto Error", false);
 	}
 
 	public void teleopPeriodic() {
