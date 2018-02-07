@@ -3,7 +3,6 @@
  */
 package org.usfirst.frc.team5895.robot;
 
-import java.util.concurrent.TimeUnit;
 import org.usfirst.frc.team5895.robot.lib.BetterDigitalInput;
 import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
 import com.ctre.phoenix.motorcontrol.*;
@@ -27,7 +26,7 @@ public class Elevator2 {
 	public static final int kTimeoutMs = 10;
 	
 	private double targetPos;
-	private double footConversion = 1 / 360.0 * 13.0 * 4096;
+	private double footConversion = 1.0 / 2048.0 * 1.432 / 12.0;
 	private double brakeTimestamp;
 	
 	public Elevator2() {
@@ -42,10 +41,7 @@ public class Elevator2 {
 		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
 		brakeSolenoid = new Solenoid(ElectricalLayout.SOLENOID_ELEVATOR_BRAKE);
 		distSensor = new DistanceSensor();
-	}
-
-	public void setTalonSRX() {
-		
+	
 		/* first choose the sensor */
 		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 		elevatorMaster.setSensorPhase(true);
@@ -82,7 +78,7 @@ public class Elevator2 {
 	
 	public double getHeight() {
 		
-		double height = elevatorMaster.getSelectedSensorPosition(0)/2048.*1.432/12.0; // 2048 ticks per rev, pitch diameter: 1.432in
+		double height = elevatorMaster.getSelectedSensorPosition(0) * footConversion; // 2048 ticks per rev, pitch diameter: 1.432in
 		
 		return height;
 	}
@@ -199,6 +195,7 @@ public class Elevator2 {
 		
 		case DISENGAGING:
 			
+			brakeSolenoid.set(false);
 			if(Timer.getFPGATimestamp() - brakeTimestamp > 50) {
 				mode = Mode_Type.MOVING;
 			}
