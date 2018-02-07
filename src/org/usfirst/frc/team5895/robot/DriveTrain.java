@@ -26,7 +26,7 @@ public class DriveTrain {
 	private NavX navX;
 	private TrajectoryDriveController pSwitchNear,pSwitchFar,pScaleNear,pScaleFar,pStraight,pBackStraight;
 	private TrajectoryDriveController pInUse;
-	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE};
+	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
 	
 	// tracking
@@ -130,6 +130,12 @@ public class DriveTrain {
 		return (leftEncoder.getDistance()+rightEncoder.getDistance())/2;
 	}
 	
+	public boolean isPFinished() {
+		
+		return (pInUse.isFinished());
+		
+	}
+	
 	public double getXPosition() {
 		return posX;
 	}
@@ -166,6 +172,17 @@ public class DriveTrain {
 
 				leftDriveMaster.set(ControlMode.PercentOutput, m_back[0]);
 				rightDriveMaster.set(ControlMode.PercentOutput, -m_back[1]);
+				
+				break;
+				
+			case AUTO_MIRROR_SPLINE:
+				DriverStation.reportError("updating", false);
+				
+				double[] m_mirror = new double[2];
+				m_mirror = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // mirror spline
+
+				leftDriveMaster.set(ControlMode.PercentOutput, m_mirror[1]);
+				rightDriveMaster.set(ControlMode.PercentOutput, -m_mirror[0]);
 				
 				break;
 			
