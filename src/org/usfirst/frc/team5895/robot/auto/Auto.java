@@ -7,13 +7,8 @@ import org.usfirst.frc.team5895.robot.Elevator;
 import org.usfirst.frc.team5895.robot.HatHatHat;
 import org.usfirst.frc.team5895.robot.Limelight;
 
-public class RLR implements Auto{
+public interface Auto {
 	
-	@Override
-	public void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake,
-			Blinkin blinkin) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake, Blinkin blinkin);
+	
 }
