@@ -18,7 +18,7 @@ public class Elevator2 {
 	private DistanceSensor distSensor;
 	boolean aboveScale;
 	
-	private enum Mode_Type {MOVING, BRAKING, DISENGAGING, CLIMBING, PERCENT};
+	private enum Mode_Type {MOVING, BRAKING, DISENGAGING, CLIMBING, PERCENT, DISABLED};
 	private Mode_Type mode = Mode_Type.MOVING;
 	
 	public static final int kSlotIdx = 0;
@@ -146,6 +146,10 @@ public class Elevator2 {
 		}
 	}
 	
+	public void disable() {
+		mode = Mode_Type.DISABLED;
+	}
+	
 	public void update() {
 
 		//this sets the max current based on if the limit switch is triggered
@@ -209,7 +213,11 @@ public class Elevator2 {
 			elevatorMaster.set(ControlMode.PercentOutput, motorOutput);
 			
 			break;
-		
+			
+		case DISABLED:
+			brakeSolenoid.set(false);
+			elevatorMaster.set(ControlMode.PercentOutput, 0);
+			break;
 		}
 	}
 }
