@@ -24,7 +24,8 @@ public class DriveTrain {
 	private BetterEncoder leftEncoder,rightEncoder;
 	private double leftspeed, rightspeed;
 	private NavX navX;
-	private TrajectoryDriveController pSwitchNear,pSwitchFar,pScaleNear,pScaleFar,pStraight,pBackStraight;
+	private TrajectoryDriveController pStraight;
+	private TrajectoryDriveController pRRX1,pRRX2,pRRX3,pRRX4,pRRR;
 	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
@@ -52,21 +53,26 @@ public class DriveTrain {
 		navX = new NavX();
 		
 		try { // check back everything. generate missing spline
-			pSwitchNear = new TrajectoryDriveController("/home/lvuser/Test/NearSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pSwitchFar = new TrajectoryDriveController("/home/lvuser/Test/FarSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.006);
-			pScaleNear = new TrajectoryDriveController("/home/lvuser/Test/NearScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pScaleFar = new TrajectoryDriveController("/home/lvuser/Test/FarScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.0065);
+			// drive straight
 			pStraight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pBackStraight = new TrajectoryDriveController("/home/lvuser/Test/Backwards.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			// start at Right
+			pRRX1 = new TrajectoryDriveController("/home/lvuser/Test/SwitchRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRRX2 = new TrajectoryDriveController("/home/lvuser/Test/RRX2.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRRX3 = new TrajectoryDriveController("/home/lvuser/Test/RRX3.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRRX4 = new TrajectoryDriveController("/home/lvuser/Test/RRX4.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRRR = new TrajectoryDriveController("/home/lvuser/Test/RRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 	
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
 		}
 	}
 	
-	public void resetEncoderAndNavX() {
+	public void resetEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
+		
+	}
+	public void resetNavX() {
 		navX.reset();
 	}
 	
@@ -74,40 +80,45 @@ public class DriveTrain {
 		return navX.getAngle(); // navX reads angle in degree
 	}
 	
-	public void autoSwitchNear() {
-		resetEncoderAndNavX();
-		pInUse = pSwitchNear;
-		mode = Mode_Type.AUTO_SPLINE;
-	}
-	
-	public void autoSwitchFar() {
-		resetEncoderAndNavX();
-		pInUse = pSwitchFar;
-		mode = Mode_Type.AUTO_SPLINE;
-	}
-	
-	public void autoScaleNear() {
-		resetEncoderAndNavX();
-		pInUse = pScaleNear;
-		mode = Mode_Type.AUTO_SPLINE;
-	}
-	
-	public void autoScaleFar() {
-		resetEncoderAndNavX();
-		pInUse = pScaleFar;
-		mode = Mode_Type.AUTO_SPLINE;
-	}
-	
-	public void autoStraight() {
-		resetEncoderAndNavX();
+	// default = drive straight across auto line
+	public void autoForWardStraight() {
+		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void autoBackStraight() {
-		resetEncoderAndNavX();
-		pInUse = pBackStraight;
+	public void auto_back_straight() {
+		resetEncoders();
+		pInUse = pStraight;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	
+	//start at Right of the field
+	public void autoRRX1() {
+		resetEncoders();
+		pInUse = pRRX1;
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	
+	public void autoRRX2() {
+		resetEncoders();
+		pInUse = pRRX2;
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	public void auto_RRX3() {
+		resetEncoders();
+		pInUse = pRRX3;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	public void autoRRX4() {
+		resetEncoders();
+		pInUse = pRRX4;
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	public void autoRRR() {
+		resetEncoders();
+		pInUse = pRRR;
+		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	public void arcadeDrive(double speed, double turn) {
@@ -115,6 +126,7 @@ public class DriveTrain {
 		rightspeed = speed + turn;
 		mode = Mode_Type.TELEOP;
 	}
+	
 	
 	/**
 	 * @return the average velocity in feet per second from the left and right encoders.
