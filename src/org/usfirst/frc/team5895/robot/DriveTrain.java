@@ -87,7 +87,7 @@ public class DriveTrain {
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
-	public void auto_back_straight() {
+	public void autoBackwardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
