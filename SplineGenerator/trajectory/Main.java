@@ -144,6 +144,59 @@ public class Main {
 
         serializeAndWrite(path, path_name);
       }
-    
+    {
+        final String path_name = "RRX2";
+        
+        WaypointSequence p = new WaypointSequence(10);
+        p.addWaypoint(new WaypointSequence.Waypoint(-0.5667, 12.9167, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-0.4667, 15.9167, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(2.4333, 20.9167, 60));
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+        final String path_name = "RRX3";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 45));
+        p.addWaypoint(new WaypointSequence.Waypoint(-2.0, 16.1667, 45));
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+        final String path_name = "RRX4";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(-2.0, 16.1667, 45));
+        p.addWaypoint(new WaypointSequence.Waypoint(2, 17.6667, 89));
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+        final String path_name = "RRR";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(2, 17.6667, 89));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 20.00, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-1, 25.00, -45));
+        //p.addWaypoint(new WaypointSequence.Waypoint(-0.1333, 28.5218, -45));
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
   }
 }
