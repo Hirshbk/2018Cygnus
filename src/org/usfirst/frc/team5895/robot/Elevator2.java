@@ -28,6 +28,7 @@ public class Elevator2 {
 	private double targetPos;
 	private double footConversion = 1.0 / 2048.0 * 1.432 / 12.0;
 	private double brakeTimestamp;
+	private double percentSetting;
 	
 	public Elevator2() {
 		elevatorMaster = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_MASTER);
@@ -76,6 +77,10 @@ public class Elevator2 {
 		elevatorMaster.setSelectedSensorPosition(0, 0, 10);
 	}
 	
+	/**
+	 * gets the height of the elevator in feet
+	 * @return the height of the elevator in feet
+	 */
 	public double getHeight() {
 		
 		double height = elevatorMaster.getSelectedSensorPosition(0) * footConversion; // 2048 ticks per rev, pitch diameter: 1.432in
@@ -84,61 +89,97 @@ public class Elevator2 {
 	}
 	
 	/* Motion Magic */
+	/**
+	 * sets the elevator to go to a specified height 
+	 * @param targetHeight the height to go to in feet
+	 */
 	public void setTargetPosition(double targetHeight) {
 		targetPos = targetHeight * footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
 	}
 	
-	/**
-	 * NOTE:
+	/* NOTE:
 	 * The below 5 methods have "double targetPos =" and some number
 	 * These are dummy numbers, in feet, based LOOSELY on the height of each target.
-	 * 
-	 * @param targetHeight
 	 */
 	
+	/**
+	 * sets the elevator to go to the tallest height of the scale
+	 * (either when the other side is winning or there's already a layer of cubes)
+	 */
 	public void highScale() {
 		targetPos = 6.5  * footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
 	}
 	
+	/**
+	 * sets the elevator to go the height of the scale when it's balanced
+	 */
 	public void midScale() {
 		targetPos = 6 * footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING; 
 	}
 	
+	/**
+	 * sets the elevator to go to the low height of the scale 
+	 * (when we're winning)
+	 */
 	public void lowScale() {
 		targetPos = 5.5 * footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
 	}
 	
+	/**
+	 * sets the elevator to go to the height of the switch
+	 */
 	public void switchHeight() { //must be "switchHeight" because just "switch" doesn't work
 		targetPos = 2 * footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING; 
 	}
 	
+	/**
+	 * sets the elevator to go to its lowest height
+	 */
 	public void floor() {
 		targetPos = 0 * footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING; 
 	}
 	
-	// uses the analog distance sensor to detect whether the claw is above the scale
+	/**
+	 * drives the elevator at a percent of voltage
+	 * @param speed the percent of voltage to move at
+	 */
+	public void percentDrive(double speed) {
+		percentSetting = speed;
+		mode = Mode_Type.PERCENT;
+	}
+	
+	/**
+	 * uses the analog distance sensor to detect whether the elevator is above the scale
+	 * @return true if the elevator is above the scale, false if not
+	 */
 	public boolean aboveScale() {	
 		return (distSensor.getDistance() < 3);
 	}
-	//checks if it's at target and moving slowly
+	
+	/**
+	 * checks if the elevator is at the target position and moving slowly
+	 * @return true if it is both at position and with low velocity, false otherwise
+	 */
 	public boolean atTarget() {
 		return (((elevatorMaster.getSelectedSensorPosition(0) / footConversion) - targetPos < 1.0/12.0) 
 				&& (elevatorMaster.getSelectedSensorVelocity(0) / footConversion < 1));
 	}
 	
-	// elevator automatically falls to the bottom after detecting no scale
+	/**
+	 * sets the elevator to go down to the floor automatically if we're not above the scale
+	 */
 	public void autoDrop() {
 		if(!aboveScale) {
 			targetPos = 0;
@@ -146,6 +187,9 @@ public class Elevator2 {
 		}
 	}
 	
+	/**
+	 * disables the elevator
+	 */
 	public void disable() {
 		mode = Mode_Type.DISABLED;
 	}
@@ -207,10 +251,8 @@ public class Elevator2 {
 			break;
 			
 		case PERCENT:
-			
-			/* calculate the percent motor output */
-			double motorOutput = elevatorMaster.getMotorOutputPercent();
-			elevatorMaster.set(ControlMode.PercentOutput, motorOutput);
+		
+			elevatorMaster.set(ControlMode.PercentOutput, percentSetting);
 			
 			break;
 			
