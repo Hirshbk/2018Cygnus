@@ -9,66 +9,86 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 
 public class CubeIntake {
-	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, OFF};
+	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, DISABLED};
 	private Mode_Type mode = Mode_Type.EJECTING;
-	private TalonSRX motor1, motor2;
+	private TalonSRX leftClawMotor, rightClawMotor;
 	private Solenoid solenoidClamp, solenoidClaw;
-	private DigitalInput sensor;
-	double motorspeed1, motorspeed2, lastTime;
+	private DigitalInput clawSensor;
+	double intakeSpeed, lastTime;
 	private boolean solenoidState;
 	boolean lastHasCube;
 	private boolean isDown;
 	
 	
 	public CubeIntake (){
-		motor1 = new TalonSRX(ElectricalLayout.MOTOR_CLAW_1);
-		motor2 = new TalonSRX(ElectricalLayout.MOTOR_CLAW_2);
+		leftClawMotor = new TalonSRX(ElectricalLayout.MOTOR_CLAW_1);
+		rightClawMotor = new TalonSRX(ElectricalLayout.MOTOR_CLAW_2);
 		solenoidClamp = new Solenoid (ElectricalLayout.SOLENOID_INTAKE_CLAMP);
 		solenoidClaw = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
-		sensor = new DigitalInput(ElectricalLayout.SENSOR_INTAKE);
+		clawSensor = new DigitalInput(ElectricalLayout.SENSOR_INTAKE);
 		lastHasCube=false;
 	    isDown = false;
 	    
 		}
 
+	/**
+	 * sets the claw to intaking mode
+	 */
 	public void intake(){
 		mode = Mode_Type.INTAKING;
 		}
 	
+	/**
+	 * ejects a cube
+	 */
 	public void eject(){
 		mode= Mode_Type.EJECTING;
 		}
 	
-	public void waiting(){
-		mode = Mode_Type.WAITING; 
-		}
-	
-	public void off(){
-		mode = Mode_Type.OFF;
+	/**
+	 * disables claw
+	 */
+	public void disable(){
+		mode = Mode_Type.DISABLED;
 	}
 	
+	/**
+	 * lifts claw
+	 */
 	public void up() {
 		isDown = false;	
 	}
 	
+	/**
+	 * drops claw
+	 */
 	public void down (){
 		isDown = true;
 	}
 	
+	/**
+	 * returns current claw state
+	 * @return - 1 if disabled
+	 * @return - 2 if intaking
+	 * @return - 3 if ejecting
+	 * @return - 4 if holding
+	 * @return - 5 if waiting
+	 * @return - 0 if none of the above (which shouldn't happen or else you have Problems)
+	 */
 	public double getState() {
 		switch (mode) {
-			case OFF:
-				return 0;
-			case INTAKING:
+			case DISABLED:
 				return 1;
-			case EJECTING:
+			case INTAKING:
 				return 2;
-			case HOLDING:
+			case EJECTING:
 				return 3;
-			case WAITING:
+			case HOLDING:
 				return 4;
+			case WAITING:
+				return 5;
 			default:
-				return -1;
+				return 0;
 		}
 	}
 	
@@ -78,17 +98,15 @@ public class CubeIntake {
 			   solenoidClaw.set(isDown);
 			}
 		
-		boolean hasCube = !sensor.get();
+		boolean hasCube = !clawSensor.get();
 		
-		motorspeed1 = 0;
-		motorspeed2 = 0;
+		intakeSpeed = 0;
 		
 		switch(mode) {
 		
 		case INTAKING:
 		     
-		     motorspeed1=.5;
-		     motorspeed2=.5;
+		     intakeSpeed = 0.5;
 		     
 		     if((lastHasCube == false) && (hasCube)) {
 				lastTime = Timer.getFPGATimestamp(); //stamp the time we start waiting 
@@ -99,8 +117,7 @@ public class CubeIntake {
 			
 		case WAITING:
 		
-			motorspeed1=.5;
-			motorspeed2=.5;
+			intakeSpeed = 0.5;
 			
         	double curTime = Timer.getFPGATimestamp(); //stamps current time 
             if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
@@ -112,24 +129,21 @@ public class CubeIntake {
 			break;
 		
 		case HOLDING:
-			motorspeed1 = .2;
-			motorspeed2 = .2;
+			intakeSpeed= .2;
 			solenoidState = true; // solenoid used to clamp cube while holding 
 			break;
 		
 		case EJECTING:
-			motorspeed1 = -.5;
-			motorspeed2 = -.5;
+			intakeSpeed = -.5;
 			solenoidState = false; 
 			break; 
 		
-		case OFF:
-			motorspeed1 = 0;
-			motorspeed2 = 0;
+		case DISABLED:
+			intakeSpeed = 0;
 			solenoidState = false;
 	
-		motor1.set(ControlMode.PercentOutput, motorspeed1);
-		motor2.set(ControlMode.PercentOutput, motorspeed2);
+		leftClawMotor.set(ControlMode.PercentOutput, intakeSpeed);
+		rightClawMotor.set(ControlMode.PercentOutput, intakeSpeed);
 		solenoidClamp.set(solenoidState);
 		
 		}

@@ -117,11 +117,11 @@ public class Robot extends IterativeRobot {
 				
 				if(ljoystick.getRisingEdge(1)){
 					hat.leftExtend(); 
-					intake.off();
+					intake.disable();
 				}
 				if(rjoystick.getRisingEdge(1)) {
 					hat.rightExtend();
-					intake.off();
+					intake.disable();
 				}
 			}
 			else {
