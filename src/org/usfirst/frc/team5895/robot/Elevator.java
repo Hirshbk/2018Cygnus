@@ -24,7 +24,7 @@ public class Elevator {
 	
 	public Elevator() {
 		brake = new Solenoid(ElectricalLayout.SOLENOID_ELEVATOR_BRAKE);//port ?
-		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR);
+		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_MASTER);
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
 		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
 		distSensor = new DistanceSensor();
