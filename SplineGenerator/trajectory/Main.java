@@ -119,8 +119,8 @@ public class Main {
         serializeAndWrite(path, path_name);
        }
     //start R -> touch switch R
-    /*{
-        final String path_name = "SwitchRR";
+    {
+        final String path_name = "RRX1";
         
         WaypointSequence p = new WaypointSequence(10);
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
@@ -131,141 +131,7 @@ public class Main {
 
         serializeAndWrite(path, path_name);
       }
-    //touch switch R -> intaking cube R
-    {
-        final String path_name = "CubeRR";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(-0.5667, 12.9167, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-0.4667, 15.9167, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 60));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
 
-        serializeAndWrite(path, path_name);
-      }
-    //intaking cube R -> scale R
-    {
-        final String path_name = "ScaleRR";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 45));
-        p.addWaypoint(new WaypointSequence.Waypoint(-0.1333, 28.5218, 0));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }*/
-    /*{
-        final String path_name = "ScaleRL";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 45));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2.0, 18.5, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-10, 19, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-14, 15.0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-13, 10.0, 0));
-        
-        //p.addWaypoint(new WaypointSequence.Waypoint(-17.5, 14.4167, 0));
-        
-        p.addWaypoint(new WaypointSequence.Waypoint(-0.5667, 18.9167, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-12.3584, 18.9167, 70));
-        p.addWaypoint(new WaypointSequence.Waypoint(-16, 22, 0));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "SwitchRL";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 45));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2.0, 19, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-13.5, 19, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-17.5, 23.4167, 175));
-        
-        // p.addWaypoint(new WaypointSequence.Waypoint(-16, 23, 175));
-        //p.addWaypoint(new WaypointSequence.Waypoint(-15, 28.5218, 175));
-        
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "SwitchLL";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(2.4633, 12.9167, 0));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "CubeLL";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(2.4633, 12.9167, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(2.3667, 15.9167, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(1.4633, 18.9167, -60));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "ScaleLL";
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(1.4633, 18.9167, -45));
-        p.addWaypoint(new WaypointSequence.Waypoint(1.3233, 28.5218, 0));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "SwitchLR"; //unfininshed
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(-0.4333, 18.9167, -45));
-        p.addWaypoint(new WaypointSequence.Waypoint(2.0, 19, -89));
-        p.addWaypoint(new WaypointSequence.Waypoint(13.5, 19, -89));
-        p.addWaypoint(new WaypointSequence.Waypoint(17.5, 14.4167, 0));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }
-    {
-        final String path_name = "ScaleLR";//unfinished
-        
-        WaypointSequence p = new WaypointSequence(10);
-        p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 45));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2.0, 19, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-13.5, 20, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-16, 23.0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-15, 28.5218, 0));
-        /*p.addWaypoint(new WaypointSequence.Waypoint(-0.5667, 18.9167, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(-12.3584, 18.9167, 70));
-        p.addWaypoint(new WaypointSequence.Waypoint(-16, 22, 0));
-        
-        Path path = PathGenerator.makePath(p, config,
-            kWheelbaseWidth, path_name);
-
-        serializeAndWrite(path, path_name);
-      }*/
     {
         final String path_name = "RRX2";
         
@@ -285,7 +151,7 @@ public class Main {
         WaypointSequence p = new WaypointSequence(10);
 
         p.addWaypoint(new WaypointSequence.Waypoint(0.4333, 18.9167, 45));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2.0, 16.1667, 45));
+        p.addWaypoint(new WaypointSequence.Waypoint(2.8666, 21.6667, 45));
         
         Path path = PathGenerator.makePath(p, config,
             kWheelbaseWidth, path_name);
@@ -310,9 +176,9 @@ public class Main {
         
         WaypointSequence p = new WaypointSequence(10);
 
-        p.addWaypoint(new WaypointSequence.Waypoint(2, 17.6667, 89));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 20.00, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-1, 25.00, -45));
+        p.addWaypoint(new WaypointSequence.Waypoint(2, 17.6667, -89));
+        //p.addWaypoint(new WaypointSequence.Waypoint(4, 15.3334, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(5, 10.3334, -45));
         //p.addWaypoint(new WaypointSequence.Waypoint(-0.1333, 28.5218, -45));
         
         Path path = PathGenerator.makePath(p, config,
