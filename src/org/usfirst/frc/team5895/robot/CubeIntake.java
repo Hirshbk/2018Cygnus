@@ -68,27 +68,27 @@ public class CubeIntake {
 	
 	/**
 	 * returns current claw state
-	 * @return - 0 if disabled
-	 * @return - 1 if intaking
-	 * @return - 2 if ejecting
-	 * @return - 3 if holding
-	 * @return - 4 if waiting
-	 * @return - -1 if none of the above (which shouldn't happen or else you have Problems)
+	 * @return - 1 if disabled
+	 * @return - 2 if intaking
+	 * @return - 3 if ejecting
+	 * @return - 4 if holding
+	 * @return - 5 if waiting
+	 * @return - 0 if none of the above (which shouldn't happen or else you have Problems)
 	 */
 	public double getState() {
 		switch (mode) {
 			case DISABLED:
-				return 0;
-			case INTAKING:
 				return 1;
-			case EJECTING:
+			case INTAKING:
 				return 2;
-			case HOLDING:
+			case EJECTING:
 				return 3;
-			case WAITING:
+			case HOLDING:
 				return 4;
+			case WAITING:
+				return 5;
 			default:
-				return -1;
+				return 0;
 		}
 	}
 	

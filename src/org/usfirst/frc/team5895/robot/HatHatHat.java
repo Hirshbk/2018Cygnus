@@ -41,21 +41,21 @@ public class HatHatHat {
 	}
 	/**
 	 * return Hat state
-	 * @return - 0 if holding
-	 * @return - 1 if extending left
-	 * @return - 2 if extending right
+	 * @return - 1 if holding
+	 * @return - 2 if extending left
+	 * @return - 3 if extending right
 	 * 
 	 */
 	public double getState() {
 		switch (mode) {
 		case HOLDING:
-			return 0;
-		case LEFT_EXTEND:
 			return 1;
-		case RIGHT_EXTEND:
+		case LEFT_EXTEND:
 			return 2;
+		case RIGHT_EXTEND:
+			return 3;
 		default:
-			return -1;
+			return 0;
 		}
 	}
 	/**
