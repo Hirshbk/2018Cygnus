@@ -25,7 +25,7 @@ public class DriveTrain {
 	private double leftspeed, rightspeed;
 	private NavX navX;
 	private TrajectoryDriveController pStraight;
-	private TrajectoryDriveController pRRX1,pRRX2,pRRX3,pRRX4,pRRR;
+	private TrajectoryDriveController pRRX1,pRRX2,pRRX3,pRRX4,pRRR,pRRL;
 	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
@@ -36,23 +36,30 @@ public class DriveTrain {
 	
 	public DriveTrain() {
 		
+		//initialize drive motors
 		leftDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
 		leftDriveFollower = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER);
 		rightDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
 		rightDriveFollower = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER);
 		
+		//set the two followers to follow
 		leftDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
 		rightDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
 		
+		//initialize encoders
 		leftEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_LEFT_1, ElectricalLayout.ENCODER_DRIVE_LEFT_2, true, Encoder.EncodingType.k4X);
 		rightEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_RIGHT_1, ElectricalLayout.ENCODER_DRIVE_RIGHT_2, false, Encoder.EncodingType.k4X);
 		
+		//set encoder distance per pulse so it's in feet
 		leftEncoder.setDistancePerPulse(4/12.0*Math.PI/360);
 		rightEncoder.setDistancePerPulse(4/12.0*Math.PI/360);
 		
+		//initialize navx
 		navX = new NavX();
 		
-		try { // check back everything. generate missing spline
+		//initializes trajectory generator from auto files
+		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
+		try { 
 			// drive straight
 			pStraight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			// start at Right
@@ -61,66 +68,115 @@ public class DriveTrain {
 			pRRX3 = new TrajectoryDriveController("/home/lvuser/Test/RRX3.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRX4 = new TrajectoryDriveController("/home/lvuser/Test/RRX4.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRR = new TrajectoryDriveController("/home/lvuser/Test/RRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRRL = new TrajectoryDriveController("/home/lvuser/Test/RRL.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 	
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
 		}
 	}
 	
+	/**
+	 * resets the encoder values to 0
+	 */
 	public void resetEncoders() {
 		leftEncoder.reset();
 		rightEncoder.reset();
 		
 	}
+	
+	/**
+	 * resets the NavX to 0
+	 */
 	public void resetNavX() {
 		navX.reset();
 	}
 	
+	/**
+	 * gets the current angle of the NavX
+	 * @return the NavX angle in degrees
+	 */
 	public double getAngle() {
 		return navX.getAngle(); // navX reads angle in degree
 	}
 	
-	// default = drive straight across auto line
+	/**
+	 * drives straight across the auto line with the claw forward
+	 */
 	public void autoForWardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
+	/**
+	 * drives straight across the auto line with the claw backward
+	 */
 	public void autoBackwardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
-	//start at Right of the field
+	/**
+	 * for right side, goes to the right switch
+	 */
 	public void autoRRX1() {
 		resetEncoders();
 		pInUse = pRRX1;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
+	/**
+	 * for right side, comes after autoRRX1, turns away from the switch before picking up cube
+	 */
 	public void autoRRX2() {
 		resetEncoders();
 		pInUse = pRRX2;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
+	
+	/**
+	 * for right side, comes after autoRRX2, drives forward and picks up another cube
+	 */
 	public void auto_RRX3() {
 		resetEncoders();
 		pInUse = pRRX3;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
+	
+	/**
+	 * for right side, comes after autoRRX3, drives backwards and turns after picking up cube
+	 */
 	public void autoRRX4() {
 		resetEncoders();
 		pInUse = pRRX4;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
+	
+	/**
+	 * for right side, comes after autoRRX4, goes to right scale
+	 */
+	//turn may be too sharp for splines, PID turn probably better
 	public void autoRRR() {
 		resetEncoders();
 		pInUse = pRRR;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
+	/**
+	 * for right side, comes after autoRRX4, goes to left scale
+	 */
+	public void autoRRL() {
+		resetEncoders();
+		pInUse = pRRL;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * normal arcade drive code for teleop use
+	 * @param speed the forward speed to go at
+	 * @param turn the speed to turn at
+	 */
 	public void arcadeDrive(double speed, double turn) {
 		leftspeed = speed - turn;
 		rightspeed = speed + turn;
@@ -142,23 +198,35 @@ public class DriveTrain {
 		return (leftEncoder.getDistance()+rightEncoder.getDistance())/2;
 	}
 	
+	/**
+	 * checks whether the current path is finished
+	 * @return true if the path is finished, false otherwise
+	 */
 	public boolean isPFinished() {
 		
 		return (pInUse.isFinished());
 		
 	}
 	
+	/**
+	 * gets the x position of the drivetrain
+	 * @return the x position of the drivetrain in feet
+	 */
 	public double getXPosition() {
 		return posX;
 	}
 	
+	/**
+	 * gets the y position of the drivetrain
+	 * @return the y position of the drivetrain in feet
+	 */
 	public double getYPosition() {
 		return posY;
 	}
 	
 	public void update() {
 		
-		// position
+		//changing position and distance
 		double distance = getDistanceTraveled()-lastDistance;
 		
 		posX += distance*Math.cos(Math.toRadians(getAngle()));
@@ -167,7 +235,8 @@ public class DriveTrain {
 		distance = getDistanceTraveled();
 		
 		switch(mode) {
-		
+			
+			//spline driving with the claw forward
 			case AUTO_SPLINE:
 				double[] m = new double[2];
 				m = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // change navX angle to radian
@@ -176,6 +245,7 @@ public class DriveTrain {
 				rightDriveMaster.set(ControlMode.PercentOutput, m[1]);
 				break;
 				
+			//spline driving with the claw backward
 			case AUTO_BACKWARDS_SPLINE:
 				DriverStation.reportError("updating", false);
 				
@@ -186,7 +256,9 @@ public class DriveTrain {
 				rightDriveMaster.set(ControlMode.PercentOutput, -m_back[1]);
 				
 				break;
-				
+			
+			//mirrored spline driving for the other side of the field
+			//need to add backwards mirror spline if this one works
 			case AUTO_MIRROR_SPLINE:
 				DriverStation.reportError("updating", false);
 				
@@ -198,6 +270,7 @@ public class DriveTrain {
 				
 				break;
 			
+			//teleop driving with joystick control
 			case TELEOP: 
 				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
 				rightDriveMaster.set(ControlMode.PercentOutput, -rightspeed);
