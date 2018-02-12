@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.AnalogInput;
 public class DistanceSensor {
 	private AnalogInput analogSensor;
 	
-	public DistanceSensor() {
-		analogSensor = new AnalogInput(0);
+	public DistanceSensor(int port) {
+		analogSensor = new AnalogInput(port);
 	}
 	
 	/** 

@@ -15,7 +15,7 @@ public class Elevator2 {
 	private TalonSRX elevatorMaster, elevatorFollower1, elevatorFollower2;
 	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
 	private Solenoid brakeSolenoid;
-	private DistanceSensor distSensor;
+	private DistanceSensor leftDistanceSensor, rightDistanceSensor;
 	boolean aboveScale;
 	
 	private enum Mode_Type {MOVING, BRAKING, DISENGAGING, CLIMBING, PERCENT, DISABLED};
@@ -41,7 +41,8 @@ public class Elevator2 {
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
 		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
 		brakeSolenoid = new Solenoid(ElectricalLayout.SOLENOID_ELEVATOR_BRAKE);
-		distSensor = new DistanceSensor();
+		leftDistanceSensor = new DistanceSensor(ElectricalLayout.SENSOR_ELEVATOR_DISTANCE_LEFT);
+		rightDistanceSensor = new DistanceSensor(ElectricalLayout.SENSOR_ELEVATOR_DISTANCE_RIGHT);
 	
 		/* first choose the sensor */
 		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
@@ -165,7 +166,7 @@ public class Elevator2 {
 	 * @return true if the elevator is above the scale, false if not
 	 */
 	public boolean aboveScale() {	
-		return (distSensor.getDistance() < 3);
+		return ((leftDistanceSensor.getDistance() < 3) && (rightDistanceSensor.getDistance() < 3));
 	}
 	
 	/**

@@ -24,10 +24,14 @@ public class ElectricalLayout {
     
     // Digital Inputs
     public static final int SENSOR_HAT = 0;
-    public static final int SENSOR_INTAKE = 0;
     public static final int SENSOR_ELEVATOR_TOP = 0;
     public static final int SENSOR_ELEVATOR_BOTTOM = 0;
-    public static final int SENSOR_ELEVATOR_DISTANCE = 0;
+    
+    //Analog Inputs
+    public static final int SENSOR_INTAKE_LEFT = 0;
+    public static final int SENSOR_INTAKE_RIGHT = 0;
+    public static final int SENSOR_ELEVATOR_DISTANCE_LEFT = 0;
+    public static final int SENSOR_ELEVATOR_DISTANCE_RIGHT = 0;
     
     // Encoders
     public static final int ENCODER_DRIVE_LEFT_1 = 0;

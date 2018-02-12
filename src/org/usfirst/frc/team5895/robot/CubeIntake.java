@@ -1,5 +1,7 @@
 package org.usfirst.frc.team5895.robot;
 
+import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -13,7 +15,7 @@ public class CubeIntake {
 	private Mode_Type mode = Mode_Type.EJECTING;
 	private TalonSRX leftClawMotor, rightClawMotor;
 	private Solenoid solenoidClamp, solenoidClaw;
-	private DigitalInput clawSensor;
+	private DistanceSensor leftClawSensor, rightClawSensor;
 	double intakeSpeed, lastTime;
 	private boolean solenoidState;
 	boolean lastHasCube;
@@ -25,7 +27,8 @@ public class CubeIntake {
 		rightClawMotor = new TalonSRX(ElectricalLayout.MOTOR_CLAW_2);
 		solenoidClamp = new Solenoid (ElectricalLayout.SOLENOID_INTAKE_CLAMP);
 		solenoidClaw = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
-		clawSensor = new DigitalInput(ElectricalLayout.SENSOR_INTAKE);
+		leftClawSensor = new DistanceSensor(ElectricalLayout.SENSOR_INTAKE_LEFT);
+		rightClawSensor = new DistanceSensor(ElectricalLayout.SENSOR_INTAKE_RIGHT);
 		lastHasCube=false;
 	    isDown = false;
 	    
@@ -92,13 +95,15 @@ public class CubeIntake {
 		}
 	}
 	
+	public boolean hasCube() {
+		return (leftClawSensor.getDistance() < 10 && rightClawSensor.getDistance() < 10);
+	}
+	
 	public void update(){
 		
 		if (solenoidClaw.get() != isDown) {
 			   solenoidClaw.set(isDown);
 			}
-		
-		boolean hasCube = !clawSensor.get();
 		
 		intakeSpeed = 0;
 		
@@ -108,7 +113,7 @@ public class CubeIntake {
 		     
 		     intakeSpeed = 0.5;
 		     
-		     if((lastHasCube == false) && (hasCube)) {
+		     if((lastHasCube == false) && (hasCube())) {
 				lastTime = Timer.getFPGATimestamp(); //stamp the time we start waiting 
 			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
 			 }

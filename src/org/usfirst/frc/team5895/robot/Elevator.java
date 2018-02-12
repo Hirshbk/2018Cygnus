@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Elevator {
 	private TalonSRX talon;
 	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
-	private DistanceSensor distSensor;
+	private DistanceSensor leftDistanceSensor, rightDistanceSensor;
 	boolean aboveScale;
 	private Solenoid brake;
 	
@@ -27,7 +27,8 @@ public class Elevator {
 		talon = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_MASTER);
 		topLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_TOP);
 		bottomLimitSwitch = new BetterDigitalInput(ElectricalLayout.SENSOR_ELEVATOR_BOTTOM);
-		distSensor = new DistanceSensor();
+		leftDistanceSensor = new DistanceSensor(ElectricalLayout.SENSOR_ELEVATOR_DISTANCE_LEFT);
+		rightDistanceSensor = new DistanceSensor(ElectricalLayout.SENSOR_ELEVATOR_DISTANCE_RIGHT);
 	}
 
 	public void setTalonSRX() {
@@ -115,13 +116,7 @@ public class Elevator {
 	}
 	// uses the analog distance sensor to detect whether the claw is above the scale
 	public boolean aboveScale() {	
-		if(distSensor.getDistance() < 3) {
-			aboveScale = true;
-		}
-		else {
-			aboveScale = false;
-		}
-		return aboveScale;
+		return ((leftDistanceSensor.getDistance() < 3) && (rightDistanceSensor.getDistance() < 3));
 	}
 	
 	// elevator automatically falls to the bottom after detecting no scale
