@@ -4,6 +4,7 @@ import org.usfirst.frc.team5895.robot.lib.DistanceSensor;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class CubeIntake {
 	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, DISABLED};
 	private Mode_Type mode = Mode_Type.EJECTING;
-	private TalonSRX leftClawMotor, rightClawMotor;
+	private VictorSPX leftClawMotor, rightClawMotor;
 	private Solenoid solenoidClamp, solenoidClaw;
 	private DistanceSensor leftClawSensor, rightClawSensor;
 	double intakeSpeed, lastTime;
@@ -23,15 +24,17 @@ public class CubeIntake {
 	
 	
 	public CubeIntake (){
-		leftClawMotor = new TalonSRX(ElectricalLayout.MOTOR_CLAW_1);
-		rightClawMotor = new TalonSRX(ElectricalLayout.MOTOR_CLAW_2);
+		leftClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_1);
+		rightClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_2);
+		
 		solenoidClamp = new Solenoid (ElectricalLayout.SOLENOID_INTAKE_CLAMP);
 		solenoidClaw = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
+		
 		leftClawSensor = new DistanceSensor(ElectricalLayout.SENSOR_INTAKE_LEFT);
 		rightClawSensor = new DistanceSensor(ElectricalLayout.SENSOR_INTAKE_RIGHT);
+		
 		lastHasCube=false;
 	    isDown = false;
-	    
 		}
 
 	/**

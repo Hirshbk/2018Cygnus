@@ -7,13 +7,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorTest {
-	private TalonSRX elevatorMaster, elevatorFollower1, elevatorFollower2;
+	private TalonSRX elevatorMaster;
+	private VictorSPX elevatorFollower1, elevatorFollower2;
 	private BetterDigitalInput topLimitSwitch, bottomLimitSwitch;
 	private Solenoid brakeSolenoid;
 	boolean brakeOn;
@@ -27,8 +29,8 @@ public class ElevatorTest {
 	
 	public ElevatorTest() {
 		elevatorMaster = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_MASTER);
-		elevatorFollower1 = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_FOLLOWER_1);
-		elevatorFollower2 = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_FOLLOWER_2);
+		elevatorFollower1 = new VictorSPX(ElectricalLayout.MOTOR_ELEVATOR_FOLLOWER_1);
+		elevatorFollower2 = new VictorSPX(ElectricalLayout.MOTOR_ELEVATOR_FOLLOWER_2);
 		
 		elevatorFollower1.set(ControlMode.Follower, ElectricalLayout.MOTOR_ELEVATOR_MASTER);
 		elevatorFollower2.set(ControlMode.Follower, ElectricalLayout.MOTOR_ELEVATOR_MASTER);

@@ -4,6 +4,7 @@ import org.usfirst.frc.team5895.robot.lib.TrajectoryDriveController;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.usfirst.frc.team5895.robot.lib.NavX;
 
@@ -20,7 +21,8 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class DriveTrain {
 
-	private TalonSRX leftDriveMaster, leftDriveFollower, rightDriveMaster, rightDriveFollower;
+	private TalonSRX leftDriveMaster, rightDriveMaster;
+	private VictorSPX leftDriveFollower, rightDriveFollower;
 	private BetterEncoder leftEncoder,rightEncoder;
 	private double leftspeed, rightspeed;
 	private NavX navX;
@@ -38,9 +40,9 @@ public class DriveTrain {
 		
 		//initialize drive motors
 		leftDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
-		leftDriveFollower = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER);
+		leftDriveFollower = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER);
 		rightDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
-		rightDriveFollower = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER);
+		rightDriveFollower = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER);
 		
 		//set the two followers to follow
 		leftDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
