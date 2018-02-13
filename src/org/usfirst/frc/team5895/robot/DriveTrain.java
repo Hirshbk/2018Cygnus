@@ -108,7 +108,7 @@ public class DriveTrain {
 	/**
 	 * drives straight across the auto line with the claw forward
 	 */
-	public void autoForWardStraight() {
+	public void autoForwardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_SPLINE;
