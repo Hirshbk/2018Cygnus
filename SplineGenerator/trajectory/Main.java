@@ -186,6 +186,21 @@ public class Main {
 
         serializeAndWrite(path, path_name);
       }
+    {
+        final String path_name = "RRL";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 17, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-3, 21, -89));
+        p.addWaypoint(new WaypointSequence.Waypoint(-7, 19, -175));
+
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+    }
     
   }
 }
