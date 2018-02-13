@@ -104,7 +104,7 @@ public class DriveTrain {
 	/**
 	 * drives straight across the auto line with the claw forward
 	 */
-	public void autoForWardStraight() {
+	public void autoForwardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_SPLINE;
@@ -140,7 +140,7 @@ public class DriveTrain {
 	/**
 	 * for right side, comes after autoRRX2, drives forward and picks up another cube
 	 */
-	public void auto_RRX3() {
+	public void autoRRX3() {
 		resetEncoders();
 		pInUse = pRRX3;
 		mode = Mode_Type.AUTO_SPLINE;
