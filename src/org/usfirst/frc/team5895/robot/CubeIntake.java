@@ -12,12 +12,15 @@ import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 
 public class CubeIntake {
-	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, DISABLED};
+	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, WAITING, SPINNING_LEFT, SPINNING_RIGHT, DISABLED};
 	private Mode_Type mode = Mode_Type.EJECTING;
+	
 	private VictorSPX leftClawMotor, rightClawMotor;
 	private Solenoid solenoidClamp, solenoidClaw;
 	private DistanceSensor leftClawSensor, rightClawSensor;
+	
 	double intakeSpeed, lastTime;
+	double leftSpeed, rightSpeed;
 	private boolean solenoidState;
 	boolean lastHasCube;
 	private boolean isDown;
@@ -26,6 +29,7 @@ public class CubeIntake {
 	public CubeIntake (){
 		leftClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_1);
 		rightClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_2);
+		leftClawMotor.setInverted(true);
 		
 		solenoidClamp = new Solenoid (ElectricalLayout.SOLENOID_INTAKE_CLAMP);
 		solenoidClaw = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
@@ -50,6 +54,18 @@ public class CubeIntake {
 	public void eject(){
 		mode= Mode_Type.EJECTING;
 		}
+	
+	/**
+	 * spins the cube in the intake
+	 */
+	public void spinRight() {
+		mode = Mode_Type.SPINNING_RIGHT;
+		lastTime = Timer.getFPGATimestamp();
+	}
+	public void spinLeft() {
+		mode = Mode_Type.SPINNING_LEFT;
+		lastTime = Timer.getFPGATimestamp();
+	}
 	
 	/**
 	 * disables claw
@@ -104,18 +120,22 @@ public class CubeIntake {
 	
 	public void update(){
 		
-		if (solenoidClaw.get() != isDown) {
-			   solenoidClaw.set(isDown);
-			}
-		
-		intakeSpeed = 0;
+		leftSpeed = 0;
+		rightSpeed = 0;
 		
 		switch(mode) {
 		
 		case INTAKING:
 		     
-		     intakeSpeed = 0.5;
+		     leftSpeed = 0.5;
+		     rightSpeed = 0.5;
 		     
+			/*	if (leftClawSensor.getDistance() > 3 && rightClawSensor.getDistance() < 3) {
+					spinLeft();
+				} else if (leftClawSensor.getDistance() < 3 && rightClawSensor.getDistance() > 3) {
+					spinRight();
+				} */
+				
 		     if((lastHasCube == false) && (hasCube())) {
 				lastTime = Timer.getFPGATimestamp(); //stamp the time we start waiting 
 			 	mode = Mode_Type.WAITING; //once we have the cube, we prepare to hold and clamp
@@ -125,35 +145,61 @@ public class CubeIntake {
 			
 		case WAITING:
 		
-			intakeSpeed = 0.5;
+			leftSpeed = 0.4;
+			rightSpeed = 0.5;
 			
-        	double curTime = Timer.getFPGATimestamp(); //stamps current time 
-            if (curTime - lastTime > 0.2) { //compares the time we started waiting to current time
+        	double waitTime = Timer.getFPGATimestamp(); //stamps current time 
+            if (waitTime - lastTime > 0.2) { //compares the time we started waiting to current time
             	mode = Mode_Type.HOLDING; //if it has been waiting for 200ms, it begins to hold
             } else {
-            	mode = Mode_Type.WAITING; //if not, it keeps holding
+            	mode = Mode_Type.WAITING; //if not, it keeps waiting
             }
             solenoidState=false; 
 			break;
 		
 		case HOLDING:
-			intakeSpeed= .2;
+			leftSpeed = 0.2;
+			rightSpeed = 0.2;
 			solenoidState = true; // solenoid used to clamp cube while holding 
 			break;
 		
 		case EJECTING:
-			intakeSpeed = -.5;
+			leftSpeed = -0.5;
+			rightSpeed = -0.5;
 			solenoidState = false; 
 			break; 
 		
+		case SPINNING_RIGHT:
+			leftSpeed = -0.25;
+			rightSpeed = 0.25;
+			double spinRightTime = Timer.getFPGATimestamp(); //stamps current time 
+            if (spinRightTime - lastTime > 0.4) { //compares the time we started waiting to current time
+            	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
+            } else {
+            	mode = Mode_Type.SPINNING_RIGHT; //if not, it keeps waiting
+            }
+			break;
+			
+		case SPINNING_LEFT:
+			leftSpeed = 0.25;
+			rightSpeed = -0.25;
+			double spinLeftTime = Timer.getFPGATimestamp(); //stamps current time 
+            if (spinLeftTime - lastTime > 0.5) { //compares the time we started waiting to current time
+            	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
+            } else {
+            	mode = Mode_Type.SPINNING_LEFT; //if not, it keeps waiting
+            }
+			break;
+			
 		case DISABLED:
-			intakeSpeed = 0;
+			leftSpeed = 0;
+			rightSpeed = 0;
 			solenoidState = false;
-	
-		leftClawMotor.set(ControlMode.PercentOutput, intakeSpeed);
-		rightClawMotor.set(ControlMode.PercentOutput, intakeSpeed);
-		solenoidClamp.set(solenoidState);
-		
+			break;
 		}
+		
+		leftClawMotor.set(ControlMode.PercentOutput, leftSpeed);
+		rightClawMotor.set(ControlMode.PercentOutput, rightSpeed);
+		
 	}
 }
