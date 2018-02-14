@@ -28,8 +28,9 @@ public class DriveTrain {
 	private NavX navX;
 	private TrajectoryDriveController pStraight;
 	private TrajectoryDriveController pRRX1,pRRX2,pRRX3,pRRX4,pRRR,pRRL;
+	private TrajectoryDriveController pCR0,pCRX1;
 	private TrajectoryDriveController pInUse;
-	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE};
+	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE,AUTO_MIRROR_BACKWARDS_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
 	
 	// tracking
@@ -64,14 +65,17 @@ public class DriveTrain {
 		try { 
 			// drive straight
 			pStraight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			// start at Right
+			//start at Right
 			pRRX1 = new TrajectoryDriveController("/home/lvuser/Test/SwitchRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRX2 = new TrajectoryDriveController("/home/lvuser/Test/RRX2.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRX3 = new TrajectoryDriveController("/home/lvuser/Test/RRX3.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRX4 = new TrajectoryDriveController("/home/lvuser/Test/RRX4.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRR = new TrajectoryDriveController("/home/lvuser/Test/RRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 			pRRL = new TrajectoryDriveController("/home/lvuser/Test/RRL.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-	
+			
+			//start at Center
+			pCR0 = new TrajectoryDriveController("/home/lvuser/Test/CR0.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pCRX1 = new TrajectoryDriveController("/home/lvuser/Test/CRX1.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
 		}
@@ -104,7 +108,7 @@ public class DriveTrain {
 	/**
 	 * drives straight across the auto line with the claw forward
 	 */
-	public void autoForWardStraight() {
+	public void autoForwardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
 		mode = Mode_Type.AUTO_SPLINE;
@@ -140,7 +144,7 @@ public class DriveTrain {
 	/**
 	 * for right side, comes after autoRRX2, drives forward and picks up another cube
 	 */
-	public void auto_RRX3() {
+	public void autoRRX3() {
 		resetEncoders();
 		pInUse = pRRX3;
 		mode = Mode_Type.AUTO_SPLINE;
@@ -172,6 +176,66 @@ public class DriveTrain {
 		resetEncoders();
 		pInUse = pRRL;
 		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	//start at Left
+	
+	public void autoLLX1() {
+		resetEncoders();
+		pInUse = pRRX1;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
+	
+	public void autoLLX2() {
+		resetEncoders();
+		pInUse = pRRX2;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
+	
+	public void autoLLX3() {
+		resetEncoders();
+		pInUse = pRRX3;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	public void autoLLX4() {
+		resetEncoders();
+		pInUse = pRRX4;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
+	
+	public void autoLLL() {
+		resetEncoders();
+		pInUse = pRRR;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}	
+	
+	//start at Center
+	public void autoCR0() {
+		resetEncoders();
+		pInUse = pCR0;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	public void autoMirrorCR0() {
+		resetEncoders();
+		pInUse = pCR0;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	public void autoBackCR0() {
+		resetEncoders();
+		pInUse = pCR0;
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	public void autoMirrorBackCR0() {
+		resetEncoders();
+		pInUse = pCR0;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
+		
+	public void autoCRX1() {
+		resetEncoders();
+		pInUse = pCRX1;
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
 	/**
@@ -241,35 +305,39 @@ public class DriveTrain {
 			//spline driving with the claw forward
 			case AUTO_SPLINE:
 				double[] m = new double[2];
-				m = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // change navX angle to radian
+				m = pInUse.getOutput(rightEncoder.getDistance(), leftEncoder.getDistance(), getAngle()*3.14/180); 
 
-				leftDriveMaster.set(ControlMode.PercentOutput, -m[0]);
-				rightDriveMaster.set(ControlMode.PercentOutput, m[1]);
+				leftDriveMaster.set(ControlMode.PercentOutput, -m[1]);
+				rightDriveMaster.set(ControlMode.PercentOutput, m[0]);
 				break;
 				
 			//spline driving with the claw backward
 			case AUTO_BACKWARDS_SPLINE:
-				DriverStation.reportError("updating", false);
-				
 				double[] m_back = new double[2];
-				m_back = pInUse.getOutput(-leftEncoder.getDistance(), -rightEncoder.getDistance(), getAngle()*3.14/180); // driving backwards
+				m_back = pInUse.getOutput(-leftEncoder.getDistance(), -rightEncoder.getDistance(), getAngle()*3.14/180); 
 
 				leftDriveMaster.set(ControlMode.PercentOutput, m_back[0]);
 				rightDriveMaster.set(ControlMode.PercentOutput, -m_back[1]);
-				
 				break;
 			
-			//mirrored spline driving for the other side of the field
-			//need to add backwards mirror spline if this one works
+			//mirrored spline driving for the other side of the field 
+			//with the claw forward
 			case AUTO_MIRROR_SPLINE:
-				DriverStation.reportError("updating", false);
-				
 				double[] m_mirror = new double[2];
-				m_mirror = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); // mirror spline
+				m_mirror = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); 
 
-				leftDriveMaster.set(ControlMode.PercentOutput, m_mirror[1]);
-				rightDriveMaster.set(ControlMode.PercentOutput, -m_mirror[0]);
+				leftDriveMaster.set(ControlMode.PercentOutput, -m_mirror[0]);
+				rightDriveMaster.set(ControlMode.PercentOutput, m_mirror[1]);
+				break;
 				
+			//mirrored spline driving for the other side of the field
+			//with the claw backward
+			case AUTO_MIRROR_BACKWARDS_SPLINE: 
+				double[] m_mirror_back = new double[2];
+				m_mirror_back = pInUse.getOutput(-rightEncoder.getDistance(), -leftEncoder.getDistance(), -getAngle()*3.14/180); 
+				
+				leftDriveMaster.set(ControlMode.PercentOutput, m_mirror_back[1]);
+				rightDriveMaster.set(ControlMode.PercentOutput, -m_mirror_back[0]);
 				break;
 			
 			//teleop driving with joystick control
