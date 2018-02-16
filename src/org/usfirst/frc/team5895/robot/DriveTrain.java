@@ -179,7 +179,7 @@ public class DriveTrain {
 	}
 	
 	//start at Left
-	
+
 	public void autoLLX1() {
 		resetEncoders();
 		pInUse = pRRX1;
@@ -208,34 +208,66 @@ public class DriveTrain {
 		resetEncoders();
 		pInUse = pRRR;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
-	}	
+	}
+	public void autoLLR() {
+		resetEncoders();
+		pInUse = pRRL;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
 	
 	//start at Center
+	/**
+	 * from center to front of right switch, drive forwards
+	 */
 	public void autoCR0() {
 		resetEncoders();
 		pInUse = pCR0;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
-	public void autoMirrorCR0() {
+	
+	/**
+	 * for center to front of left switch, drive forwards
+	 */
+	public void autoCL0() {
 		resetEncoders();
 		pInUse = pCR0;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
+	
+	/**
+	 * for center to front of right switch, drive backwards
+	 */
 	public void autoBackCR0() {
 		resetEncoders();
 		pInUse = pCR0;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
-	public void autoMirrorBackCR0() {
+	
+	/**
+	 * for center to front of left switch, drive backwards
+	 */
+	public void autoBackCL0() {
 		resetEncoders();
 		pInUse = pCR0;
 		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
 	}
-		
+	
+	/**
+	 * for center to side of the right switch
+	 */
 	public void autoCRX1() {
 		resetEncoders();
 		pInUse = pCRX1;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	
+	/**
+	 * for center to side of the left switch 
+	 */
+	public void autoCLX1() {
+		resetEncoders();
+		pInUse = pCRX1;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
 	}
 	
 	/**
