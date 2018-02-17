@@ -224,7 +224,110 @@ public class Main {
 
         serializeAndWrite(path, path_name);
       }
-   
+    {
+    	final String path_name = "RightScaleLeftSwitch";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(-2, 21.5, -135));
+        p.addWaypoint(new WaypointSequence.Waypoint(-5, 18, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-12, 18, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-14, 17.5, -135));
+        p.addWaypoint(new WaypointSequence.Waypoint(-15, 16, -160));
+
+        
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	final String path_name = "RightSwitchLeft";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 10, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-12, 18, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-14, 17.5, -135));
+        p.addWaypoint(new WaypointSequence.Waypoint(-15, 16, -160));
+
+        
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	final String path_name = "RightScaleLeft";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 10, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-12, 18, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-15, 18, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-16.5, 18.5, -45));
+        p.addWaypoint(new WaypointSequence.Waypoint(-17, 22, 0));
+
+        
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	final String path_name = "LeftScale2RightSwitch";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(-17, 22, -179.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-16.5, 18.5, -225));;
+        p.addWaypoint(new WaypointSequence.Waypoint(-15, 18, -270));
+        p.addWaypoint(new WaypointSequence.Waypoint(-8, 18.25, -270));
+        p.addWaypoint(new WaypointSequence.Waypoint(-4.25, 17.5, -225));
+        p.addWaypoint(new WaypointSequence.Waypoint(-3.5, 16, -180));
+
+        
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	final String path_name = "DumbSwitchSameSide";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-4.25, 9, 0));
+
+        
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	final String path_name = "DumbSwitchOppSide";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-14, 9, 0));
+
+        
+        
+        Path path = PathGenerator.makePath(p, config,
+            kWheelbaseWidth, path_name);
+
+        serializeAndWrite(path, path_name);
+      }
     
   }
 }
