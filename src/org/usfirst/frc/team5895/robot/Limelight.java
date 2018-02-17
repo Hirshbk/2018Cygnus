@@ -82,6 +82,26 @@ public class Limelight {
 	}
 	
 	/**
+	 * seeks for a cube assuming that its sees one and does not already possess one.
+	 * @param intake cube intake instance
+	 * @param drive drive train instance.
+	 */
+	public void seek(CubeIntake intake, DriveTrain drive) {
+		while (!intake.hasCube() && hasTarget) {
+			double threshold = 10, speed = .5;
+			// go forward
+			if (Math.abs(horizontalOffset) < threshold) {
+				drive.arcadeDrive(speed, 0);
+			}
+			// turn to face cube
+			else {
+				drive.turnTo(horizontalOffset);
+			}
+		}
+		drive.stopTurning();
+	}
+	
+	/**
 	 * Update boolean hasTarget
 	 */
 	public void updateHasTarget() {

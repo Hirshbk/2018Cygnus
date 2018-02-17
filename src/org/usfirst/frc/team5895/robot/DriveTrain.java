@@ -107,6 +107,7 @@ public class DriveTrain {
 		navX.reset();
 		turnPID.set(angle);
 		turning = true;
+		mode = Mode_Type.TELEOP;
 	}
 	
 	/**
@@ -313,6 +314,7 @@ public class DriveTrain {
 		leftspeed = speed - turn;
 		rightspeed = speed + turn;
 		mode = Mode_Type.TELEOP;
+		turning = false;
 	}
 	
 	
@@ -415,7 +417,6 @@ public class DriveTrain {
 				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
 				rightDriveMaster.set(ControlMode.PercentOutput, -rightspeed);
 				break;
-				
 			
 		}
 	}
