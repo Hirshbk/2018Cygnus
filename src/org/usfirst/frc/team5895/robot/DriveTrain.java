@@ -33,6 +33,12 @@ public class DriveTrain {
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE,AUTO_MIRROR_BACKWARDS_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
 	
+	private PID turnPID;
+	private boolean turning;
+	
+	public static final double TURN_P = 0.015; 
+	public static final double TURN_I = 0.00002;
+	
 	// tracking
 	private double posX, posY; // feet
 	private double lastDistance = 0d; // distance traveled the last time update() was called
@@ -59,6 +65,9 @@ public class DriveTrain {
 		
 		//initialize navx
 		navX = new NavX();
+		
+		// initialize PID
+		turnPID = new PID(TURN_P, TURN_I, 0, false);
 		
 		//initializes trajectory generator from auto files
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
@@ -88,6 +97,32 @@ public class DriveTrain {
 		leftEncoder.reset();
 		rightEncoder.reset();
 		
+	}
+	
+	/**
+	 * turns the robot to a certain angle using the PID.
+	 * @param angle the angle that the robot should point to.
+	 */
+	public void turnTo(double angle) {
+		navX.reset();
+		turnPID.set(angle);
+		turning = true;
+		mode = Mode_Type.TELEOP;
+	}
+	
+	/**
+	 * makes the robot stop turning using the PID
+	 */
+	public void stopTurning() {
+		turning = false;
+	}
+	
+	/**
+	 * returns if the robot is turning to an angle using the PID
+	 * @return if the robot is turning to an angle using the PID
+	 */
+	public boolean isTurning() {
+		return turning;	
 	}
 	
 	/**
@@ -279,6 +314,7 @@ public class DriveTrain {
 		leftspeed = speed - turn;
 		rightspeed = speed + turn;
 		mode = Mode_Type.TELEOP;
+		turning = false;
 	}
 	
 	
@@ -374,10 +410,13 @@ public class DriveTrain {
 			
 			//teleop driving with joystick control
 			case TELEOP: 
+				if (turning) {
+					leftspeed = -turnPID.getOutput(navX.getAngle());
+					rightspeed = turnPID.getOutput(navX.getAngle());
+				}
 				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
 				rightDriveMaster.set(ControlMode.PercentOutput, -rightspeed);
 				break;
-				
 			
 		}
 	}
