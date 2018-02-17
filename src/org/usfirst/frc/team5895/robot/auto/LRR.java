@@ -4,7 +4,6 @@ import org.usfirst.frc.team5895.robot.Blinkin;
 import org.usfirst.frc.team5895.robot.CubeIntake;
 import org.usfirst.frc.team5895.robot.DriveTrain;
 import org.usfirst.frc.team5895.robot.Elevator;
-import org.usfirst.frc.team5895.robot.HatHatHat;
 import org.usfirst.frc.team5895.robot.Limelight;
 
 /**
@@ -13,7 +12,7 @@ import org.usfirst.frc.team5895.robot.Limelight;
  */
 public class LRR {
 	
-	public static final  void run(DriveTrain drive, HatHatHat hat, Elevator elevator, Limelight lime, CubeIntake intake,
+	public static final  void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
 			Blinkin blinkin) {
 		
 		// switch > far
