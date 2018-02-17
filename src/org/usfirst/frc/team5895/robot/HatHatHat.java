@@ -1,6 +1,4 @@
-//HAT NO LONGER EXISTS
-
-/*package org.usfirst.frc.team5895.robot;
+package org.usfirst.frc.team5895.robot;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
@@ -19,23 +17,35 @@ public class HatHatHat {
 		rightSolenoid1 = new Solenoid(ElectricalLayout.SOLENOID_HAT_RIGHT_1);
 		rightSolenoid2 = new Solenoid(ElectricalLayout.SOLENOID_HAT_RIGHT_2);
 	}
-	
+	/**
+	 * Hat is flat
+	 */
 	public void hold() {
 		mode = Mode_Type.HOLDING;
 	}
-
+	/**
+	 * Pop up left flap, throw tote to the left
+	 */
 	public void leftExtend() {
 		if(mode == Mode_Type.HOLDING){
 			mode = Mode_Type.LEFT_EXTEND;
 		}
 	}
-
+	/**
+	 * Pop up right flap, throw tote to the right
+	 */
 	public void rightExtend() {
 		if(mode == Mode_Type.HOLDING){
 			mode = Mode_Type.RIGHT_EXTEND;
 		}
 	}
-
+	/**
+	 * return Hat state
+	 * @return - 1 if holding
+	 * @return - 2 if extending left
+	 * @return - 3 if extending right
+	 * 
+	 */
 	public double getState() {
 		switch (mode) {
 		case HOLDING:
@@ -48,7 +58,10 @@ public class HatHatHat {
 			return 0;
 		}
 	}
-
+	/**
+	 * Return Hat to HOLDING state 2 seconds after last extension
+	 * Update Hat state
+	 */
 	public void update() {
 		
 		if(mode == Mode_Type.LEFT_EXTEND || mode == Mode_Type.RIGHT_EXTEND) {
@@ -79,6 +92,7 @@ public class HatHatHat {
 		leftSolenoid1.set(leftSolenoidState);
 		leftSolenoid2.set(leftSolenoidState);
 		rightSolenoid1.set(rightSolenoidState);
-		rightSolenoid2.set(rightSolenoidState);
+		rightSolenoid2.set(rightSolenoidState);		
+	}
 		
-}*/
+}

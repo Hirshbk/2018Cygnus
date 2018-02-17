@@ -14,11 +14,16 @@ public class ElectricalLayout {
     public static final int MOTOR_CLAW_2 = 9;
     
     // Solenoids
+    public static final int SOLENOID_HAT_LEFT_1 = 0;
+    public static final int SOLENOID_HAT_LEFT_2 = 0;
+    public static final int SOLENOID_HAT_RIGHT_1 = 0;
+    public static final int SOLENOID_HAT_RIGHT_2 = 0;
     public static final int SOLENOID_INTAKE_CLAMP = 0;
     public static final int SOLENOID_INTAKE_CLAW = 0;
     public static final int SOLENOID_ELEVATOR_BRAKE = 0;
     
     // Digital Inputs
+    public static final int SENSOR_HAT = 0;
     public static final int SENSOR_ELEVATOR_TOP = 0;
     public static final int SENSOR_ELEVATOR_BOTTOM = 0;
     
