@@ -7,15 +7,15 @@ public class ElectricalLayout {
     public static final int MOTOR_DRIVE_LEFT_FOLLOWER = 2;
     public static final int MOTOR_DRIVE_RIGHT_MASTER = 3;
     public static final int MOTOR_DRIVE_RIGHT_FOLLOWER = 4;
-    public static final int MOTOR_ELEVATOR_MASTER = 5;
-    public static final int MOTOR_ELEVATOR_FOLLOWER_1 = 6;
-    public static final int MOTOR_ELEVATOR_FOLLOWER_2 = 7;
-    public static final int MOTOR_CLAW_1 = 8;
+    public static final int MOTOR_ELEVATOR_MASTER = 6;
+    public static final int MOTOR_ELEVATOR_FOLLOWER_1 = 7;
+    public static final int MOTOR_ELEVATOR_FOLLOWER_2 = 8;
+//    public static final int MOTOR_CLAW_1 = 5;
     public static final int MOTOR_CLAW_2 = 9;
     
     // Solenoids
-    public static final int SOLENOID_INTAKE_CLAMP = 0;
-    public static final int SOLENOID_INTAKE_CLAW = 0;
+    public static final int SOLENOID_INTAKE_CLAMP = 2;
+    public static final int SOLENOID_INTAKE_CLAW = 1;
     public static final int SOLENOID_ELEVATOR_BRAKE = 0;
     
     // Digital Inputs
@@ -24,9 +24,9 @@ public class ElectricalLayout {
     
     //Analog Inputs
     public static final int SENSOR_INTAKE_LEFT = 0;
-    public static final int SENSOR_INTAKE_RIGHT = 0;
-    public static final int SENSOR_ELEVATOR_DISTANCE_LEFT = 0;
-    public static final int SENSOR_ELEVATOR_DISTANCE_RIGHT = 0;
+    public static final int SENSOR_INTAKE_RIGHT = 1;
+    public static final int SENSOR_ELEVATOR_DISTANCE_LEFT = 2;
+    public static final int SENSOR_ELEVATOR_DISTANCE_RIGHT = 3;
     
     // Encoders
     public static final int ENCODER_DRIVE_LEFT_1 = 0;

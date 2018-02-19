@@ -193,7 +193,7 @@ public class CubeIntake {
 		leftClawMotor.set(leftSpeed);
 		rightClawMotor.set(ControlMode.PercentOutput, rightSpeed);
 		
-		clawSolenoid.set(isDown);
+		clawSolenoid.set(!isDown);
 		clampSolenoid.set(!solenoidState);
 		
 		DriverStation.reportError("leftClawDistance" + getLeftDistance(), false);
