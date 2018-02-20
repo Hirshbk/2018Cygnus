@@ -9,18 +9,11 @@ public class Blinkin {
 	public Blinkin() {
 		blinkin = new Spark(2);
 	}
-	
-	/**
-	 * if the robot is in hatMode, the LED turns solid, dark green (0.75)
-	 */
-	public void lightsHatmode() {
-		blinkin.set(0.75);
-	}
-	
+		
 	/**
 	 * if the robot is not in hatMode and in normal drive, the LED turns solid white (0.93)
 	 */
-	public void lightsNormalDrive() {
+	public void lightsNormal() {
 		blinkin.set(0.93);
 	}
 	
