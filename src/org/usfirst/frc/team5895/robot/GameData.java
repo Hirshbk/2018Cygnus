@@ -8,36 +8,39 @@ public class GameData {
 	String gameData; 
 	String side;
 	
-	boolean leftSwitch, leftScale; {
-		leftSwitch = true; 
-		leftScale = true;
-	}
+	boolean leftSwitch = true;
+	boolean leftScale = true;
 	
 	public GameData() {
 		//gets the side that we start on from the dashboard
 		side = SmartDashboard.getString("DB/String 0", "nothing");
-		
-		//gets the game data from the field
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		
-		//leftSwitch is true if the switch position is left, false otherwise
-		if(gameData.charAt(0) == 'L'){
-			leftSwitch= true;
-		} else if(gameData.charAt(0) == 'R'){
-			leftSwitch= false;
-		} else {
-			DriverStation.reportError("Did not read field data", false);
-		}
-		
-		//leftScale is true if the scale position is left, false otherwise
-		if(gameData.charAt(1) == 'L') {
-			leftScale= true;
-		} else if(gameData.charAt(1) == 'R'){
-			leftScale=false;
-		} else  {
-			DriverStation.reportError("Did not read field data", false);
-		}
 	} 
+	
+	/**
+	 * gets the game data from the field
+	 */
+	public void getGameData() {
+		//gets the game data from the field
+				gameData = DriverStation.getInstance().getGameSpecificMessage();
+				
+				//leftSwitch is true if the switch position is left, false otherwise
+				if(gameData.charAt(0) == 'L'){
+					leftSwitch= true;
+				} else if(gameData.charAt(0) == 'R'){
+					leftSwitch= false;
+				} else {
+					DriverStation.reportError("Did not read field data", false);
+				}
+				
+				//leftScale is true if the scale position is left, false otherwise
+				if(gameData.charAt(1) == 'L') {
+					leftScale= true;
+				} else if(gameData.charAt(1) == 'R'){
+					leftScale=false;
+				} else  {
+					DriverStation.reportError("Did not read field data", false);
+				}
+	}
 	
 	/**
 	 * right side, right switch, right scale

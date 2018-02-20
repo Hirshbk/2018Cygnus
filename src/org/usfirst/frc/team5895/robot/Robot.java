@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class Robot extends IterativeRobot {
 
 	Looper loop;
-	Elevator elevator;
+	Elevator2 elevator;
 	BetterJoystick ljoystick;
 	BetterJoystick rjoystick;
 	CubeIntake intake;
@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot {
 
 	public void robotInit() {
 		intake = new CubeIntake();
-		elevator = new Elevator();
+		elevator = new Elevator2();
 		ljoystick = new BetterJoystick(0);
 		rjoystick = new BetterJoystick(1);
 		drive = new DriveTrain();
@@ -59,6 +59,8 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		r.startRecording();
+		
+		gameData.getGameData();
 		if (gameData.RRR()) {
 			LLL.run(drive, elevator, lime, intake, blinkin);
 		}
