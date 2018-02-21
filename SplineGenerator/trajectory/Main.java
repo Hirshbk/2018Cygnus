@@ -91,7 +91,7 @@ public class Main {
     config.max_jerk = 60.0;
     config.max_vel = 10.0;
     
-    final double kWheelbaseWidth = 27.0/12; //correct
+    final double kWheelbaseWidth = 25.0/12; //correct
    
     //drive straight for 10 feet 
     { 
@@ -119,7 +119,7 @@ public class Main {
     }
     
     {
-        final String path_name = "CenterScaleRight";
+        final String path_name = "CenterRightScale";
         
         WaypointSequence p = new WaypointSequence(10);
 
@@ -201,7 +201,7 @@ public class Main {
     }
     
     {
-        final String path_name = "RightScaleRight";
+        final String path_name = "RightRightScale";
         
         WaypointSequence p = new WaypointSequence(10);
 
