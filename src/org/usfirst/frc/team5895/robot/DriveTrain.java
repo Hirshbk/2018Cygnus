@@ -11,7 +11,6 @@ import org.usfirst.frc.team5895.robot.lib.PID;
 
 import java.awt.geom.Point2D;
 
-import org.usfirst.frc.team5895.robot.DriveTrain.Mode_Type;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
