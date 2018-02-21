@@ -11,6 +11,7 @@ import org.usfirst.frc.team5895.robot.lib.PID;
 
 import java.awt.geom.Point2D;
 
+import org.usfirst.frc.team5895.robot.DriveTrain.Mode_Type;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -28,8 +29,9 @@ public class DriveTrain {
 	private double leftspeed, rightspeed;
 	private NavX navX;
 	private TrajectoryDriveController pStraight;
-	private TrajectoryDriveController pRRX1,pRRX2,pRRX3,pRRX4,pRRR,pRRL;
-	private TrajectoryDriveController pCR0,pCRX1;
+	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale;
+	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
+	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock;
 	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE,AUTO_MIRROR_BACKWARDS_SPLINE};
 	private Mode_Type mode = Mode_Type.TELEOP;
@@ -61,8 +63,8 @@ public class DriveTrain {
 		rightEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_RIGHT_1, ElectricalLayout.ENCODER_DRIVE_RIGHT_2, false, Encoder.EncodingType.k4X);
 		
 		//set encoder distance per pulse so it's in feet
-		leftEncoder.setDistancePerPulse(4/12.0*Math.PI/360);
-		rightEncoder.setDistancePerPulse(4/12.0*Math.PI/360);
+		leftEncoder.setDistancePerPulse(6/12.0*Math.PI/360); //correct
+		rightEncoder.setDistancePerPulse(6/12.0*Math.PI/360); //correct
 		
 		//initialize navx
 		navX = new NavX();
@@ -73,19 +75,26 @@ public class DriveTrain {
 		//initializes trajectory generator from auto files
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
+			//kp kd ki kv ka kturn are for Basan
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/Test/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			
 			//start at Right
-			pRRX1 = new TrajectoryDriveController("/home/lvuser/Test/SwitchRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRRX2 = new TrajectoryDriveController("/home/lvuser/Test/RRX2.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRRX3 = new TrajectoryDriveController("/home/lvuser/Test/RRX3.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRRX4 = new TrajectoryDriveController("/home/lvuser/Test/RRX4.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRRR = new TrajectoryDriveController("/home/lvuser/Test/RRR.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRRL = new TrajectoryDriveController("/home/lvuser/Test/RRL.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchSide.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);// haven't test
+			pRightLeftSwitchBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchBack.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightLeftSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchFront.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightLeftScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01); 
+			pLeftScaleRightSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/LeftScaleRightSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pRightSwitchBlock = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightSwitchBlock.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01); // haven't test
 			
 			//start at Center
-			pCR0 = new TrajectoryDriveController("/home/lvuser/Test/CR0.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pCRX1 = new TrajectoryDriveController("/home/lvuser/Test/CRX1.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01); //don't have
+			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
 		}
@@ -159,151 +168,225 @@ public class DriveTrain {
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
-	/**
-	 * for right side, goes to the right switch
-	 */
-	public void autoRRX1() {
-		resetEncoders();
-		pInUse = pRRX1;
-		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
-	}
+	//start at Right
 	
 	/**
-	 * for right side, comes after autoRRX1, turns away from the switch before picking up cube
+	 * go to the front of right switch
 	 */
-	public void autoRRX2() {
+	public void autoRightRightSwitchFront() {
 		resetEncoders();
-		pInUse = pRRX2;
-		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
-	}
-	
-	/**
-	 * for right side, comes after autoRRX2, drives forward and picks up another cube
-	 */
-	public void autoRRX3() {
-		resetEncoders();
-		pInUse = pRRX3;
+		pInUse = pRightRightSwitchFront;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	/**
-	 * for right side, comes after autoRRX3, drives backwards and turns after picking up cube
+	 * go to the side of right switch
 	 */
-	public void autoRRX4() {
+	public void autoRightRightSwitchSide() {
 		resetEncoders();
-		pInUse = pRRX4;
+		pInUse = pRightRightSwitchSide;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * go to the front of left switch
+	 */
+	public void autoRightLeftSwitchFront() {
+		resetEncoders();
+		pInUse = pRightLeftSwitchFront;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * go to the back of left switch
+	 */
+	public void autoRightLeftSwitchBack() {
+		resetEncoders();
+		pInUse = pRightLeftSwitchBack;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * go to the right scale
+	 */
+	public void autoRightRightScale() {
+		resetEncoders();
+		pInUse = pRightRightScale;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * go to the left scale
+	 */
+	public void autoRightLeftScale() {
+		resetEncoders();
+		pInUse = pRightLeftScale;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * from right scale to back of left switch
+	 */
+	public void autoRightRightScaleLeftSwitch() {
+		resetEncoders();
+		pInUse = pRightScaleLeftSwitch;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * from left scale to back to right switch
+	 */
+	public void autoRightLeftScaleRightSwitch() {
+		resetEncoders();
+		pInUse = pLeftScaleRightSwitch;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	/**
+	 * from side of right switch to null zone, drive backwards
+	 */
+	public void autoRightSwitchBlock() {
+		resetEncoders();
+		pInUse = pRightSwitchBlock;
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
-	}
-	
-	/**
-	 * for right side, comes after autoRRX4, goes to right scale
-	 */
-	//turn may be too sharp for splines, PID turn probably better
-	public void autoRRR() {
-		resetEncoders();
-		pInUse = pRRR;
-		mode = Mode_Type.AUTO_SPLINE;
-	}
-	
-	/**
-	 * for right side, comes after autoRRX4, goes to left scale
-	 */
-	public void autoRRL() {
-		resetEncoders();
-		pInUse = pRRL;
-		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	//start at Left
-
-	public void autoLLX1() {
-		resetEncoders();
-		pInUse = pRRX1;
-		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
-	}
 	
-	public void autoLLX2() {
+	/**
+	 * go to the front of left switch
+	 */
+	public void autoLeftLeftSwitchFront() {
 		resetEncoders();
-		pInUse = pRRX2;
-		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
-	}
-	
-	public void autoLLX3() {
-		resetEncoders();
-		pInUse = pRRX3;
+		pInUse = pRightRightSwitchFront;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
-	public void autoLLX4() {
+	/**
+	 * go to the side of left switch
+	 */
+	public void autoLeftLeftSwitchSide() {
 		resetEncoders();
-		pInUse = pRRX4;
-		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+		pInUse = pRightRightSwitchSide;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
-	public void autoLLL() {
+	/**
+	 * go to the front of right switch
+	 */
+	public void autoLeftRightSwitchFront() {
 		resetEncoders();
-		pInUse = pRRR;
+		pInUse = pRightLeftSwitchFront;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
-	public void autoLLR() {
+	
+	/**
+	 * go to the back of right switch
+	 */
+	public void autoLeftRightSwitchBack() {
 		resetEncoders();
-		pInUse = pRRL;
+		pInUse = pRightRightSwitchSide;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	/**
+	 * go to the left scale
+	 */
+	public void autoLeftLeftScale() {
+		resetEncoders();
+		pInUse = pRightRightScale;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	/**
+	 * go to the right scale
+	 */
+	public void autoLeftRightScale() {
+		resetEncoders();
+		pInUse = pRightLeftScale;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	/**
+	 * from left scale to back of right switch
+	 */
+	public void autoLeftLeftScaleRightSwitch() {
+		resetEncoders();
+		pInUse = pRightScaleLeftSwitch;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	/**
+	 * from right scale to back to left switch
+	 */
+	public void autoLeftRightScaleLeftSwitch() {
+		resetEncoders();
+		pInUse = pLeftScaleRightSwitch;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	/**
+	 * from side of right switch to null zone, drive backwards
+	 */
+	public void autoLeftSwitchBlock() {
+		resetEncoders();
+		pInUse = pRightSwitchBlock;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
 	}
 	
 	//start at Center
 	/**
-	 * from center to front of right switch, drive forwards
+	 * go to front of right switch, drive forwards
 	 */
-	public void autoCR0() {
+	public void autoCenterRightSwitchFront() {
 		resetEncoders();
-		pInUse = pCR0;
+		pInUse = pCenterRightSwitchFront;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	/**
-	 * for center to front of left switch, drive forwards
+	 * go to front of left switch, drive forwards
 	 */
-	public void autoCL0() {
+	public void autoCenterLeftSwitchFront() {
 		resetEncoders();
-		pInUse = pCR0;
+		pInUse = pCenterRightSwitchFront;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
 	/**
-	 * for center to front of right switch, drive backwards
+	 * go to right scale, drive forwards
 	 */
-	public void autoBackCR0() {
+	public void autoCenterRightScale() {
 		resetEncoders();
-		pInUse = pCR0;
-		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+		pInUse = pCenterRightScale;
+		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	/**
-	 * for center to front of left switch, drive backwards
+	 * go to right scale, drive forwards
 	 */
-	public void autoBackCL0() {
+	public void autoCenterLeftScale() {
 		resetEncoders();
-		pInUse = pCR0;
-		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+		pInUse = pCenterRightScale;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
 	/**
-	 * for center to side of the right switch
+	 * go to side of right switch, drive forwards
 	 */
-	public void autoCRX1() {
+	public void autoCenterRightSwitchSide() {
 		resetEncoders();
-		pInUse = pCRX1;
-		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+		pInUse = pCenterRightSwitchSide;
+		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	/**
-	 * for center to side of the left switch 
+	 * go to side of right switch, drive forwards
 	 */
-	public void autoCLX1() {
+	public void autoCenterLeftSwitchSide() {
 		resetEncoders();
-		pInUse = pCRX1;
-		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+		pInUse = pCenterRightSwitchSide;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
 	/**
@@ -376,8 +459,8 @@ public class DriveTrain {
 				double[] m = new double[2];
 				m = pInUse.getOutput(rightEncoder.getDistance(), leftEncoder.getDistance(), getAngle()*3.14/180); 
 
-				leftDriveMaster.set(ControlMode.PercentOutput, -m[1]);
-				rightDriveMaster.set(ControlMode.PercentOutput, m[0]);
+				leftDriveMaster.set(ControlMode.PercentOutput, m[1]);
+				rightDriveMaster.set(ControlMode.PercentOutput, -m[0]);
 				break;
 				
 			//spline driving with the claw backward
@@ -385,8 +468,8 @@ public class DriveTrain {
 				double[] m_back = new double[2];
 				m_back = pInUse.getOutput(-leftEncoder.getDistance(), -rightEncoder.getDistance(), getAngle()*3.14/180); 
 
-				leftDriveMaster.set(ControlMode.PercentOutput, m_back[0]);
-				rightDriveMaster.set(ControlMode.PercentOutput, -m_back[1]);
+				leftDriveMaster.set(ControlMode.PercentOutput, -m_back[0]);
+				rightDriveMaster.set(ControlMode.PercentOutput, m_back[1]);
 				break;
 			
 			//mirrored spline driving for the other side of the field 
@@ -395,8 +478,8 @@ public class DriveTrain {
 				double[] m_mirror = new double[2];
 				m_mirror = pInUse.getOutput(leftEncoder.getDistance(), rightEncoder.getDistance(), -getAngle()*3.14/180); 
 
-				leftDriveMaster.set(ControlMode.PercentOutput, -m_mirror[0]);
-				rightDriveMaster.set(ControlMode.PercentOutput, m_mirror[1]);
+				leftDriveMaster.set(ControlMode.PercentOutput, m_mirror[0]);
+				rightDriveMaster.set(ControlMode.PercentOutput, -m_mirror[1]);
 				break;
 				
 			//mirrored spline driving for the other side of the field
@@ -405,8 +488,8 @@ public class DriveTrain {
 				double[] m_mirror_back = new double[2];
 				m_mirror_back = pInUse.getOutput(-rightEncoder.getDistance(), -leftEncoder.getDistance(), -getAngle()*3.14/180); 
 				
-				leftDriveMaster.set(ControlMode.PercentOutput, m_mirror_back[1]);
-				rightDriveMaster.set(ControlMode.PercentOutput, -m_mirror_back[0]);
+				leftDriveMaster.set(ControlMode.PercentOutput, -m_mirror_back[1]);
+				rightDriveMaster.set(ControlMode.PercentOutput, m_mirror_back[0]);
 				break;
 			
 			//teleop driving with joystick control
@@ -415,8 +498,8 @@ public class DriveTrain {
 					leftspeed = -turnPID.getOutput(navX.getAngle());
 					rightspeed = turnPID.getOutput(navX.getAngle());
 				}
-				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
-				rightDriveMaster.set(ControlMode.PercentOutput, -rightspeed);
+				leftDriveMaster.set(ControlMode.PercentOutput, -leftspeed);
+				rightDriveMaster.set(ControlMode.PercentOutput, rightspeed);
 				break;
 			
 		}
