@@ -25,8 +25,8 @@ public class Elevator2 {
 	public static final int kTimeoutMs = 10;
 	
 	private double targetPos;
-	private double footConversion = 9.22 * Math.pow(10, -5);
-	private double carriageOffset = 0.54;
+	private double inchConversion = 9.22 * Math.pow(10, -5) * 12;
+	private double carriageOffset = 0.54 * 12;
 	private double brakeTimestamp;
 	private double percentSetting;
 	
@@ -81,7 +81,7 @@ public class Elevator2 {
 	 */
 	public double getHeight() {
 		
-		double height = elevatorMaster.getSelectedSensorPosition(0) * footConversion + carriageOffset; // 2048 ticks per rev, pitch diameter: 1.432in
+		double height = elevatorMaster.getSelectedSensorPosition(0) * inchConversion + carriageOffset; // 2048 ticks per rev, pitch diameter: 1.432in
 		
 		return height;
 	}
@@ -92,7 +92,7 @@ public class Elevator2 {
 	 * @param targetHeight the height to go to in feet
 	 */
 	public void setTargetPosition(double targetHeight) {
-		targetPos = (targetHeight - carriageOffset) / footConversion;
+		targetPos = (targetHeight - carriageOffset) / inchConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.MOVING;
 	}
@@ -107,7 +107,7 @@ public class Elevator2 {
 	 * (either when the other side is winning or there's already a layer of cubes)
 	 */
 	public void highScale() {
-		targetPos = (6.5 - carriageOffset) / footConversion;
+		targetPos = (78 - carriageOffset) / inchConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
 	}
@@ -116,7 +116,7 @@ public class Elevator2 {
 	 * sets the elevator to go the height of the scale when it's balanced
 	 */
 	public void midScale() {
-		targetPos = (6 - carriageOffset) / footConversion;
+		targetPos = (72 - carriageOffset) / inchConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING; 
 	}
@@ -126,7 +126,7 @@ public class Elevator2 {
 	 * (when we're winning)
 	 */
 	public void lowScale() {
-		targetPos = (5.5 - carriageOffset) / footConversion;
+		targetPos = (66 - carriageOffset) / inchConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
 	}
@@ -135,7 +135,7 @@ public class Elevator2 {
 	 * sets the elevator to go to the height of the switch
 	 */
 	public void switchHeight() { //must be "switchHeight" because just "switch" doesn't work
-		targetPos = (2 - carriageOffset) / footConversion;
+		targetPos = (24 - carriageOffset) / inchConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING; 
 	}
@@ -176,7 +176,7 @@ public class Elevator2 {
 	 */
 	public boolean atTarget() {
 		return ((elevatorMaster.getSelectedSensorPosition(0) - targetPos < 1000.0) 
-				&& (elevatorMaster.getSelectedSensorVelocity(0) / footConversion < 1));
+				&& (elevatorMaster.getSelectedSensorVelocity(0) / inchConversion < 1));
 	}
 	
 	/**

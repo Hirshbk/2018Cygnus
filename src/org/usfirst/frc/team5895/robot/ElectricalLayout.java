@@ -4,14 +4,16 @@ public class ElectricalLayout {
     
     // Motors
     public static final int MOTOR_DRIVE_LEFT_MASTER = 1;
-    public static final int MOTOR_DRIVE_LEFT_FOLLOWER = 2;
-    public static final int MOTOR_DRIVE_RIGHT_MASTER = 3;
-    public static final int MOTOR_DRIVE_RIGHT_FOLLOWER = 4;
-    public static final int MOTOR_ELEVATOR_MASTER = 6;
-    public static final int MOTOR_ELEVATOR_FOLLOWER_1 = 7;
-    public static final int MOTOR_ELEVATOR_FOLLOWER_2 = 8;
-//    public static final int MOTOR_CLAW_1 = 5;
-    public static final int MOTOR_CLAW_2 = 9;
+    public static final int MOTOR_DRIVE_LEFT_FOLLOWER_1 = 2;
+    public static final int MOTOR_DRIVE_LEFT_FOLLOWER_2 = 3;
+    public static final int MOTOR_DRIVE_RIGHT_MASTER = 4;
+    public static final int MOTOR_DRIVE_RIGHT_FOLLOWER_1 = 5;
+    public static final int MOTOR_DRIVE_RIGHT_FOLLOWER_2 = 6;
+    public static final int MOTOR_ELEVATOR_MASTER = 7;
+    public static final int MOTOR_ELEVATOR_FOLLOWER_1 = 8;
+    public static final int MOTOR_ELEVATOR_FOLLOWER_2 = 9;
+    public static final int MOTOR_CLAW_1 = 10;
+    public static final int MOTOR_CLAW_2 = 11;
     
     // Solenoids
     public static final int SOLENOID_INTAKE_CLAMP = 2;

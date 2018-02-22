@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class DriveTrain {
 
 	private TalonSRX leftDriveMaster, rightDriveMaster;
-	private VictorSPX leftDriveFollower, rightDriveFollower;
+	private VictorSPX leftDriveFollower1, leftDriveFollower2, rightDriveFollower1, rightDriveFollower2;
 	private BetterEncoder leftEncoder,rightEncoder;
 	private double leftspeed, rightspeed;
 	private NavX navX;
@@ -49,13 +49,17 @@ public class DriveTrain {
 		
 		//initialize drive motors
 		leftDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
-		leftDriveFollower = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER);
+		leftDriveFollower1 = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER_1);
+		leftDriveFollower2 = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_LEFT_FOLLOWER_2);
 		rightDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
-		rightDriveFollower = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER);
+		rightDriveFollower1 = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER_1);
+		rightDriveFollower2 = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER_2);
 		
 		//set the two followers to follow
-		leftDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_LEFT_MASTER);
-		rightDriveFollower.set(ControlMode.Follower, ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
+		leftDriveFollower1.follow(leftDriveMaster);
+		leftDriveFollower2.follow(leftDriveMaster);
+		rightDriveFollower1.follow(rightDriveMaster);
+		rightDriveFollower2.follow(rightDriveMaster);
 		
 		//initialize encoders
 		leftEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_LEFT_1, ElectricalLayout.ENCODER_DRIVE_LEFT_2, true, Encoder.EncodingType.k4X);

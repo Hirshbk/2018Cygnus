@@ -136,7 +136,7 @@ public class CubeIntake {
 		    	 mode = Mode_Type.SPINNING_RIGHT;
 		     }
 		     
-		     if((lastHasCube == false) && (hasCube())) {
+		     if(!lastHasCube && hasCube()) {
 			 	mode = Mode_Type.HOLDING; //once we have the cube, we prepare to hold and clamp
 			 }
 			solenoidState = false; //solenoid only clamps once it is holding 

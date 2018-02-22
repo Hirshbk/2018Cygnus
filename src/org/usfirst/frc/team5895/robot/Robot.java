@@ -114,7 +114,7 @@ public class Robot extends IterativeRobot {
 			blinkin.lightsHasCube();
 		}
 		else {
-			blinkin.lightsNormalDrive();
+			blinkin.lightsNormal();
 		}
 
 		if(ljoystick.getRisingEdge(1)) {
