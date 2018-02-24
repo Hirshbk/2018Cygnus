@@ -14,8 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class CubeIntake {
 	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, SPINNING_RIGHT, SPINNING_LEFT, DISABLED};
 	private Mode_Type mode = Mode_Type.DISABLED;
-	private Talon leftClawMotor;
-	private VictorSPX rightClawMotor;
+	private VictorSPX leftClawMotor, rightClawMotor;
 	private AnalogInput leftClawSensor, rightClawSensor;
 	double leftSpeed, rightSpeed;
 	double lastTime;
@@ -25,7 +24,7 @@ public class CubeIntake {
 	private Solenoid clawSolenoid, clampSolenoid;
 	
 	public CubeIntake (){
-		leftClawMotor = new Talon(0);
+		leftClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_1);
 		rightClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_2);
 		
 		leftClawSensor = new AnalogInput(ElectricalLayout.SENSOR_INTAKE_LEFT);
@@ -190,7 +189,7 @@ public class CubeIntake {
 			break;
 		}
 		
-		leftClawMotor.set(leftSpeed);
+		leftClawMotor.set(ControlMode.PercentOutput, leftSpeed);
 		rightClawMotor.set(ControlMode.PercentOutput, rightSpeed);
 		
 		clawSolenoid.set(!isDown);
