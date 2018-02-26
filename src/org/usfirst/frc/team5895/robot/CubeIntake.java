@@ -142,8 +142,8 @@ public class CubeIntake {
 			break;
 		
 		case HOLDING:
-			leftSpeed = 0.2;
-			rightSpeed = 0.2;
+			leftSpeed = 0.0;
+			rightSpeed = 0.0;
 			solenoidState = true; // solenoid used to clamp cube while holding 
 			DriverStation.reportError("holding", false);
 			break;
@@ -161,8 +161,8 @@ public class CubeIntake {
 			break; 
 		
 		case SPINNING_RIGHT:
-			leftSpeed = -0.25;
-			rightSpeed = 0.25;
+			leftSpeed = -0.1;
+			rightSpeed = 0.1;
 			double spinRightTime = Timer.getFPGATimestamp(); //stamps current time 
             if (spinRightTime - lastTime > 0.4) { //compares the time we started waiting to current time
             	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
@@ -172,8 +172,8 @@ public class CubeIntake {
 			break;
 			
 		case SPINNING_LEFT:
-			leftSpeed = 0.25;
-			rightSpeed = -0.25;
+			leftSpeed = 0.1;
+			rightSpeed = -0.1;
 			double spinLeftTime = Timer.getFPGATimestamp(); //stamps current time 
             if (spinLeftTime - lastTime > 0.5) { //compares the time we started waiting to current time
             	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
@@ -192,7 +192,7 @@ public class CubeIntake {
 		leftClawMotor.set(ControlMode.PercentOutput, leftSpeed);
 		rightClawMotor.set(ControlMode.PercentOutput, rightSpeed);
 		
-		clawSolenoid.set(!isDown);
+		clawSolenoid.set(isDown);
 		clampSolenoid.set(!solenoidState);
 		
 		DriverStation.reportError("leftClawDistance" + getLeftDistance(), false);
