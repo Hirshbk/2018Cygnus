@@ -5,11 +5,8 @@ import org.usfirst.frc.team5895.robot.framework.Looper;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 
 

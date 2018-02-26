@@ -6,6 +6,7 @@ import java.util.Formatter;
 import java.util.FormatterClosedException;
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.concurrent.Callable;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class Recorder {		
 	private boolean recordFile;
 	private Formatter f;
-	private Vector<Gettable> methods;
+	private Vector<Callable<Double>> methods;
 	private Vector<String> names;
 	private Looper loop;
 	
@@ -24,7 +25,7 @@ public class Recorder {
 	 */
 	public Recorder(int time){
 		recordFile = false;
-		methods = new Vector<Gettable>();
+		methods = new Vector<Callable<Double>>();
 		names = new Vector<String>();
 		loop = new Looper(time);
 		loop.add(this::record);
@@ -36,7 +37,7 @@ public class Recorder {
 	 * @param name
 	 * @param g
 	 */
-	public void add(String name, Gettable g) {
+	public void add(String name, Callable<Double> g) {
 		if (!recordFile) {
 			methods.add(g);
 			names.add(name);
@@ -99,13 +100,17 @@ public class Recorder {
     	if (recordFile==true) {
     		boolean first = true;
     		StringBuilder line = new StringBuilder();
-    		for (Gettable g : methods) {
-    			if (first) {
-    				first = false;
-    				line.append("" + g.get());
-    			} else {
-    				line.append("," + g.get());
-    			}
+    		for (Callable<Double> g : methods) {
+    			try {
+	    			if (first) {
+	    				first = false;
+	    				line.append("" + g.call());
+	    			} else {
+	    				line.append("," + g.call());
+	    			}
+    			} catch (Exception e) {
+    				DriverStation.reportError("CallableExeption\n", true);
+	    		}
     		}
     		line.append("\r\n");
     		f.format(line.toString());
