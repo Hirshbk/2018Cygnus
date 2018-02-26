@@ -1,14 +1,11 @@
 package org.usfirst.frc.team5895.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Timer;
 
 public class CubeIntake {
@@ -108,11 +105,11 @@ public class CubeIntake {
 		return (leftClawSensor.getVoltage() > 3 && rightClawSensor.getVoltage() < 3);
 	}
 	
-	public double getLeftDistance() {
+	public double getLeftVoltage() {
 		return leftClawSensor.getVoltage();
 	}
 	
-	public double getRightDistance() {
+	public double getRightVoltage() {
 		return rightClawSensor.getVoltage();
 	}
 	
@@ -194,9 +191,6 @@ public class CubeIntake {
 		
 		clawSolenoid.set(isDown);
 		clampSolenoid.set(!solenoidState);
-		
-		DriverStation.reportError("leftClawDistance" + getLeftDistance(), false);
-		System.out.println("leftClawDistance" + getLeftDistance());
 		
 	}
 }
