@@ -15,7 +15,7 @@ public class Elevator2 {
 	private Solenoid brakeSolenoid;
 //	private AnalogInput leftDistanceSensor, rightDistanceSensor;
 	boolean aboveScale;
-	boolean brakeOn;
+	boolean brakeOn = false;
 	
 	private enum Mode_Type {MOVING, BRAKING, DISENGAGING, CLIMBING, PERCENT, DISABLED};
 	private Mode_Type mode = Mode_Type.DISABLED;
@@ -25,8 +25,8 @@ public class Elevator2 {
 	public static final int kTimeoutMs = 10;
 	
 	private double targetPos;
-	private double inchConversion = 9.22 * Math.pow(10, -5) * 12;
-	private double carriageOffset = 0.54 * 12;
+	private double footConversion = 9.22 * Math.pow(10, -5);
+	private double carriageOffset = 0.54;
 	private double brakeTimestamp;
 	private double percentSetting;
 	
@@ -58,20 +58,20 @@ public class Elevator2 {
 		
 		/* set closed loop gains in slot0 - see documentation */
 		elevatorMaster.selectProfileSlot(kSlotIdx, kPIDLoopIdx);
-		elevatorMaster.config_kF(0, 0.44, kTimeoutMs);
-		elevatorMaster.config_kP(0, 1.5, kTimeoutMs);
+		elevatorMaster.config_kF(0, 0.33, kTimeoutMs);
+		elevatorMaster.config_kP(0, 0.5, kTimeoutMs);
 		elevatorMaster.config_kI(0, 0, kTimeoutMs);
 		elevatorMaster.config_kD(0, 0, kTimeoutMs);
 		
 		/* set acceleration and vcruise velocity - see documentation */
-		elevatorMaster.configMotionCruiseVelocity(2200, kTimeoutMs);
-		elevatorMaster.configMotionAcceleration(3000, kTimeoutMs);
+		elevatorMaster.configMotionCruiseVelocity(3900, kTimeoutMs);
+		elevatorMaster.configMotionAcceleration(7000, kTimeoutMs);
 		
 		/* zero the distance sensor */
 		elevatorMaster.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 		
 		/*set up the encoder */
-		elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
+	 	elevatorMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 10);
 		elevatorMaster.setSelectedSensorPosition(0, 0, 10);
 	}
 	
@@ -81,7 +81,7 @@ public class Elevator2 {
 	 */
 	public double getHeight() {
 		
-		double height = elevatorMaster.getSelectedSensorPosition(0) * inchConversion + carriageOffset; // 2048 ticks per rev, pitch diameter: 1.432in
+		double height = elevatorMaster.getSelectedSensorPosition(0) * footConversion + carriageOffset; // 2048 ticks per rev, pitch diameter: 1.432in
 		
 		return height;
 	}
@@ -92,63 +92,11 @@ public class Elevator2 {
 	 * @param targetHeight the height to go to in feet
 	 */
 	public void setTargetPosition(double targetHeight) {
-		targetPos = (targetHeight - carriageOffset) / inchConversion;
-		brakeTimestamp = Timer.getFPGATimestamp();
-		mode = Mode_Type.MOVING;
-	}
-	
-	/* NOTE:
-	 * The below 5 methods have "double targetPos =" and some number
-	 * These are dummy numbers, in feet, based LOOSELY on the height of each target.
-	 */
-	
-	/**
-	 * sets the elevator to go to the tallest height of the scale
-	 * (either when the other side is winning or there's already a layer of cubes)
-	 */
-	public void highScale() {
-		targetPos = (78 - carriageOffset) / inchConversion;
+		targetPos = (targetHeight - carriageOffset) / footConversion;
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
-	}
-	
-	/**
-	 * sets the elevator to go the height of the scale when it's balanced
-	 */
-	public void midScale() {
-		targetPos = (72 - carriageOffset) / inchConversion;
-		brakeTimestamp = Timer.getFPGATimestamp();
-		mode = Mode_Type.DISENGAGING; 
-	}
-	
-	/**
-	 * sets the elevator to go to the low height of the scale 
-	 * (when we're winning)
-	 */
-	public void lowScale() {
-		targetPos = (66 - carriageOffset) / inchConversion;
-		brakeTimestamp = Timer.getFPGATimestamp();
-		mode = Mode_Type.DISENGAGING;
-	}
-	
-	/**
-	 * sets the elevator to go to the height of the switch
-	 */
-	public void switchHeight() { //must be "switchHeight" because just "switch" doesn't work
-		targetPos = (24 - carriageOffset) / inchConversion;
-		brakeTimestamp = Timer.getFPGATimestamp();
-		mode = Mode_Type.DISENGAGING; 
-	}
-	
-	/**
-	 * sets the elevator to go to its lowest height
-	 */
-	public void floor() {
-		targetPos = 0;
-		brakeTimestamp = Timer.getFPGATimestamp();
-		mode = Mode_Type.DISENGAGING; 
-	}
-	
+	}	
+
 	/**
 	 * drives the elevator at a percent of voltage
 	 * @param speed the percent of voltage to move at
@@ -161,6 +109,11 @@ public class Elevator2 {
 	public void brake() {
 		mode = Mode_Type.BRAKING;
 	}
+	
+	public double getSpeed() {
+		return elevatorMaster.getSelectedSensorVelocity(0);
+	}
+	
 /*	
 	/**
 	 * uses the analog distance sensor to detect whether the elevator is above the scale
@@ -175,11 +128,11 @@ public class Elevator2 {
 	 * @return true if it is both at position and with low velocity, false otherwise
 	 */
 	public boolean atTarget() {
-		return ((elevatorMaster.getSelectedSensorPosition(0) - targetPos < 1000.0) 
-				&& (elevatorMaster.getSelectedSensorVelocity(0) / inchConversion < 1));
+		return ((Math.abs(elevatorMaster.getSelectedSensorPosition(0) - targetPos) < 200.0) 
+				&& (Math.abs(elevatorMaster.getSelectedSensorVelocity(0)) < 1.0));
 	}
 	
-	/**
+	/*
 	 * sets the elevator to go down to the floor automatically if we're not above the scale
 	 * 
 	public void autoDrop() {
@@ -199,32 +152,29 @@ public class Elevator2 {
 	public void update() {
 /*
 		//this sets the max current based on if the limit switch is triggered
-		if(topLimitSwitch.getRisingEdge()) {
-			elevatorMaster.configPeakOutputForward(0, kTimeoutMs);	
+		if(elevatorMaster.) {
+			elevatorMaster.configPeakOutputForward(0.0, kTimeoutMs);	
 		}
 		else if(topLimitSwitch.getFallingEdge()) {
-			elevatorMaster.configPeakOutputForward(0.15, kTimeoutMs);
+			elevatorMaster.configPeakOutputForward(1.0, kTimeoutMs);
 		}
 		
 		if (bottomLimitSwitch.getRisingEdge()) {
-			elevatorMaster.configPeakOutputReverse(0, kTimeoutMs);	
+			elevatorMaster.configPeakOutputReverse(0.0, kTimeoutMs);	
 		}
 		else if (bottomLimitSwitch.getFallingEdge()) {
-			elevatorMaster.configPeakOutputReverse(-0.15, kTimeoutMs);
+			elevatorMaster.configPeakOutputReverse(-1.0, kTimeoutMs);
 		}
 */		
 		//automatically brakes if it's at target and not moving quickly
 		//I have no idea what the velocity units are so I just put 1, change when we actually have a robot
-		if( mode == Mode_Type.MOVING && atTarget()) {
-			mode = Mode_Type.BRAKING;
-		}
 		
 		switch(mode) {
 		
 		case DISENGAGING:
 			
 			brakeOn = false;
-			if(Timer.getFPGATimestamp() - brakeTimestamp > 0.50) {
+			if(Timer.getFPGATimestamp() - brakeTimestamp > 0.1) {
 				mode = Mode_Type.MOVING;
 			}
 			
@@ -233,6 +183,10 @@ public class Elevator2 {
 		case MOVING:
 			brakeOn = false;
 			elevatorMaster.set(ControlMode.MotionMagic, targetPos); 
+			
+			if(atTarget()) {
+				mode = Mode_Type.BRAKING;
+			}
 			
 			break;
 			
@@ -264,7 +218,10 @@ public class Elevator2 {
 			break;
 		}
 		brakeSolenoid.set(brakeOn);
-//		DriverStation.reportError("" + getHeight(), false);
+		
+//		DriverStation.reportError("" + elevatorMaster.getSelectedSensorPosition(0), false);
+//		DriverStation.reportError("" + atTarget(), false);
+//		DriverStation.reportError("" + targetPos, false);
 //		System.out.println("" + getHeight());
 		
 	}
