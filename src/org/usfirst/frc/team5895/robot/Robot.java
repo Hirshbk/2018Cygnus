@@ -7,6 +7,7 @@ import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 
 
@@ -17,9 +18,9 @@ public class Robot extends IterativeRobot {
 	BetterJoystick ljoystick;
 	BetterJoystick rjoystick;
 	CubeIntake intake;
-
 	DriveTrain drive;
 	Blinkin blinkin;
+	PowerDistributionPanel pdp;
 
 	boolean clawUp;
 	GameData gameData;
@@ -36,6 +37,7 @@ public class Robot extends IterativeRobot {
 		blinkin = new Blinkin();
 		gameData = new GameData();
 		lime = new Limelight();
+		pdp = new PowerDistributionPanel();
 
 		loop = new Looper(10);
 		loop.add(elevator::update);
@@ -43,13 +45,18 @@ public class Robot extends IterativeRobot {
 		loop.add(drive::update);
 		loop.start();
 
+		//set up recorder
 		r = new Recorder(100);
 		r.add("Time", Timer::getFPGATimestamp);
-		r.add("time", Timer::getFPGATimestamp);
-		r.add("x", drive::getXPosition);
-		r.add("y", drive::getYPosition);
-		r.add("velocity", drive::getVelocity);
-		r.add("distance", drive::getDistanceTraveled);
+		r.add("Drive Distance", drive::getDistanceTraveled);
+		r.add("Drive Velocity", drive::getVelocity);
+		r.add("Elevator Height", elevator::getHeight);
+		r.add("Intake LeftClawSensor", intake::getLeftVoltage);
+		r.add("Intake RightClawSensor", intake::getRightVoltage);
+		for (int i = 0; i < 16; i++) {
+			final int x = i;
+			r.add("Current " + i, () -> pdp.getCurrent(x));
+		}
 
 	}
 
@@ -87,9 +94,6 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void teleopPeriodic() {
-
-		//elevator motion magic
-		double leftYstick = -1.0 * rjoystick.getRawAxis(1);
 
 		if(rjoystick.getRisingEdge(2)) {
 			elevator.setTargetPosition(66);

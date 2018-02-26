@@ -9,14 +9,9 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import org.usfirst.frc.team5895.robot.lib.NavX;
 import org.usfirst.frc.team5895.robot.lib.PID;
 
-import java.awt.geom.Point2D;
-
-import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Talon;
-import edu.wpi.first.wpilibj.Timer;
 
 //all parameters are tested using Basan 
 
