@@ -113,6 +113,25 @@ public class CubeIntake {
 		return rightClawSensor.getVoltage();
 	}
 	
+	public double getState() {
+		switch(mode) {
+		case INTAKING:
+			return 1;
+		case HOLDING:
+			return 2;
+		case EJECTING:
+			return 3;
+		case SPINNING_LEFT:
+			return 4;
+		case SPINNING_RIGHT:
+			return 5;
+		case DISABLED:
+			return 6;
+		default:
+			return 0;
+		}
+	}
+	
 	public void update(){
 		
 		switch(mode) {
