@@ -58,14 +58,14 @@ public class DriveTrain {
 		
 		//limits the current to 40 amps whenever the current has exceeded 45 amps for 100 Ms
 		// current limiting - left
-		leftDriveMaster.configContinuousCurrentLimit(40, 0);
-		leftDriveMaster.configPeakCurrentLimit(45, 0);
+		leftDriveMaster.configContinuousCurrentLimit(30, 0);
+		leftDriveMaster.configPeakCurrentLimit(35, 0);
 		leftDriveMaster.configPeakCurrentDuration(100, 0);
 		leftDriveMaster.enableCurrentLimit(true);
 				
 		// current limiting - right
-		rightDriveMaster.configContinuousCurrentLimit(40, 0);
-		rightDriveMaster.configPeakCurrentLimit(45, 0);
+		rightDriveMaster.configContinuousCurrentLimit(30, 0);
+		rightDriveMaster.configPeakCurrentLimit(35, 0);
 		rightDriveMaster.configPeakCurrentDuration(100, 0);
 		rightDriveMaster.enableCurrentLimit(true);
 		
