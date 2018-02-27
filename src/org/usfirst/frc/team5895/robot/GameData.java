@@ -119,6 +119,42 @@ public class GameData {
 				&& leftSwitch == false
 				&& leftScale == false);
 	}
+	/**
+	 * center, right switch, right scale
+	 * @return true if the order is CRR, false otherwise
+	 */
+	public boolean CRR() {
+		return (side.toUpperCase().contains("C")
+				&& leftSwitch == false
+				&& leftScale == false);
+	}
+	/**
+	 * center, right switch, right scale
+	 * @return true if the order is CRL, false otherwise
+	 */
+	public boolean CRL() {
+		return (side.toUpperCase().contains("C")
+				&& leftSwitch == false
+				&& leftScale == true);
+	}
+	/**
+	 * center, right switch, right scale
+	 * @return true if the order is CLR, false otherwise
+	 */
+	public boolean CLR() {
+		return (side.toUpperCase().contains("C")
+				&& leftSwitch == true
+				&& leftScale == false);
+	}
+	/**
+	 * center, right switch, right scale
+	 * @return true if the order is CLL, false otherwise
+	 */
+	public boolean CLL() {
+		return (side.toUpperCase().contains("C")
+				&& leftSwitch == true
+				&& leftScale == true);
+	}
 }
 
 	
