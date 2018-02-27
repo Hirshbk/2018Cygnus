@@ -3,7 +3,7 @@ package org.usfirst.frc.team5895.robot.auto;
 import org.usfirst.frc.team5895.robot.Blinkin;
 import org.usfirst.frc.team5895.robot.CubeIntake;
 import org.usfirst.frc.team5895.robot.DriveTrain;
-import org.usfirst.frc.team5895.robot.Elevator2;
+import org.usfirst.frc.team5895.robot.Elevator;
 import org.usfirst.frc.team5895.robot.Limelight;
 
 /**
@@ -12,7 +12,7 @@ import org.usfirst.frc.team5895.robot.Limelight;
  */
 public class RRL {
 
-	public static final void run(DriveTrain drive, Elevator2 elevator, Limelight lime, CubeIntake intake,
+	public static final void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
 			Blinkin blinkin) {
 		
 		// switch > near

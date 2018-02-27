@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
-public class Elevator2 {
+public class Elevator {
 	private TalonSRX elevatorMaster;
 	private VictorSPX elevatorFollower1, elevatorFollower2;
 	private Solenoid brakeSolenoid;
@@ -27,7 +27,7 @@ public class Elevator2 {
 	private double brakeTimestamp;
 	private double percentSetting;
 	
-	public Elevator2() {
+	public Elevator() {
 		elevatorMaster = new TalonSRX(ElectricalLayout.MOTOR_ELEVATOR_MASTER);
 		elevatorFollower1 = new VictorSPX(ElectricalLayout.MOTOR_ELEVATOR_FOLLOWER_1);
 		elevatorFollower2 = new VictorSPX(ElectricalLayout.MOTOR_ELEVATOR_FOLLOWER_2);
@@ -78,9 +78,7 @@ public class Elevator2 {
 	 */
 	public double getHeight() {
 		
-		double height = elevatorMaster.getSelectedSensorPosition(0) * footConversion + carriageOffset; // 2048 ticks per rev, pitch diameter: 1.432in
-		
-		return height;
+		return elevatorMaster.getSelectedSensorPosition(0) * footConversion + carriageOffset; // 2048 ticks per rev, pitch diameter: 1.432in
 	}
 	
 	/* Motion Magic */
@@ -139,6 +137,11 @@ public class Elevator2 {
 		}
 	}
 */	
+	
+	public double getState() {
+		return mode.ordinal();
+	}
+	
 	/**
 	 * disables the elevator
 	 */

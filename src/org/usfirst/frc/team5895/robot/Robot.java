@@ -14,23 +14,24 @@ import edu.wpi.first.wpilibj.Timer;
 public class Robot extends IterativeRobot {
 
 	Looper loop;
-	Elevator2 elevator;
-	BetterJoystick ljoystick;
-	BetterJoystick rjoystick;
+	Elevator elevator;
 	CubeIntake intake;
 	DriveTrain drive;
 	Blinkin blinkin;
+	Limelight lime;
+	GameData gameData;
 	PowerDistributionPanel pdp;
 
 	boolean clawUp;
-	GameData gameData;
-	Limelight lime;
 
 	Recorder r;
+	
+	BetterJoystick ljoystick;
+	BetterJoystick rjoystick;
 
 	public void robotInit() {
 		intake = new CubeIntake();
-		elevator = new Elevator2();
+		elevator = new Elevator();
 		ljoystick = new BetterJoystick(0);
 		rjoystick = new BetterJoystick(1);
 		drive = new DriveTrain();
@@ -51,8 +52,10 @@ public class Robot extends IterativeRobot {
 		r.add("Drive Distance", drive::getDistanceTraveled);
 		r.add("Drive Velocity", drive::getVelocity);
 		r.add("Elevator Height", elevator::getHeight);
+		r.add("Elevator State", elevator::getState);
 		r.add("Intake LeftClawSensor", intake::getLeftVoltage);
 		r.add("Intake RightClawSensor", intake::getRightVoltage);
+		r.add("Intake State", intake::getState);
 		for (int i = 0; i < 16; i++) {
 			final int x = i;
 			r.add("Current " + i, () -> pdp.getCurrent(x));
@@ -111,7 +114,7 @@ public class Robot extends IterativeRobot {
 			elevator.setTargetPosition(20);
 		}
 
-		if(intake.lastHasCube) {
+		if(intake.hasCube()) {
 			blinkin.lightsHasCube();
 		}
 		else {

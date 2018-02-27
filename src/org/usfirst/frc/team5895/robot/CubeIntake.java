@@ -13,10 +13,10 @@ public class CubeIntake {
 	private Mode_Type mode = Mode_Type.DISABLED;
 	private VictorSPX leftClawMotor, rightClawMotor;
 	private AnalogInput leftClawSensor, rightClawSensor;
-	double leftSpeed, rightSpeed;
-	double lastTime;
-	private boolean solenoidState;
-	boolean lastHasCube;
+	private double leftSpeed, rightSpeed;
+	private double lastTime;
+	private boolean lastHasCube;
+	private boolean isClamped;
 	private boolean isDown;
 	private Solenoid clawSolenoid, clampSolenoid;
 	
@@ -114,22 +114,7 @@ public class CubeIntake {
 	}
 	
 	public double getState() {
-		switch(mode) {
-		case INTAKING:
-			return 1;
-		case HOLDING:
-			return 2;
-		case EJECTING:
-			return 3;
-		case SPINNING_LEFT:
-			return 4;
-		case SPINNING_RIGHT:
-			return 5;
-		case DISABLED:
-			return 6;
-		default:
-			return 0;
-		}
+		return mode.ordinal();
 	}
 	
 	public void update(){
@@ -154,20 +139,20 @@ public class CubeIntake {
 		     if(!lastHasCube && hasCube()) {
 			 	mode = Mode_Type.HOLDING; //once we have the cube, we prepare to hold and clamp
 			 }
-			solenoidState = false; //solenoid only clamps once it is holding 
+			isClamped = false; //solenoid only clamps once it is holding 
 			break;
 		
 		case HOLDING:
 			leftSpeed = 0.0;
 			rightSpeed = 0.0;
-			solenoidState = true; // solenoid used to clamp cube while holding 
+			isClamped = true; // solenoid used to clamp cube while holding 
 			DriverStation.reportError("holding", false);
 			break;
 		
 		case EJECTING:
 			leftSpeed = -1.0;
 			rightSpeed = -1.0;
-			solenoidState = false; 
+			isClamped = false; 
 			double waitTime = Timer.getFPGATimestamp(); //stamps current time 
             if (waitTime - lastTime > 0.6) { //compares the time we started waiting to current time
             	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
@@ -201,7 +186,7 @@ public class CubeIntake {
 		case DISABLED:
 			leftSpeed = 0;
 			rightSpeed = 0;
-			solenoidState = false;
+			isClamped = false;
 			break;
 		}
 		
@@ -209,7 +194,7 @@ public class CubeIntake {
 		rightClawMotor.set(ControlMode.PercentOutput, rightSpeed);
 		
 		clawSolenoid.set(isDown);
-		clampSolenoid.set(!solenoidState);
+		clampSolenoid.set(!isClamped);
 		
 	}
 }
