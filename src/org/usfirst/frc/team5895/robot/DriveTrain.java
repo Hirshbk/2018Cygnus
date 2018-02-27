@@ -56,6 +56,19 @@ public class DriveTrain {
 		rightDriveFollower1.follow(rightDriveMaster);
 		rightDriveFollower2.follow(rightDriveMaster);
 		
+		//limits the current to 40 amps whenever the current has exceeded 45 amps for 100 Ms
+		// current limiting - left
+		leftDriveMaster.configContinuousCurrentLimit(40, 0);
+		leftDriveMaster.configPeakCurrentLimit(45, 0);
+		leftDriveMaster.configPeakCurrentDuration(100, 0);
+		leftDriveMaster.enableCurrentLimit(true);
+				
+		// current limiting - right
+		rightDriveMaster.configContinuousCurrentLimit(40, 0);
+		rightDriveMaster.configPeakCurrentLimit(45, 0);
+		rightDriveMaster.configPeakCurrentDuration(100, 0);
+		rightDriveMaster.enableCurrentLimit(true);
+		
 		//initialize encoders
 		leftEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_LEFT_1, ElectricalLayout.ENCODER_DRIVE_LEFT_2, true, Encoder.EncodingType.k4X);
 		rightEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_RIGHT_1, ElectricalLayout.ENCODER_DRIVE_RIGHT_2, false, Encoder.EncodingType.k4X);
