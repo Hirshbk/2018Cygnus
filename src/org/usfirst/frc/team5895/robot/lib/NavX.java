@@ -6,7 +6,8 @@ import edu.wpi.first.wpilibj.SPI;
 public class NavX {
 
 	private AHRS ahrs;
-	private double lastRawAngle, lastRawPitch;
+	private double lastRawAngle;
+	private double pitch;
 	private double offset;
 	
 	/**
@@ -15,7 +16,6 @@ public class NavX {
 	public NavX() {
 		ahrs = new AHRS(SPI.Port.kMXP);
 		lastRawAngle = ahrs.getAngle();
-		lastRawPitch = ahrs.getPitch();
 		offset = 0;
 		}	
 	
@@ -24,7 +24,7 @@ public class NavX {
 	 */
 	public void reset() {
 		lastRawAngle = 0;
-		lastRawPitch = 0;
+		pitch = 0;
 		offset = 0;
 		ahrs.reset();
 	}
@@ -52,17 +52,6 @@ public class NavX {
 	}
 	
 	public double getPitch() {
-		double rawPitch = ahrs.getPitch();
-
-		if (rawPitch > 340 && lastRawPitch < 20) {
-			offset -= 360.0;
-		}
-		else if (rawPitch < 20 && lastRawPitch > 340) {
-			offset += 360;
-		}
-		
-		lastRawPitch = rawPitch;
-		
-		return rawPitch + offset;
+		return pitch = ahrs.getPitch();
 	}
 }
