@@ -1,8 +1,6 @@
 package org.usfirst.frc.team5895.robot.framework;
 
-import java.util.concurrent.Callable;
-
-import edu.wpi.first.wpilibj.DriverStation;
+import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.Timer;
 
 
@@ -26,7 +24,7 @@ public class Waiter {
 	 * @param condition The method to check
 	 * @param time The amount of time to wait in milliseconds
 	 */
-	public static void waitFor(Callable<Boolean> condition, double time) {
+	public static void waitFor(Supplier<Boolean> condition, double time) {
 		waitFor(condition, time, 10);
 	}
 	
@@ -37,17 +35,12 @@ public class Waiter {
 	 * @param time The amount of time to wait in milliseconds
 	 * @param precision The amount of time in milliseconds between checks to the condition method
 	 */
-	public static void waitFor(Callable<Boolean> condition, double time, double precision) {
+	public static void waitFor(Supplier<Boolean> condition, double time, double precision) {
 		double timeSeconds = time / 1000;
 		double precisionSeconds = precision / 1000;
 		double start = Timer.getFPGATimestamp();
 		while (Timer.getFPGATimestamp() - start < timeSeconds) {
-			try {
-				if (condition.call()) {
-					return;
-				}
-			} catch (Exception e) {
-				DriverStation.reportError("CallableException\n", true);
+			if (condition.get()) {
 				return;
 			}
 			Timer.delay(precisionSeconds);

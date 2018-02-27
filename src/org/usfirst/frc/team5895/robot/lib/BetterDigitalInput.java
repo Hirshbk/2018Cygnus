@@ -1,7 +1,6 @@
 package org.usfirst.frc.team5895.robot.lib;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
 
 public class BetterDigitalInput extends DigitalInput {
 
