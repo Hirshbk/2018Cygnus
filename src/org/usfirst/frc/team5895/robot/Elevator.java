@@ -53,6 +53,12 @@ public class Elevator {
 		elevatorMaster.configPeakOutputForward(1, kTimeoutMs);
 		elevatorMaster.configPeakOutputReverse(-1, kTimeoutMs);
 		
+		/* Set current limiting */
+		elevatorMaster.configContinuousCurrentLimit(30, 0);
+		elevatorMaster.configPeakCurrentLimit(35, 0);
+		elevatorMaster.configPeakCurrentDuration(100, 0);
+		elevatorMaster.enableCurrentLimit(true);
+		
 		/* set closed loop gains in slot0 - see documentation */
 		elevatorMaster.selectProfileSlot(kSlotIdx, kPIDLoopIdx);
 		elevatorMaster.config_kF(0, 0.33, kTimeoutMs);
