@@ -26,14 +26,14 @@ public class Robot extends IterativeRobot {
 
 	Recorder r;
 	
-	BetterJoystick ljoystick;
-	BetterJoystick rjoystick;
+	BetterJoystick leftJoystick;
+	BetterJoystick rightJoystick;
 
 	public void robotInit() {
 		intake = new CubeIntake();
 		elevator = new Elevator();
-		ljoystick = new BetterJoystick(0);
-		rjoystick = new BetterJoystick(1);
+		leftJoystick = new BetterJoystick(0);
+		rightJoystick = new BetterJoystick(1);
 		drive = new DriveTrain();
 		blinkin = new Blinkin();
 		gameData = new GameData();
@@ -98,21 +98,32 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 
-		if(rjoystick.getRisingEdge(2)) {
-			elevator.setTargetPosition(66);
+		//teleop drive
+		drive.arcadeDrive(leftJoystick.getRawAxis(1), rightJoystick.getRawAxis(0));
+		
+		//left joystick controls
+		if(leftJoystick.getRisingEdge(1)) {
+			intake.down();
+		} else if(leftJoystick.getRisingEdge(2)){
+			intake.up();
+		} else if(leftJoystick.getRisingEdge(3)) {
+			elevator.setTargetPosition(0.54);
 		}
-		else if(rjoystick.getRisingEdge(3)) {
-			elevator.setTargetPosition(54);
+		else if(leftJoystick.getRisingEdge(4)) {
+			elevator.setTargetPosition(20.0/12);
+		}  
+		
+		//right joystick controls
+		if(rightJoystick.getRisingEdge(1)) {
+			intake.eject(); 
+		} else if(rightJoystick.getRisingEdge(2)) {
+			elevator.setTargetPosition(74.0/12);
+		} else if(rightJoystick.getRisingEdge(3)) {
+			elevator.setTargetPosition(70.0/12);
+		} else if(rightJoystick.getRisingEdge(4)) {
+			elevator.setTargetPosition(78.0/12);
 		}
-		else if(rjoystick.getRisingEdge(4)) {
-			elevator.setTargetPosition(78);
-		}
-		else if(ljoystick.getRisingEdge(2)) {
-			elevator.setTargetPosition(0);
-		}
-		else if(ljoystick.getRisingEdge(4)) {
-			elevator.setTargetPosition(20);
-		}
+	
 
 		if(intake.hasCube()) {
 			blinkin.lightsHasCube();
@@ -121,17 +132,6 @@ public class Robot extends IterativeRobot {
 			blinkin.lightsNormal();
 		}
 
-		if(ljoystick.getRisingEdge(1)) {
-			clawUp = !clawUp;
-			if(clawUp){
-				intake.up();
-			}else{
-				intake.down();
-			}	
-		}
-		if(rjoystick.getRisingEdge(1)) {
-			intake.eject(); 
-		}
 	}
 
 
