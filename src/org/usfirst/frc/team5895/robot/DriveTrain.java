@@ -27,14 +27,19 @@ public class DriveTrain {
 	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
 	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock;
 	private TrajectoryDriveController pInUse;
-	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE,AUTO_MIRROR_BACKWARDS_SPLINE};
+	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE, AUTO_MIRROR_BACKWARDS_SPLINE, AUTO_DRIVE};
 	private Mode_Type mode = Mode_Type.TELEOP;
 	
 	private PID turnPID;
 	private boolean turning;
+	private PID drivePID;
 	
 	public static final double TURN_P = 0.015; 
-	public static final double TURN_I = 0.00002;
+	public static final double TURN_I = 0.000001;
+	private static final double capSpeed = 0.5;
+	
+	private static final double DRIVE_KP = 0.04;
+	private static final double DRIVE_KI = 0.00001;
 	
 	// tracking
 	private double posX, posY; // feet
@@ -81,30 +86,30 @@ public class DriveTrain {
 		navX = new NavX();
 		
 		// initialize PID
-		turnPID = new PID(TURN_P, TURN_I, 0, false);
+		turnPID = new PID(TURN_P, TURN_I, 0, 6);
+		drivePID = new PID(DRIVE_KP, DRIVE_KI, 0, 6);
 		
 		//initializes trajectory generator from auto files
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
-			//kp kd ki kv ka kturn are for Basan
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
 			
 			//start at Right
-			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRightRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchSide.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);// haven't test
-			pRightLeftSwitchBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchBack.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRightLeftSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchFront.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRightLeftScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01); 
-			pLeftScaleRightSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/LeftScaleRightSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pRightSwitchBlock = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightSwitchBlock.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01); // haven't test
+			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pRightRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);// haven't test
+			pRightLeftSwitchBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchBack.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pRightLeftSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pRightLeftScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01); 
+			pLeftScaleRightSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/LeftScaleRightSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pRightSwitchBlock = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightSwitchBlock.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01); // haven't test
 			
 			//start at Center
-			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
-			pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01); //don't have
-			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.2, 0, 0, 1.0/13.0, 1.0/50.0, -0.01);
+			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			//pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01); //don't have
+			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
 			
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
@@ -503,11 +508,33 @@ public class DriveTrain {
 				rightDriveMaster.set(ControlMode.PercentOutput, m_mirror_back[0]);
 				break;
 			
+			//drive straight with PID	
+			case AUTO_DRIVE:
+				leftspeed = drivePID.getOutput(getDistanceTraveled());
+				rightspeed = -drivePID.getOutput(getDistanceTraveled());
+				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
+				rightDriveMaster.set(ControlMode.PercentOutput, rightspeed);
+				break;	
+			
+			
 			//teleop driving with joystick control
 			case TELEOP: 
 				if (turning) {
 					leftspeed = -turnPID.getOutput(navX.getAngle());
 					rightspeed = turnPID.getOutput(navX.getAngle());
+					
+					if(leftspeed > capSpeed) {
+						leftspeed = capSpeed;
+					}
+					if(rightspeed > capSpeed) {
+						rightspeed = capSpeed;
+					}
+					if(leftspeed < -capSpeed) {
+						leftspeed = -capSpeed;
+					}
+					if(rightspeed < -capSpeed) {
+						rightspeed = -capSpeed;
+					}
 				}
 				leftDriveMaster.set(ControlMode.PercentOutput, -leftspeed);
 				rightDriveMaster.set(ControlMode.PercentOutput, rightspeed);
