@@ -93,31 +93,30 @@ public class Limelight {
 		if (!intake.hasCube() && hasTarget) {
 			intake.down();
 			intake.intake();
-			double threshold = 10, speed = 0.2;
+			double threshold = 10, speed = 0.5;
 			// turn to face cube
-
+			int turnConstant = 15;
+			
 			DriverStation.reportError("horizontal: " + horizontalOffset, false);
 			if (Math.abs(horizontalOffset) > threshold) {
-				DriverStation.reportError("turning", false);
 				if (horizontalOffset > 0)
-					drive.turnTo(horizontalOffset+10);
+					drive.turnTo(horizontalOffset + turnConstant);
 				else 
-					drive.turnTo(horizontalOffset-10);
-				//Waiter.waitFor(2000);
+					drive.turnTo(horizontalOffset - turnConstant);
+
 			}
 			// go forward
 			else {
 				DriverStation.reportError("forward", false);
 				drive.arcadeDrive(-speed, 0);
-				//Waiter.waitFor(2000);
-				
+
 			}
 			return true;
 		}
 
-		return false; //no target || has cube
+		return false; // has cube || no target
 	}
-	
+
 	public void autoSeek(CubeIntake intake, DriveTrain drive) {
 		while (seek(intake, drive)) {}
 		drive.arcadeDrive(0, 0);
@@ -134,84 +133,84 @@ public class Limelight {
 			hasTarget = true;
 		} 
 	}
-	
+
 	public void updateHorizontalOffset() {
 		horizontalOffset = table.getEntry("tx").getDouble(-1);
 	}
-	
+
 	public void updateVerticalOffset() {
 		verticalOffset = table.getEntry("ty").getDouble(-1);
 	}
-	
-	
+
+
 	public void updateTargetArea() {
 		area = table.getEntry("ta").getDouble(-1);
 	}
-	
+
 	public void updateRotation() {
 		rotation = table.getEntry("ts").getDouble(-1);
 	}
-	
+
 	public void updateLatency() {
 		latency = table.getEntry("tl").getDouble(-1);
 	}
-	
+
 	public void updateLedMode() {
 		table.getEntry("ledMode").setDouble(led.getValue());
 	}
-	
+
 	public void updateCamMode() {
 		table.getEntry("camMode").setDouble(cam.getValue());
 	}
-	
+
 	public void updatePipeline() {
 		table.getEntry("pipeline").setDouble(pipeline);
 	}
-	
+
 	public void setLedMode(LedMode led) {
 		this.led = led;
 	}
-	
+
 	public void setCamMode(CamMode cam) {
 		this.cam = cam;
 	}
-	
+
 	public void setPipeline(double pipeline) {
 		this.pipeline = Math.max(Math.min(pipeline, 9), 0);
 	}
-	
+
 	public boolean hasTarget() {
 		return hasTarget;
 	}
-	
+
 	public double getHorizontalOffset() {
 		return horizontalOffset;
 	}
-	
+
 	public double getVerticalOffset() {
 		return verticalOffset;
 	}
-	
+
 	public double getArea() {
 		return area;
 	}
-	
+
 	public double getRotation() {
 		return rotation;
 	}
-	
+
 	public double getLatency() {
 		return latency;
 	}
-	
+
 	public LedMode getLED() {
 		return led;
 	}
-	
+
 	public CamMode getCAM() {
 		return cam;
 	}
-	
+
 	public double getPipeline() {
 		return pipeline;
 	}

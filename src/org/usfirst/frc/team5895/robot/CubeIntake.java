@@ -194,7 +194,7 @@ public class CubeIntake {
 		rightClawMotor.set(ControlMode.PercentOutput, rightSpeed);
 		
 		clawSolenoid.set(isDown);
-		clampSolenoid.set(!isClamped);
+		clampSolenoid.set(isClamped);
 		
 	}
 }

@@ -39,11 +39,14 @@ public class Robot extends IterativeRobot {
 		gameData = new GameData();
 		lime = new Limelight();
 		pdp = new PowerDistributionPanel();
-
+		
+		lime.setLedMode(Limelight.LedMode.OFF);
+		
 		loop = new Looper(10);
 		loop.add(elevator::update);
 		loop.add(intake::update);
 		loop.add(drive::update);
+		loop.add(lime::update);
 		loop.start();
 
 		//set up recorder
@@ -66,6 +69,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		r.startRecording();
+		//lime.autoSeek(intake, drive);
 		
 		gameData.getGameData();
 		if (gameData.RRR()) {
@@ -94,6 +98,7 @@ public class Robot extends IterativeRobot {
 		}
 		else
 			DriverStation.reportError("Auto Error", false);
+			
 	}
 
 	public void teleopPeriodic() {
