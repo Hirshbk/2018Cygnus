@@ -38,8 +38,8 @@ public class DriveTrain {
 	public static final double TURN_I = 0.000001;
 	private static final double capSpeed = 0.5;
 	
-	private static final double DRIVE_KP = 0.04;
-	private static final double DRIVE_KI = 0.00001;
+	private static final double DRIVE_KP = 0.1;
+	private static final double DRIVE_KI = 0.00000;
 	
 	// tracking
 	private double posX, posY; // feet
@@ -433,16 +433,6 @@ public class DriveTrain {
 	}
 	
 	/**
-	 * checks whether the current path is finished
-	 * @return true if the path is finished, false otherwise
-	 */
-	public boolean isPFinished() {
-		
-		return (pInUse.isFinished());
-		
-	}
-	
-	/**
 	 * gets the x position of the drivetrain
 	 * @return the x position of the drivetrain in feet
 	 */
@@ -456,6 +446,30 @@ public class DriveTrain {
 	 */
 	public double getYPosition() {
 		return posY;
+	}
+	
+	/**
+	 * checks whether the current path is finished
+	 * @return true if the path is finished, false otherwise
+	 */
+	public boolean isPFinished() {
+		return (pInUse.isFinished());
+	}
+	
+	/**
+	 * stop turnPID when robot is at correct angle
+	 * @return whether PID is at correct angle 
+	 */
+	public boolean atAngle() {
+		return (Math.abs(turnPID.getSetpoint() - getDistanceTraveled()) <= 2);//?
+	}
+	
+	/**
+	 * stop drivePID when robot is at correct distance
+	 * @return whether PID is at correct distance 
+	 */
+	public boolean atDistance() {
+		return (Math.abs(drivePID.getSetpoint() - getDistanceTraveled()) <= 2);
 	}
 	
 	public void update() {
