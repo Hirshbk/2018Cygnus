@@ -19,6 +19,7 @@ public class CubeIntake {
 	private boolean isClamped;
 	private boolean isDown;
 	private Solenoid clawSolenoid, clampSolenoid;
+	private double ejectSpeed;
 	
 	public CubeIntake (){
 		leftClawMotor = new VictorSPX(ElectricalLayout.MOTOR_CLAW_1);
@@ -47,9 +48,19 @@ public class CubeIntake {
 		}
 	
 	/**
-	 * ejects a cube
+	 * ejects a cube at full speed
 	 */
-	public void eject(){
+	public void ejectFast(){
+		ejectSpeed = 1.0;
+		mode= Mode_Type.EJECTING;
+		lastTime = Timer.getFPGATimestamp();
+		}
+	
+	/**
+	 * ejects a cube at half speed
+	 */
+	public void ejectSlow(){
+		ejectSpeed = 0.5;
 		mode= Mode_Type.EJECTING;
 		lastTime = Timer.getFPGATimestamp();
 		}
@@ -136,7 +147,7 @@ public class CubeIntake {
 		    	 mode = Mode_Type.SPINNING_RIGHT;
 		     }
 		     
-		     if(!lastHasCube && hasCube()) {
+		     if(hasCube()) { //get rid off lastHasCube
 			 	mode = Mode_Type.HOLDING; //once we have the cube, we prepare to hold and clamp
 			 }
 			isClamped = false; //solenoid only clamps once it is holding 
@@ -150,8 +161,8 @@ public class CubeIntake {
 			break;
 		
 		case EJECTING:
-			leftSpeed = -1.0;
-			rightSpeed = -1.0;
+			leftSpeed = -ejectSpeed;
+			rightSpeed = -ejectSpeed;
 			isClamped = false; 
 			double waitTime = Timer.getFPGATimestamp(); //stamps current time 
             if (waitTime - lastTime > 0.6) { //compares the time we started waiting to current time

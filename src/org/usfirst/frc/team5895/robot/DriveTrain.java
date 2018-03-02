@@ -8,12 +8,9 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import org.usfirst.frc.team5895.robot.lib.NavX;
 import org.usfirst.frc.team5895.robot.lib.PID;
-
 import org.usfirst.frc.team5895.robot.lib.BetterEncoder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
-
-//all parameters are tested using Basan 
 
 public class DriveTrain {
 
@@ -25,7 +22,7 @@ public class DriveTrain {
 	private TrajectoryDriveController pStraight;
 	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale;
 	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
-	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock;
+	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube;
 	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE, AUTO_MIRROR_BACKWARDS_SPLINE, AUTO_DRIVE};
 	private Mode_Type mode = Mode_Type.TELEOP;
@@ -34,7 +31,7 @@ public class DriveTrain {
 	private boolean turning;
 	private PID drivePID;
 	
-	public static final double TURN_P = 0.015; 
+	public static final double TURN_P = 0.01; 
 	public static final double TURN_I = 0.000001;
 	private static final double capSpeed = 0.5;
 	
@@ -93,23 +90,24 @@ public class DriveTrain {
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+						
 			//start at Right
-			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			pRightRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);// haven't test
-			pRightLeftSwitchBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchBack.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			pRightLeftSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			pRightLeftScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01); 
-			pLeftScaleRightSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/LeftScaleRightSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			pRightSwitchBlock = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightSwitchBlock.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01); // haven't test
+			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			//pRightRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);// haven't test
+			//pRightLeftSwitchBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchBack.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pRightLeftSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.007);
+			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.05);
+			pRightLeftScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.009); 
+			//pLeftScaleRightSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/LeftScaleRightSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.07);
+			//pRightSwitchBlock = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightSwitchBlock.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01); // haven't test
+			pRightScaleCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleCube.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			
 			//start at Center
-			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
-			//pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01); //don't have
-			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/50.0, -0.01);
+			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			//pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01); //don't have
+			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
@@ -267,6 +265,15 @@ public class DriveTrain {
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
+	/**
+	 * from right scale to pick up the nearest cube
+	 */
+	public void autoRightScaleCube() {
+		resetEncoders();
+		pInUse = pRightScaleCube;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
 	//start at Left
 	
 	/**
@@ -350,6 +357,15 @@ public class DriveTrain {
 		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
 	}
 	
+	/**
+	 * from right scale to pick up the nearest cube
+	 */
+	public void autoLeftScaleCube() {
+		resetEncoders();
+		pInUse = pRightScaleCube;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
 	//start at Center
 	/**
 	 * go to front of right switch, drive forwards
@@ -417,7 +433,6 @@ public class DriveTrain {
 		turning = false;
 	}
 	
-	
 	/**
 	 * @return the average velocity in feet per second from the left and right encoders.
 	 */
@@ -461,7 +476,7 @@ public class DriveTrain {
 	 * @return whether PID is at correct angle 
 	 */
 	public boolean atAngle() {
-		return (Math.abs(turnPID.getSetpoint() - getDistanceTraveled()) <= 2);//?
+		return (Math.abs(turnPID.getSetpoint() - getAngle()) <= 5);
 	}
 	
 	/**

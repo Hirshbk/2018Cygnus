@@ -93,7 +93,7 @@ public class Limelight {
 		if (!intake.hasCube() && hasTarget) {
 			intake.down();
 			intake.intake();
-			double threshold = 10, speed = 0.5;
+			double threshold = 10, speed = 0.3;
 			// turn to face cube
 			int turnConstant = 15;
 			

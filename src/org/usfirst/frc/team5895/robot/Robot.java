@@ -72,6 +72,7 @@ public class Robot extends IterativeRobot {
 		//lime.autoSeek(intake, drive);
 		
 		gameData.getGameData();
+		
 		if (gameData.RRR()) {
 			LLL.run(drive, elevator, lime, intake, blinkin);
 		}
@@ -95,6 +96,36 @@ public class Robot extends IterativeRobot {
 		}
 		else if (gameData.LRR()) {
 			LRR.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.CRR()) {
+			CRR.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.CRL()) {
+			CRL.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.CLR()) {
+			CLR.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.CLL()) {
+			CLL.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.CR0()) {
+			CR0.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.CL0()) {
+			CL0.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.LL0()) {
+			LL0.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.LR0()) {
+			LR0.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.RL0()) {
+			RL0.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.RR0()) {
+			RR0.run(drive, elevator, lime, intake, blinkin);
 		}
 		else
 			DriverStation.reportError("Auto Error", false);
@@ -120,7 +151,7 @@ public class Robot extends IterativeRobot {
 		
 		//right joystick controls
 		if(rightJoystick.getRisingEdge(1)) {
-			intake.eject(); 
+			intake.ejectFast(); 
 		} else if(rightJoystick.getRisingEdge(2)) {
 			elevator.setTargetPosition(74.0/12);
 		} else if(rightJoystick.getRisingEdge(3)) {
