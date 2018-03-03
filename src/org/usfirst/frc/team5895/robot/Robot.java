@@ -21,19 +21,22 @@ public class Robot extends IterativeRobot {
 	Limelight lime;
 	GameData gameData;
 	PowerDistributionPanel pdp;
-
-	boolean clawUp;
+	
+	boolean fastShoot = true;
 
 	Recorder r;
 	
 	BetterJoystick leftJoystick;
 	BetterJoystick rightJoystick;
+	BetterJoystick operatorJoystick;
 
 	public void robotInit() {
-		intake = new CubeIntake();
-		elevator = new Elevator();
 		leftJoystick = new BetterJoystick(0);
 		rightJoystick = new BetterJoystick(1);
+		operatorJoystick = new BetterJoystick(2);
+		
+		intake = new CubeIntake();
+		elevator = new Elevator();
 		drive = new DriveTrain();
 		blinkin = new Blinkin();
 		gameData = new GameData();
@@ -41,6 +44,7 @@ public class Robot extends IterativeRobot {
 		pdp = new PowerDistributionPanel();
 		
 		lime.setLedMode(Limelight.LedMode.OFF);
+		blinkin.lightsNormal();
 		
 		loop = new Looper(10);
 		loop.add(elevator::update);
@@ -154,7 +158,11 @@ public class Robot extends IterativeRobot {
 		
 		//right joystick controls
 		if(rightJoystick.getRisingEdge(1)) {
-			intake.ejectFast(); 
+			if(fastShoot) {
+				intake.ejectFast();
+			} else {
+				intake.ejectSlow();
+			}		
 		} else if(rightJoystick.getRisingEdge(2)) {
 			elevator.setTargetPosition(74.0/12);
 		} else if(rightJoystick.getRisingEdge(3)) {
@@ -163,6 +171,12 @@ public class Robot extends IterativeRobot {
 			elevator.setTargetPosition(78.0/12);
 		}
 	
+		//operator joystick controls
+		if(operatorJoystick.getRisingEdge(3)) {
+			fastShoot = true;
+		} else if(operatorJoystick.getRisingEdge(4)) {
+			fastShoot = false;
+		}
 
 		if(intake.hasCube()) {
 			blinkin.lightsHasCube();
