@@ -127,6 +127,9 @@ public class Robot extends IterativeRobot {
 		else if (gameData.RR0()) {
 			RR0.run(drive, elevator, lime, intake, blinkin);
 		}
+		else if (gameData.S00()) {
+			S00.run(drive, elevator, lime, intake, blinkin);
+		}
 		else
 			DriverStation.reportError("Auto Error", false);
 			

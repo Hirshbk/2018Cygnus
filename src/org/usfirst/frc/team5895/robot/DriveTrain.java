@@ -51,26 +51,7 @@ public class DriveTrain {
 		rightDriveMaster = new TalonSRX(ElectricalLayout.MOTOR_DRIVE_RIGHT_MASTER);
 		rightDriveFollower1 = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER_1);
 		rightDriveFollower2 = new VictorSPX(ElectricalLayout.MOTOR_DRIVE_RIGHT_FOLLOWER_2);
-		
-		//set the two followers to follow
-		leftDriveFollower1.follow(leftDriveMaster);
-		leftDriveFollower2.follow(leftDriveMaster);
-		rightDriveFollower1.follow(rightDriveMaster);
-		rightDriveFollower2.follow(rightDriveMaster);
-		
-		//limits the current to 40 amps whenever the current has exceeded 45 amps for 100 Ms
-		// current limiting - left
-		leftDriveMaster.configContinuousCurrentLimit(30, 0);
-		leftDriveMaster.configPeakCurrentLimit(35, 0);
-		leftDriveMaster.configPeakCurrentDuration(100, 0);
-		leftDriveMaster.enableCurrentLimit(true);
-				
-		// current limiting - right
-		rightDriveMaster.configContinuousCurrentLimit(30, 0);
-		rightDriveMaster.configPeakCurrentLimit(35, 0);
-		rightDriveMaster.configPeakCurrentDuration(100, 0);
-		rightDriveMaster.enableCurrentLimit(true);
-		
+			
 		//initialize encoders
 		leftEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_LEFT_1, ElectricalLayout.ENCODER_DRIVE_LEFT_2, true, Encoder.EncodingType.k4X);
 		rightEncoder = new BetterEncoder(ElectricalLayout.ENCODER_DRIVE_RIGHT_1, ElectricalLayout.ENCODER_DRIVE_RIGHT_2, false, Encoder.EncodingType.k4X);
@@ -506,6 +487,10 @@ public class DriveTrain {
 
 				leftDriveMaster.set(ControlMode.PercentOutput, m[1]);
 				rightDriveMaster.set(ControlMode.PercentOutput, -m[0]);
+				leftDriveFollower1.set(ControlMode.PercentOutput, m[1]);
+				rightDriveFollower1.set(ControlMode.PercentOutput, -m[0]);
+				leftDriveFollower2.set(ControlMode.PercentOutput, m[1]);
+				rightDriveFollower2.set(ControlMode.PercentOutput, -m[0]);
 				break;
 				
 			//spline driving with the claw backward
@@ -515,6 +500,10 @@ public class DriveTrain {
 
 				leftDriveMaster.set(ControlMode.PercentOutput, -m_back[0]);
 				rightDriveMaster.set(ControlMode.PercentOutput, m_back[1]);
+				leftDriveFollower1.set(ControlMode.PercentOutput, -m_back[0]);
+				rightDriveFollower1.set(ControlMode.PercentOutput, m_back[1]);
+				leftDriveFollower2.set(ControlMode.PercentOutput, -m_back[0]);
+				rightDriveFollower2.set(ControlMode.PercentOutput, m_back[1]);
 				break;
 			
 			//mirrored spline driving for the other side of the field 
@@ -525,6 +514,10 @@ public class DriveTrain {
 
 				leftDriveMaster.set(ControlMode.PercentOutput, m_mirror[0]);
 				rightDriveMaster.set(ControlMode.PercentOutput, -m_mirror[1]);
+				leftDriveFollower1.set(ControlMode.PercentOutput, m_mirror[0]);
+				rightDriveFollower1.set(ControlMode.PercentOutput, -m_mirror[1]);
+				leftDriveFollower2.set(ControlMode.PercentOutput, m_mirror[0]);
+				rightDriveFollower2.set(ControlMode.PercentOutput, -m_mirror[1]);
 				break;
 				
 			//mirrored spline driving for the other side of the field
@@ -535,6 +528,10 @@ public class DriveTrain {
 				
 				leftDriveMaster.set(ControlMode.PercentOutput, -m_mirror_back[1]);
 				rightDriveMaster.set(ControlMode.PercentOutput, m_mirror_back[0]);
+				leftDriveFollower1.set(ControlMode.PercentOutput, -m_mirror_back[1]);
+				rightDriveFollower1.set(ControlMode.PercentOutput, m_mirror_back[0]);
+				leftDriveFollower2.set(ControlMode.PercentOutput, -m_mirror_back[1]);
+				rightDriveFollower2.set(ControlMode.PercentOutput, m_mirror_back[0]);
 				break;
 			
 			//drive straight with PID	
@@ -543,6 +540,10 @@ public class DriveTrain {
 				rightspeed = -drivePID.getOutput(getDistanceTraveled());
 				leftDriveMaster.set(ControlMode.PercentOutput, leftspeed);
 				rightDriveMaster.set(ControlMode.PercentOutput, rightspeed);
+				leftDriveFollower1.set(ControlMode.PercentOutput, leftspeed);
+				rightDriveFollower1.set(ControlMode.PercentOutput, rightspeed);
+				leftDriveFollower2.set(ControlMode.PercentOutput, leftspeed);
+				rightDriveFollower2.set(ControlMode.PercentOutput, rightspeed);
 				break;	
 			
 			
@@ -567,6 +568,10 @@ public class DriveTrain {
 				}
 				leftDriveMaster.set(ControlMode.PercentOutput, -leftspeed);
 				rightDriveMaster.set(ControlMode.PercentOutput, rightspeed);
+				leftDriveFollower1.set(ControlMode.PercentOutput, -leftspeed);
+				rightDriveFollower1.set(ControlMode.PercentOutput, rightspeed);
+				leftDriveFollower2.set(ControlMode.PercentOutput, -leftspeed);
+				rightDriveFollower2.set(ControlMode.PercentOutput, rightspeed);
 				break;
 			
 		}

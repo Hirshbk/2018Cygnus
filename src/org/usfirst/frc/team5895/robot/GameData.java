@@ -229,6 +229,10 @@ public class GameData {
 				&& scaleSide == false
 				&& doScale.toUpperCase().contains("N"));
 	}
+	
+	public boolean S00() {
+		return (side.toUpperCase().contains("S"));
+	}
 }
 
 	
