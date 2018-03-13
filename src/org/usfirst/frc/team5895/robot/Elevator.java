@@ -107,6 +107,10 @@ public class Elevator {
 		mode = Mode_Type.PERCENT;
 	}
 	
+	public void climb() {
+		mode = Mode_Type.CLIMBING;
+	}
+	
 	public void brake() {
 		mode = Mode_Type.BRAKING;
 	}
@@ -205,11 +209,11 @@ public class Elevator {
 			
 		case CLIMBING:
 			
-			elevatorMaster.set(ControlMode.PercentOutput, 0.2);
-/*			if(bottomLimitSwitch.get() == false) {
+			elevatorMaster.set(ControlMode.PercentOutput, -0.2);
+			if(elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
 				mode = Mode_Type.BRAKING;
 			}
-*/			
+			
 			break;
 			
 		case PERCENT:

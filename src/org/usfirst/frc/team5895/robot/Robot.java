@@ -172,6 +172,9 @@ public class Robot extends IterativeRobot {
 		}
 	
 		//operator joystick controls
+		if(operatorJoystick.getRisingEdge(1)) {
+			elevator.climb();
+		}
 		if(operatorJoystick.getRisingEdge(3)) {
 			fastShoot = true;
 		} else if(operatorJoystick.getRisingEdge(4)) {
