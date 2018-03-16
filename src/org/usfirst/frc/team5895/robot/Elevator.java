@@ -3,6 +3,7 @@ package org.usfirst.frc.team5895.robot;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -160,25 +161,24 @@ public class Elevator {
 	}
 	
 	public void update() {
-/*
-		//this sets the max current based on if the limit switch is triggered
-		if(elevatorMaster.) {
+
+/*		//this sets the max current based on if the limit switch is triggered
+  		//still doesn't work and idk why
+  		//it just sort of doesn't move??? but it's not that important so eh
+  
+		if(elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed()) {
 			elevatorMaster.configPeakOutputForward(0.0, kTimeoutMs);	
-		}
-		else if(topLimitSwitch.getFallingEdge()) {
+		} else {
 			elevatorMaster.configPeakOutputForward(1.0, kTimeoutMs);
 		}
 		
-		if (bottomLimitSwitch.getRisingEdge()) {
+		if (!elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
 			elevatorMaster.configPeakOutputReverse(0.0, kTimeoutMs);	
-		}
-		else if (bottomLimitSwitch.getFallingEdge()) {
+		} else {
 			elevatorMaster.configPeakOutputReverse(-1.0, kTimeoutMs);
 		}
 */		
-		//automatically brakes if it's at target and not moving quickly
-		//I have no idea what the velocity units are so I just put 1, change when we actually have a robot
-		
+
 		switch(mode) {
 		
 		case DISENGAGING:
@@ -208,9 +208,13 @@ public class Elevator {
 			break;
 			
 		case CLIMBING:
-			
+			DriverStation.reportError("climbing", false);
+			brakeOn = false;
 			elevatorMaster.set(ControlMode.PercentOutput, -0.2);
-			if(elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
+			if(elevatorMaster.getSelectedSensorPosition(0) < 0) {
+				mode = Mode_Type.BRAKING;
+			}
+			if(!elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
 				mode = Mode_Type.BRAKING;
 			}
 			
@@ -227,8 +231,9 @@ public class Elevator {
 			elevatorMaster.set(ControlMode.PercentOutput, 0);
 			break;
 		}
-		brakeSolenoid.set(brakeOn);
+		brakeSolenoid.set(!brakeOn);
 		
+		DriverStation.reportError("" + elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed(), false);
 //		DriverStation.reportError("" + elevatorMaster.getSelectedSensorPosition(0), false);
 //		DriverStation.reportError("" + atTarget(), false);
 //		DriverStation.reportError("" + targetPos, false);

@@ -175,12 +175,15 @@ public class Robot extends IterativeRobot {
 		if(operatorJoystick.getRisingEdge(1)) {
 			elevator.climb();
 		}
+		if(operatorJoystick.getRisingEdge(2)) {
+			elevator.brake();
+		}
 		if(operatorJoystick.getRisingEdge(3)) {
 			fastShoot = true;
 		} else if(operatorJoystick.getRisingEdge(4)) {
 			fastShoot = false;
 		}
-
+		
 		if(intake.hasCube()) {
 			blinkin.lightsHasCube();
 		}
