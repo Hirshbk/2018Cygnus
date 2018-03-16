@@ -162,22 +162,21 @@ public class Elevator {
 	
 	public void update() {
 
-/*		//this sets the max current based on if the limit switch is triggered
-  		//still doesn't work and idk why
-  		//it just sort of doesn't move??? but it's not that important so eh
-  
-		if(elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed()) {
+		//this sets the max current based on if the limit switch is triggered
+		if(!elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed()) {
+			DriverStation.reportError("forward limit switch triggered", false);
 			elevatorMaster.configPeakOutputForward(0.0, kTimeoutMs);	
 		} else {
 			elevatorMaster.configPeakOutputForward(1.0, kTimeoutMs);
 		}
 		
 		if (!elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
+			DriverStation.reportError("reverse limit switch triggered", false);
 			elevatorMaster.configPeakOutputReverse(0.0, kTimeoutMs);	
 		} else {
 			elevatorMaster.configPeakOutputReverse(-1.0, kTimeoutMs);
 		}
-*/		
+		
 
 		switch(mode) {
 		
@@ -233,7 +232,7 @@ public class Elevator {
 		}
 		brakeSolenoid.set(!brakeOn);
 		
-		DriverStation.reportError("" + elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed(), false);
+//		DriverStation.reportError("" + elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed(), false);
 //		DriverStation.reportError("" + elevatorMaster.getSelectedSensorPosition(0), false);
 //		DriverStation.reportError("" + atTarget(), false);
 //		DriverStation.reportError("" + targetPos, false);
