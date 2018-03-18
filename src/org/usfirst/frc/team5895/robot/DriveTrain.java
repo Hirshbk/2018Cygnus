@@ -71,7 +71,7 @@ public class DriveTrain {
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/SCurve.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 						
 			//start at Right
 			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);

@@ -297,5 +297,22 @@ public class Main {
         serializeAndWrite(path, path_name);
       }
 
+    {
+    	config.dt = .01;
+        config.max_acc = 60.0;
+        config.max_jerk = 60.0;
+        config.max_vel = 5.0;
+    	
+    	final String path_name = "SCurve";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(3, 10, 0));
+
+        Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
+        serializeAndWrite(path, path_name);
+      }
+    
   }
 }

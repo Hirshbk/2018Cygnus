@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 	GameData gameData;
 	PowerDistributionPanel pdp;
 	
-	boolean fastShoot = true;
+	boolean fastShoot = false;
 
 	Recorder r;
 	
@@ -83,7 +83,7 @@ public class Robot extends IterativeRobot {
 		
 		if (gameData.RRR()) {
 			RRR.run(drive, elevator, lime, intake, blinkin);
-		}
+  		}
 		else if (gameData.RRL()) {
 			RRL.run(drive, elevator, lime, intake, blinkin);
 		}
@@ -142,8 +142,10 @@ public class Robot extends IterativeRobot {
 			DriverStation.reportError("Auto Error", false);
 			S00.run(drive, elevator, lime, intake, blinkin);
 		}
-			
-	}
+/*		drive.resetNavX();
+		drive.resetEncoders();
+		drive.autoForwardStraight();	
+*/	}
 
 	public void teleopPeriodic() {
 
@@ -159,7 +161,7 @@ public class Robot extends IterativeRobot {
 			elevator.setTargetPosition(0.54);
 		}
 		else if(leftJoystick.getRisingEdge(4)) {
-			elevator.setTargetPosition(20.0/12);
+			elevator.setTargetPosition(15.0/12);
 		}  
 		
 		//right joystick controls
@@ -172,7 +174,7 @@ public class Robot extends IterativeRobot {
 		} else if(rightJoystick.getRisingEdge(2)) {
 			elevator.setTargetPosition(74.0/12);
 		} else if(rightJoystick.getRisingEdge(3)) {
-			elevator.setTargetPosition(70.0/12);
+			elevator.setTargetPosition(32.0/12);
 		} else if(rightJoystick.getRisingEdge(4)) {
 			elevator.setTargetPosition(79.0/12);
 		}

@@ -17,7 +17,7 @@ public class Main {
 	
 	private static void createAndShowUI() {
 		
-		String splineName = "RightLeftScale"; //name of spline .txt file
+		String splineName = "SCurve"; //name of spline .txt file
 		double startX = 20; //start position along the alliance wall in feet
 		double startY = 0; //start position away from the alliance wall in feet
 		

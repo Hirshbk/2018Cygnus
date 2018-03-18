@@ -113,7 +113,6 @@ public class GameData {
 	 * @return true if the order is LLL, false otherwise
 	 */
 	public boolean LLL() {
-		DriverStation.reportError("LLL", false);
 		return (side.toUpperCase().contains("L")
 				&& switchSide == true
 				&& scaleSide == true
@@ -138,10 +137,6 @@ public class GameData {
 				&& switchSide == true
 				&& doScale.toUpperCase().contains("N"));
 	}
-	/**
-	 * left side, right switch, left scale
-	 * @return true if the order is LRL, false otherwise
-	 */
 	/**
 	 * left side, right switch, left scale
 	 * @return true if the order is LRL, false otherwise
@@ -227,7 +222,6 @@ public class GameData {
 	public boolean CL0() {
 		return (side.toUpperCase().contains("C")
 				&& switchSide == true
-				&& scaleSide == false
 				&& doScale.toUpperCase().contains("N"));
 	}
 	
