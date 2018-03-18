@@ -87,7 +87,7 @@ public class CubeIntake {
 	 */
 	public void up() {
 		isDown = false;
-		mode = Mode_Type.DISABLED;
+		mode = Mode_Type.HOLDING;
 	}
 	
 	/**
@@ -157,7 +157,7 @@ public class CubeIntake {
 			leftSpeed = 0.0;
 			rightSpeed = 0.0;
 			isClamped = true; // solenoid used to clamp cube while holding 
-			DriverStation.reportError("holding", false);
+		//	DriverStation.reportError("holding", false);
 			break;
 		
 		case EJECTING:

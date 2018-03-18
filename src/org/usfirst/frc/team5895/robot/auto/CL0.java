@@ -23,7 +23,7 @@ public class CL0 {
 		intake.down();
 		drive.autoCenterLeftSwitchFront();
 		Waiter.waitFor(drive::isPFinished,5000);
-		intake.ejectFast();
+		intake.ejectSlow();
 		
 	}
 

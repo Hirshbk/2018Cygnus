@@ -29,7 +29,7 @@ public class LLL {
 		intake.ejectSlow();
 		Waiter.waitFor(500);
 		elevator.setTargetPosition(0.0);
-		drive.turnTo(-210);
+/*		drive.turnTo(-210);
 		Waiter.waitFor(drive::atAngle, 3000);
 		drive.stopTurning(); 
 		drive.arcadeDrive(0, 0);
@@ -40,7 +40,7 @@ public class LLL {
 		elevator.setTargetPosition(40.0/12);
 		Waiter.waitFor(2000);
 		intake.ejectFast();
-		
+*/		
 	}
 
 }

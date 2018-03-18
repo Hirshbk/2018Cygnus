@@ -15,7 +15,7 @@ public class Elevator {
 	boolean aboveScale;
 	boolean brakeOn = false;
 	
-	private enum Mode_Type {MOVING, BRAKING, DISENGAGING, CLIMBING, PERCENT, DISABLED};
+	private enum Mode_Type {MOVING, BRAKING, DISENGAGING, CLIMBING, CLIMB_DISENGAGING, PERCENT, DISABLED};
 	private Mode_Type mode = Mode_Type.DISABLED;
 	
 	public static final int kSlotIdx = 0;
@@ -109,7 +109,8 @@ public class Elevator {
 	}
 	
 	public void climb() {
-		mode = Mode_Type.CLIMBING;
+		brakeTimestamp = Timer.getFPGATimestamp();
+		mode = Mode_Type.CLIMB_DISENGAGING;
 	}
 	
 	public void brake() {
@@ -164,14 +165,14 @@ public class Elevator {
 
 		//this sets the max current based on if the limit switch is triggered
 		if(!elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed()) {
-			DriverStation.reportError("forward limit switch triggered", false);
+//			DriverStation.reportError("forward limit switch triggered", false);
 			elevatorMaster.configPeakOutputForward(0.0, kTimeoutMs);	
 		} else {
 			elevatorMaster.configPeakOutputForward(1.0, kTimeoutMs);
 		}
 		
 		if (!elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
-			DriverStation.reportError("reverse limit switch triggered", false);
+//			DriverStation.reportError("reverse limit switch triggered", false);
 			elevatorMaster.configPeakOutputReverse(0.0, kTimeoutMs);	
 		} else {
 			elevatorMaster.configPeakOutputReverse(-1.0, kTimeoutMs);
@@ -207,16 +208,22 @@ public class Elevator {
 			break;
 			
 		case CLIMBING:
-			DriverStation.reportError("climbing", false);
 			brakeOn = false;
-			elevatorMaster.set(ControlMode.PercentOutput, -0.2);
-			if(elevatorMaster.getSelectedSensorPosition(0) < 0) {
+			elevatorMaster.set(ControlMode.PercentOutput, -0.5);
+			if(getHeight() <= 0.05) {
 				mode = Mode_Type.BRAKING;
 			}
 			if(!elevatorMaster.getSensorCollection().isRevLimitSwitchClosed()) {
 				mode = Mode_Type.BRAKING;
 			}
-			
+			DriverStation.reportError("Climbing " + elevatorMaster.getMotorOutputPercent(), false);
+			break;
+		
+		case CLIMB_DISENGAGING:
+			brakeOn = false;
+			if(Timer.getFPGATimestamp() - brakeTimestamp > 0.1) {
+				mode = Mode_Type.CLIMBING;
+			}
 			break;
 			
 		case PERCENT:
@@ -230,7 +237,7 @@ public class Elevator {
 			elevatorMaster.set(ControlMode.PercentOutput, 0);
 			break;
 		}
-		brakeSolenoid.set(!brakeOn);
+		brakeSolenoid.set(brakeOn);
 		
 //		DriverStation.reportError("" + elevatorMaster.getSensorCollection().isFwdLimitSwitchClosed(), false);
 //		DriverStation.reportError("" + elevatorMaster.getSelectedSensorPosition(0), false);

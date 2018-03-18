@@ -1,10 +1,12 @@
 package org.usfirst.frc.team5895.robot;
 
+import org.usfirst.frc.team5895.robot.Limelight.CamMode;
 import org.usfirst.frc.team5895.robot.auto.*;
 import org.usfirst.frc.team5895.robot.framework.Looper;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -31,6 +33,8 @@ public class Robot extends IterativeRobot {
 	BetterJoystick operatorJoystick;
 
 	public void robotInit() {
+		CameraServer.getInstance().startAutomaticCapture();
+		
 		leftJoystick = new BetterJoystick(0);
 		rightJoystick = new BetterJoystick(1);
 		operatorJoystick = new BetterJoystick(2);
@@ -43,7 +47,7 @@ public class Robot extends IterativeRobot {
 		lime = new Limelight();
 		pdp = new PowerDistributionPanel();
 		
-		lime.setLedMode(Limelight.LedMode.OFF);
+		lime.setLedMode(Limelight.LedMode.ON);
 		blinkin.lightsNormal();
 		
 		loop = new Looper(10);
@@ -73,12 +77,12 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 
 		r.startRecording();
-		//lime.autoSeek(intake, drive);
-		
 		gameData.getGameData();
 		
+		DriverStation.reportError("" + gameData.side, false);
+		
 		if (gameData.RRR()) {
-			LLL.run(drive, elevator, lime, intake, blinkin);
+			RRR.run(drive, elevator, lime, intake, blinkin);
 		}
 		else if (gameData.RRL()) {
 			RRL.run(drive, elevator, lime, intake, blinkin);
@@ -134,8 +138,10 @@ public class Robot extends IterativeRobot {
 		else if (gameData.S00()) {
 			S00.run(drive, elevator, lime, intake, blinkin);
 		}
-		else
+		else {
 			DriverStation.reportError("Auto Error", false);
+			S00.run(drive, elevator, lime, intake, blinkin);
+		}
 			
 	}
 
@@ -168,7 +174,7 @@ public class Robot extends IterativeRobot {
 		} else if(rightJoystick.getRisingEdge(3)) {
 			elevator.setTargetPosition(70.0/12);
 		} else if(rightJoystick.getRisingEdge(4)) {
-			elevator.setTargetPosition(78.0/12);
+			elevator.setTargetPosition(79.0/12);
 		}
 	
 		//operator joystick controls
@@ -184,7 +190,7 @@ public class Robot extends IterativeRobot {
 			fastShoot = false;
 		}
 		
-		if(intake.hasCube()) {
+		if(intake.hasCube() || intake.tiltedLeft() || intake.tiltedRight()) {
 			blinkin.lightsHasCube();
 		}
 		else {

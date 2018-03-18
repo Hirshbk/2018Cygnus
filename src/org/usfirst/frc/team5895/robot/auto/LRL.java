@@ -26,7 +26,7 @@ public class LRL {
 		Waiter.waitFor(1000);
 		elevator.setTargetPosition(82/12);
 		intake.up();
-		Waiter.waitFor(drive::isPFinished, 4000);
+		Waiter.waitFor(drive::isPFinished, 2500);
 		intake.ejectFast();
 		Waiter.waitFor(500);
 		drive.turnTo(120);
@@ -37,15 +37,15 @@ public class LRL {
 		drive.autoLeftLeftScaleRightSwitch();
 		intake.down();
 		intake.intake();
-		Waiter.waitFor(drive::isPFinished, 5000);
+		Waiter.waitFor(drive::isPFinished, 3000);
 		drive.arcadeDrive(0, 0);
 		lime.autoSeek(intake, drive);
 		Waiter.waitFor(1000);
 		elevator.setTargetPosition(40.0/12);
 		drive.arcadeDrive(-0.1, 0);
 		Waiter.waitFor(200);
-		drive.arcadeDrive(0, 0.1);
-		Waiter.waitFor(2000);
+		drive.arcadeDrive(0.1, 0);
+		Waiter.waitFor(200);
 		intake.ejectFast();
 	}
 

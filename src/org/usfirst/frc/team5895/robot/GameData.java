@@ -23,8 +23,8 @@ public class GameData {
 	public void getGameData() {
 		
 		//gets the side that we start on from the dashboard
-		side = SmartDashboard.getString("DB/String 0", "nothing");
-		doScale = SmartDashboard.getString("DB/String 1", "nothing");
+		side = SmartDashboard.getString("DB/String 0", "C");
+		doScale = SmartDashboard.getString("DB/String 1", "N");
 		
 		//gets the game data from the field
 				gameData = DriverStation.getInstance().getGameSpecificMessage();
@@ -113,6 +113,7 @@ public class GameData {
 	 * @return true if the order is LLL, false otherwise
 	 */
 	public boolean LLL() {
+		DriverStation.reportError("LLL", false);
 		return (side.toUpperCase().contains("L")
 				&& switchSide == true
 				&& scaleSide == true

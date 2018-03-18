@@ -31,7 +31,7 @@ public class DriveTrain {
 	private boolean turning;
 	private PID drivePID;
 	
-	public static final double TURN_P = 0.01; 
+	public static final double TURN_P = 0.008; 
 	public static final double TURN_I = 0.000001;
 	private static final double capSpeed = 0.5;
 	

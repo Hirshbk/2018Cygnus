@@ -87,7 +87,7 @@ public class Main {
     
     TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
     config.dt = .01;
-    config.max_acc = 80.0;
+    config.max_acc = 60.0;
     config.max_jerk = 60.0;
     config.max_vel = 10.0;
     
@@ -108,7 +108,7 @@ public class Main {
     //start at Center spline
     { 
     	config.dt = .01;
-        config.max_acc = 80.0;
+        config.max_acc = 60.0;
         config.max_jerk = 60.0;
         config.max_vel = 4.0;
         
@@ -125,7 +125,7 @@ public class Main {
     
     {
     	config.dt = .01;
-        config.max_acc = 80.0;
+        config.max_acc = 60.0;
         config.max_jerk = 60.0;
         config.max_vel = 10.0;
         
@@ -211,13 +211,14 @@ public class Main {
     }
     
     {
+    	//THIS WORKS DO NOT TOUCH
         final String path_name = "RightRightScale";
         
         WaypointSequence p = new WaypointSequence(10);
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 17, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-1, 20.5, -20));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 15, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-2, 20, -20));
         
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);
@@ -230,10 +231,10 @@ public class Main {
         
         WaypointSequence p = new WaypointSequence(10);
 
-        p.addWaypoint(new WaypointSequence.Waypoint(-1, 20.5, -120));
-        p.addWaypoint(new WaypointSequence.Waypoint(-4, 20, -89.99));
-        p.addWaypoint(new WaypointSequence.Waypoint(-6, 20, -89.99));
-        p.addWaypoint(new WaypointSequence.Waypoint(-15.5, 20.5, -135));
+        p.addWaypoint(new WaypointSequence.Waypoint(-2, 20, -120));
+        p.addWaypoint(new WaypointSequence.Waypoint(-5, 19, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-8, 19, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-17.5, 17, -135));
 
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);
@@ -247,11 +248,11 @@ public class Main {
         WaypointSequence p = new WaypointSequence(10);
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 11.5, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-10, 19, -89.99));
-        p.addWaypoint(new WaypointSequence.Waypoint(-15, 19, -89.99));
-        p.addWaypoint(new WaypointSequence.Waypoint(-16.5, 20, -45));
-        p.addWaypoint(new WaypointSequence.Waypoint(-17.5, 22.5, -15));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 11, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-10, 17, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-14, 17, -89.99));
+        p.addWaypoint(new WaypointSequence.Waypoint(-15.5, 20, -45));
+        p.addWaypoint(new WaypointSequence.Waypoint(-16.5, 22.5, 15));
 
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);
@@ -259,9 +260,9 @@ public class Main {
     
     {
     	config.dt = .01;
-        config.max_acc = 80.0;
+        config.max_acc = 60.0;
         config.max_jerk = 60.0;
-        config.max_vel = 5.0;
+                         config.max_vel = 5.0;
     	
     	final String path_name = "LeftScaleRightSwitch";
         
@@ -279,6 +280,7 @@ public class Main {
       }
     
     {
+    	//THIS WORKS DO NOT TOUCH
     	config.dt = .01;
         config.max_acc = 200.0;
         config.max_jerk = 180.0;

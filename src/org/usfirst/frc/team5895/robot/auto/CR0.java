@@ -7,6 +7,8 @@ import org.usfirst.frc.team5895.robot.Elevator;
 import org.usfirst.frc.team5895.robot.Limelight;
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 /**
  * center of field, left switch, & left scale.
  * @author lalewis-19
@@ -23,7 +25,7 @@ public class CR0 {
 		intake.down();
 		drive.autoCenterRightSwitchFront();
 		Waiter.waitFor(drive::isPFinished,5000);
-		intake.ejectFast();
+		intake.ejectSlow();
 		
 	}
 
