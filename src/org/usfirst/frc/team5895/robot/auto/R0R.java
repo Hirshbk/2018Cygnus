@@ -9,7 +9,7 @@ import org.usfirst.frc.team5895.robot.framework.Waiter;
 
 public class R0R {
 
-	public void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
+	public static final void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
 			Blinkin blinkin) {
 		drive.resetNavX();
 		intake.intake();

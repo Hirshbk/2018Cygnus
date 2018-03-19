@@ -136,6 +136,18 @@ public class Robot extends IterativeRobot {
 		else if (gameData.getAutoRoutine().equals("RR")) {
 			RR0.run(drive, elevator, lime, intake, blinkin);
 		}
+		else if (gameData.getAutoRoutine().equals("L0L")) {
+			L0L.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.getAutoRoutine().equals("L0R")) {
+			L0R.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.getAutoRoutine().equals("R0L")) {
+			R0L.run(drive, elevator, lime, intake, blinkin);
+		}
+		else if (gameData.getAutoRoutine().equals("R0R")) {
+			R0R.run(drive, elevator, lime, intake, blinkin);
+		}
 		else if (gameData.getAutoRoutine().equals("S00")) {
 			S00.run(drive, elevator, lime, intake, blinkin);
 		}
