@@ -81,7 +81,7 @@ public class DriveTrain {
 			//pRightRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);// haven't test
 			//pRightLeftSwitchBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchBack.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			pRightLeftSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftSwitchFront.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.007);
-			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.05);
+			pRightRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.009);
 			pRightLeftScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.009); 
 			//pLeftScaleRightSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/LeftScaleRightSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.07);
