@@ -28,8 +28,8 @@ public class RRR {
 		Waiter.waitFor(drive::isPFinished, 2500);
 		intake.ejectFast();
 		Waiter.waitFor(500);
-		elevator.setTargetPosition(0.0);
-/*		drive.turnTo(210);
+/*		elevator.setTargetPosition(0.0);
+		drive.turnTo(210);
 		Waiter.waitFor(drive::atAngle, 3000);
 		drive.stopTurning(); 
 		drive.arcadeDrive(0, 0);

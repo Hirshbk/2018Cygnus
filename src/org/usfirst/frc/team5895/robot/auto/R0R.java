@@ -7,24 +7,19 @@ import org.usfirst.frc.team5895.robot.Elevator;
 import org.usfirst.frc.team5895.robot.Limelight;
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
-/**
- * Left side of field, left switch, & right scale.
- * @author lalewis-19
- */
-public class LLR {
+public class R0R {
 
-	public static final void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
+	public void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
 			Blinkin blinkin) {
-		
 		drive.resetNavX();
 		intake.intake();
 		Waiter.waitFor(200);
-		drive.autoLeftRightScale();
-		Waiter.waitFor(3000);
+		drive.autoRightRightScale();
+		Waiter.waitFor(1000);
 		elevator.setTargetPosition(82/12);
-		Waiter.waitFor(drive::isPFinished, 4000);
-		intake.ejectSlow();
-
+		Waiter.waitFor(drive::isPFinished, 2500);
+		intake.ejectFast();
+		Waiter.waitFor(500);
 	}
-
+	
 }
