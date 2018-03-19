@@ -99,7 +99,7 @@ public class Main {
       
       WaypointSequence p = new WaypointSequence(10);
       p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 10, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 20, 0));
 
       Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
       serializeAndWrite(path, path_name);
@@ -127,7 +127,7 @@ public class Main {
     	config.dt = .01;
         config.max_acc = 60.0;
         config.max_jerk = 60.0;
-        config.max_vel = 10.0;
+        config.max_vel = 9.0;
         
         final String path_name = "CenterRightScale";
         
@@ -211,14 +211,13 @@ public class Main {
     }
     
     {
-    	//THIS WORKS DO NOT TOUCH
         final String path_name = "RightRightScale";
         
         WaypointSequence p = new WaypointSequence(10);
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 15, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2, 20, -20));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 17.5, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(-1, 21, -20));
         
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);

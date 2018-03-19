@@ -17,9 +17,9 @@ public class Main {
 	
 	private static void createAndShowUI() {
 		
-		String splineName = "SCurve"; //name of spline .txt file
-		double startX = 20; //start position along the alliance wall in feet
-		double startY = 0; //start position away from the alliance wall in feet
+		String splineName = "RightRightScale"; //name of spline .txt file
+		double startX = 22; //start position along the alliance wall in feet
+		double startY = 2.5; //start position away from the alliance wall in feet
 		
 		//creates new window frame
 		JFrame frame = new JFrame();
