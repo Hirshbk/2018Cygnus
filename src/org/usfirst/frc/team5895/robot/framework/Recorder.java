@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class Recorder {		
 	private boolean recordFile;
 	private Formatter f;
-	private Vector<Supplier<Double>> methods;
+	private Vector<Supplier<Object>> methods;
 	private Vector<String> names;
 	private Looper loop;
 	
@@ -25,7 +25,7 @@ public class Recorder {
 	 */
 	public Recorder(int time){
 		recordFile = false;
-		methods = new Vector<Supplier<Double>>();
+		methods = new Vector<Supplier<Object>>();
 		names = new Vector<String>();
 		loop = new Looper(time);
 		loop.add(this::record);
@@ -37,7 +37,7 @@ public class Recorder {
 	 * @param name
 	 * @param g
 	 */
-	public void add(String name, Supplier<Double> g) {
+	public void add(String name, Supplier<Object> g) {
 		if (!recordFile) {
 			methods.add(g);
 			names.add(name);
@@ -100,12 +100,12 @@ public class Recorder {
     	if (recordFile==true) {
     		boolean first = true;
     		StringBuilder line = new StringBuilder();
-    		for (Supplier<Double> g : methods) {
+    		for (Supplier<Object> g : methods) {
     			if (first) {
     				first = false;
-    				line.append("" + g.get());
+    				line.append("" + g.get().toString());
     			} else {
-    				line.append("," + g.get());
+    				line.append("," + g.get().toString());
     			}
     		}
     		line.append("\r\n");
