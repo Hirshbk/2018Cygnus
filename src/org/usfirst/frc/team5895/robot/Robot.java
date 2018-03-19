@@ -71,7 +71,8 @@ public class Robot extends IterativeRobot {
 			final int x = i;
 			r.add("Current " + i, () -> pdp.getCurrent(x));
 		}
-
+		r.add("Auto Routine", gameData::getAutoRoutine);
+		r.add("Game Data", gameData::getGameData);
 	}
 
 	public void autonomousInit() {
@@ -79,63 +80,63 @@ public class Robot extends IterativeRobot {
 		r.startRecording();
 		gameData.getGameData();
 		
-		DriverStation.reportError("" + gameData.side, false);
+		DriverStation.reportError("" + gameData.getAutoRoutine(), false);
 		
-		if (gameData.RRR()) {
+		if (gameData.getAutoRoutine().equals("RRR")) {
 			RRR.run(drive, elevator, lime, intake, blinkin);
   		}
-		else if (gameData.RRL()) {
+		else if (gameData.getAutoRoutine().equals("RRL")) {
 			RRL.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.RLR()) {
+		else if (gameData.getAutoRoutine().equals("RLR")) {
 			RLR.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.RLL()) {
+		else if (gameData.getAutoRoutine().equals("RLL")) {
 			RLL.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.LLL()) {
+		else if (gameData.getAutoRoutine().equals("LLL")) {
 			LLL.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.LLR()) {
+		else if (gameData.getAutoRoutine().equals("LLR")) {
 			LLR.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.LRL()) {
+		else if (gameData.getAutoRoutine().equals("LRL")) {
 			LRL.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.LRR()) {
+		else if (gameData.getAutoRoutine().equals("LRR")) {
 			LRR.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.CRR()) {
+		else if (gameData.getAutoRoutine().equals("CRR")) {
 			CRR.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.CRL()) {
+		else if (gameData.getAutoRoutine().equals("CRL")) {
 			CRL.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.CLR()) {
+		else if (gameData.getAutoRoutine().equals("CLR")) {
 			CLR.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.CLL()) {
+		else if (gameData.getAutoRoutine().equals("CLL")) {
 			CLL.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.CR0()) {
+		else if (gameData.getAutoRoutine().equals("CR0")) {
 			CR0.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.CL0()) {
+		else if (gameData.getAutoRoutine().equals("CL0")) {
 			CL0.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.LL0()) {
+		else if (gameData.getAutoRoutine().equals("LL0")) {
 			LL0.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.LR0()) {
+		else if (gameData.getAutoRoutine().equals("LR0")) {
 			LR0.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.RL0()) {
+		else if (gameData.getAutoRoutine().equals("RL0")) {
 			RL0.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.RR0()) {
+		else if (gameData.getAutoRoutine().equals("RR")) {
 			RR0.run(drive, elevator, lime, intake, blinkin);
 		}
-		else if (gameData.S00()) {
+		else if (gameData.getAutoRoutine().equals("S00")) {
 			S00.run(drive, elevator, lime, intake, blinkin);
 		}
 		else {
