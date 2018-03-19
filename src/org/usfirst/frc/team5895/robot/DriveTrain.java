@@ -19,7 +19,7 @@ public class DriveTrain {
 	private BetterEncoder leftEncoder,rightEncoder;
 	private double leftspeed, rightspeed;
 	private NavX navX;
-	private TrajectoryDriveController pStraight;
+	private TrajectoryDriveController pStraight, pTest;
 	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale;
 	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
 	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube;
@@ -71,7 +71,10 @@ public class DriveTrain {
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/SCurve.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			
+			//test splines
+			pTest = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 						
 			//start at Right
 			pRightRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
@@ -151,6 +154,12 @@ public class DriveTrain {
 	public void autoForwardStraight() {
 		resetEncoders();
 		pInUse = pStraight;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	public void autoTestDrive() {
+		resetEncoders();
+		pInUse = pTest;
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
