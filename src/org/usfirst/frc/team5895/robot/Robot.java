@@ -1,6 +1,7 @@
 package org.usfirst.frc.team5895.robot;
 
-import org.usfirst.frc.team5895.robot.Limelight.CamMode;
+import java.util.HashMap;
+
 import org.usfirst.frc.team5895.robot.auto.*;
 import org.usfirst.frc.team5895.robot.framework.Looper;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
@@ -27,6 +28,7 @@ public class Robot extends IterativeRobot {
 	boolean fastShoot = false;
 
 	Recorder r;
+	HashMap<String, Runnable> autoRoutines;
 	
 	BetterJoystick leftJoystick;
 	BetterJoystick rightJoystick;
@@ -73,92 +75,34 @@ public class Robot extends IterativeRobot {
 		}
 		r.add("Auto Routine", gameData::getAutoRoutine);
 		r.add("Game Data", gameData::getGameData);
+		
+		//set up auto map
+		autoRoutines = new HashMap<String, Runnable>();
+		autoRoutines.put("CR0", () -> CR0.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("CL0", () -> CL0.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("L0R", () -> L0R.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("L0L", () -> L0L.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("R0R", () -> R0R.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("R0L", () -> R0L.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("S00", () -> S00.run(drive, elevator, lime, intake, blinkin));
+		
 	}
 
 	public void autonomousInit() {
 
 		r.startRecording();
-		gameData.getGameData();
+		
+		String autoRoutine = gameData.getAutoRoutine();
 		
 		DriverStation.reportError("" + gameData.getAutoRoutine(), false);
 		
-		if (gameData.getAutoRoutine().equals("RRR")) {
-			RRR.run(drive, elevator, lime, intake, blinkin);
-  		}
-		else if (gameData.getAutoRoutine().equals("RRL")) {
-			RRL.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("RLR")) {
-			RLR.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("RLL")) {
-			RLL.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("LLL")) {
-			LLL.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("LLR")) {
-			LLR.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("LRL")) {
-			LRL.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("LRR")) {
-			LRR.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("CRR")) {
-			CRR.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("CRL")) {
-			CRL.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("CLR")) {
-			CLR.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("CLL")) {
-			CLL.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("CR0")) {
-			CR0.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("CL0")) {
-			CL0.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("LL0")) {
-			LL0.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("LR0")) {
-			LR0.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("RL0")) {
-			RL0.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("RR")) {
-			RR0.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("L0L")) {
-			L0L.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("L0R")) {
-			L0R.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("R0L")) {
-			R0L.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("R0R")) {
-			R0R.run(drive, elevator, lime, intake, blinkin);
-		}
-		else if (gameData.getAutoRoutine().equals("S00")) {
+		if (autoRoutines.containsKey(autoRoutine)) {
+			autoRoutines.get(autoRoutine).run();
+		} else {
+			DriverStation.reportError("Auto Error: " + autoRoutine, false);
 			S00.run(drive, elevator, lime, intake, blinkin);
-		}
-		else {
-			DriverStation.reportError("Auto Error", false);
-			S00.run(drive, elevator, lime, intake, blinkin);
-		}
-/*		drive.resetNavX();
-		drive.resetEncoders();
-		drive.autoForwardStraight();	
-*/	}
+		}	
+	}
 
 	public void teleopPeriodic() {
 
@@ -213,8 +157,6 @@ public class Robot extends IterativeRobot {
 		}
 
 	}
-
-
 
 	public void disabledInit() {
 		r.stopRecording();

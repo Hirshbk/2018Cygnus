@@ -7,7 +7,7 @@ public class Blinkin {
 	Spark blinkin;
 
 	public Blinkin() {
-		blinkin = new Spark(0);
+		blinkin = new Spark(ElectricalLayout.LIGHTS);
 	}
 		
 	/**

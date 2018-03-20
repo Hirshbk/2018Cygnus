@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -15,7 +14,6 @@ public class CubeIntake {
 	private AnalogInput leftClawSensor, rightClawSensor;
 	private double leftSpeed, rightSpeed;
 	private double lastTime;
-	private boolean lastHasCube;
 	private boolean isClamped;
 	private boolean isDown;
 	private Solenoid clawSolenoid, clampSolenoid;
@@ -31,8 +29,7 @@ public class CubeIntake {
 
 		clawSolenoid = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAW);
 		clampSolenoid = new Solenoid(ElectricalLayout.SOLENOID_INTAKE_CLAMP);
-		
-		lastHasCube=false;
+
 	    isDown = false;
 	    
 		leftClawMotor.setInverted(true);

@@ -2,7 +2,10 @@ package org.usfirst.frc.team5895.robot;
 
 public class ElectricalLayout {
     
-    // Motors
+	// PWM
+	public static final int LIGHTS = 0;
+	
+    // CAN
     public static final int MOTOR_DRIVE_LEFT_MASTER = 1;
     public static final int MOTOR_DRIVE_LEFT_FOLLOWER_1 = 2;
     public static final int MOTOR_DRIVE_LEFT_FOLLOWER_2 = 3;

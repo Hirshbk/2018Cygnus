@@ -13,22 +13,10 @@ public class GameData {
 	
 	public GameData() {
 	} 
+		
 	
-	/**
-	 * gets the game data from the field
-	 */
-	public String getGameData() {
-		
-		//gets the side that we start on from the dashboard
-		side = SmartDashboard.getString("DB/String 0", "C");
-		doSwitch = SmartDashboard.getString("DB/String 1", "Y");
-		doScale = SmartDashboard.getString("DB/String 2", "N");
-		
-		//gets the game data from the field
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		
-		return gameData;
-				
+	public String getGameData() { 
+		return DriverStation.getInstance().getGameSpecificMessage();
 	}
 	
 	/**
@@ -36,6 +24,17 @@ public class GameData {
 	 * @return the auto routine to run 
 	 */
 	public String getAutoRoutine() {
+
+		//gets the side that we start on from the dashboard
+		side = SmartDashboard.getString("DB/String 0", "C");
+		doSwitch = SmartDashboard.getString("DB/String 1", "Y");
+		doScale = SmartDashboard.getString("DB/String 2", "N");
+		
+		//gets the game data from the field
+		gameData = getGameData();
+		
+		autoRoutine = "";
+		
 		autoRoutine.concat(side);
 		if(doSwitch.toUpperCase().contains("Y")) {
 			autoRoutine.concat(String.valueOf(gameData.charAt(0)));
