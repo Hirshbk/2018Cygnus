@@ -35,17 +35,18 @@ public class GameData {
 		
 		autoRoutine = "";
 		
-		autoRoutine.concat(side);
+		autoRoutine = autoRoutine + side;
 		if(doSwitch.toUpperCase().contains("Y")) {
-			autoRoutine.concat(String.valueOf(gameData.charAt(0)));
+			autoRoutine = autoRoutine + gameData.charAt(0);
 		} else {
-			autoRoutine.concat("0");
+			autoRoutine = autoRoutine + "0";
 		}
 		if(doScale.toUpperCase().contains("Y")) {
-			autoRoutine.concat(String.valueOf(gameData.charAt(1)));
+			autoRoutine = autoRoutine + gameData.charAt(1);
 		} else {
-			autoRoutine.concat("0");
+			autoRoutine = autoRoutine + "0";
 		}
+		DriverStation.reportError("" + autoRoutine, false);
 		return autoRoutine;
 	}
 	

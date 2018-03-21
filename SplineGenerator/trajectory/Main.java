@@ -279,7 +279,7 @@ public class Main {
       }
     
     {
-    	//THIS WORKS DO NOT TOUCH
+    	
     	config.dt = .01;
         config.max_acc = 200.0;
         config.max_jerk = 180.0;
@@ -308,6 +308,22 @@ public class Main {
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
         p.addWaypoint(new WaypointSequence.Waypoint(3, 10, 0));
+
+        Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	config.dt = .01;
+        config.max_acc = 60.0;
+        config.max_jerk = 60.0;
+        config.max_vel = 5.0;
+    	
+    	final String path_name = "CenterRightSwitchCube";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 4.75, 0));
 
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);

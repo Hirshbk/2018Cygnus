@@ -20,7 +20,7 @@ public class DriveTrain {
 	private double leftspeed, rightspeed;
 	private NavX navX;
 	private TrajectoryDriveController pStraight, pTest;
-	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale;
+	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale, pCenterRightSwitchCube;
 	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
 	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube;
 	private TrajectoryDriveController pInUse;
@@ -31,8 +31,8 @@ public class DriveTrain {
 	private boolean turning;
 	private PID drivePID;
 	
-	public static final double TURN_P = 0.008; 
-	public static final double TURN_I = 0.000001;
+	public static final double TURN_P = 0.013; 
+	public static final double TURN_I = 0.00000;
 	private static final double capSpeed = 0.5;
 	
 	private static final double DRIVE_KP = 0.1;
@@ -92,6 +92,7 @@ public class DriveTrain {
 			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			//pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01); //don't have
 			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pCenterRightSwitchCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchCube.txt", 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
@@ -411,6 +412,31 @@ public class DriveTrain {
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
+	public void autoCenterRightSwitchCube() {
+		resetEncoders();
+		resetNavX();
+		pInUse = pCenterRightSwitchCube;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	public void autoCenterLeftSwitchCube() {
+		resetEncoders();
+		resetNavX();
+		pInUse = pCenterRightSwitchCube;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	public void autoCenterRightSwitchRev() {
+		resetEncoders();
+		pInUse = pCenterRightSwitchCube;
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	
+	public void autoCenterLeftSwitchRev() {
+		resetEncoders();
+		pInUse = pCenterRightSwitchCube;
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
 	/**
 	 * normal arcade drive code for teleop use
 	 * @param speed the forward speed to go at
