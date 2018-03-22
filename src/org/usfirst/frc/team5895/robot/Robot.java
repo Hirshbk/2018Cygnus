@@ -7,6 +7,7 @@ import org.usfirst.frc.team5895.robot.framework.Looper;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -35,7 +36,6 @@ public class Robot extends IterativeRobot {
 	BetterJoystick operatorJoystick;
 
 	public void robotInit() {
-		CameraServer.getInstance().startAutomaticCapture();
 		
 		leftJoystick = new BetterJoystick(0);
 		rightJoystick = new BetterJoystick(1);
