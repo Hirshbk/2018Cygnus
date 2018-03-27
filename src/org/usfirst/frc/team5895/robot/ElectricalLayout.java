@@ -19,6 +19,7 @@ public class ElectricalLayout {
     public static final int MOTOR_CLAW_2 = 11;
     
     // Solenoids
+    public static final int SOLENOID_INTAKE_TENSION = 3;
     public static final int SOLENOID_INTAKE_CLAMP = 2;
     public static final int SOLENOID_INTAKE_CLAW = 1;
     public static final int SOLENOID_ELEVATOR_BRAKE = 0;

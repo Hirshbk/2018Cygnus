@@ -18,7 +18,7 @@ public class Robot extends IterativeRobot {
 
 	Looper loop;
 	Elevator elevator;
-	CubeIntake intake;
+	IntakeV2 intake;
 	DriveTrain drive;
 	Blinkin blinkin;
 	Limelight lime;
@@ -26,8 +26,9 @@ public class Robot extends IterativeRobot {
 	PowerDistributionPanel pdp;
 	
 	boolean fastShoot = false;
+	boolean isDown = false;
 
-	Recorder r;
+//	Recorder r;
 	HashMap<String, Runnable> autoRoutines;
 	
 	BetterJoystick leftJoystick;
@@ -35,13 +36,12 @@ public class Robot extends IterativeRobot {
 	BetterJoystick operatorJoystick;
 
 	public void robotInit() {
-		CameraServer.getInstance().startAutomaticCapture();
 		
 		leftJoystick = new BetterJoystick(0);
 		rightJoystick = new BetterJoystick(1);
 		operatorJoystick = new BetterJoystick(2);
 		
-		intake = new CubeIntake();
+		intake = new IntakeV2();
 		elevator = new Elevator();
 		drive = new DriveTrain();
 		blinkin = new Blinkin();
@@ -59,7 +59,7 @@ public class Robot extends IterativeRobot {
 		loop.add(lime::update);
 		loop.start();
 
-		//set up recorder
+/*		//set up recorder
 		r = new Recorder(100);
 		r.add("Time", Timer::getFPGATimestamp);
 		r.add("Drive Distance", drive::getDistanceTraveled);
@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 		}
 		r.add("Auto Routine", gameData::getAutoRoutine);
 		r.add("Game Data", gameData::getGameData);
-		
+*/		
 		//set up auto map
 		autoRoutines = new HashMap<String, Runnable>();
 		autoRoutines.put("CR0", () -> CR0.run(drive, elevator, lime, intake, blinkin));
@@ -90,7 +90,7 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 
-		r.startRecording();
+//		r.startRecording();
 		
 		String autoRoutine = gameData.getAutoRoutine();
 		
@@ -111,10 +111,17 @@ public class Robot extends IterativeRobot {
 		
 		//left joystick controls
 		if(leftJoystick.getRisingEdge(1)) {
-			intake.down();
+			if(intake.isDown) {
+				intake.up();
+			} else {
+				intake.down();
+			}
 		} else if(leftJoystick.getRisingEdge(2)){
-			intake.up();
-		} else if(leftJoystick.getRisingEdge(3)) {
+			intake.drop();
+		} else if(leftJoystick.getFallingEdge(2)) {
+			intake.intake();
+		}
+		else if(leftJoystick.getRisingEdge(3)) {
 			elevator.setTargetPosition(0.54);
 		}
 		else if(leftJoystick.getRisingEdge(4)) {
@@ -155,11 +162,11 @@ public class Robot extends IterativeRobot {
 		else {
 			blinkin.lightsNormal();
 		}
-
 	}
 
 	public void disabledInit() {
-		r.stopRecording();
+//		r.stopRecording();
+		drive.arcadeDrive(0, 0);
 	}
 
 }

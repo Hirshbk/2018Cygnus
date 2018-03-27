@@ -4,12 +4,13 @@ import org.usfirst.frc.team5895.robot.Blinkin;
 import org.usfirst.frc.team5895.robot.CubeIntake;
 import org.usfirst.frc.team5895.robot.DriveTrain;
 import org.usfirst.frc.team5895.robot.Elevator;
+import org.usfirst.frc.team5895.robot.IntakeV2;
 import org.usfirst.frc.team5895.robot.Limelight;
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
 public class R0L {
 
-	public static final void run(DriveTrain drive, Elevator elevator, Limelight lime, CubeIntake intake,
+	public static final void run(DriveTrain drive, Elevator elevator, Limelight lime, IntakeV2 intake,
 			Blinkin blinkin) {
 		drive.resetNavX();
 		intake.intake();
