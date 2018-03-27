@@ -2,8 +2,10 @@ package org.usfirst.frc.team5895.robot;
 
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class Limelight {
@@ -59,6 +61,7 @@ public class Limelight {
 			return value;
 		}
 	}
+	
 	/**
 	 * Start NetworkTable
 	 * Initialize NetworkTable of Limelight
@@ -67,6 +70,10 @@ public class Limelight {
 	public Limelight() {
 		NetworkTableInstance.getDefault().startClient(); //
 		table = NetworkTableInstance.getDefault().getTable("limelight");
+		
+		// usb camera
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(640, 360);
 	}
 
 	/**
