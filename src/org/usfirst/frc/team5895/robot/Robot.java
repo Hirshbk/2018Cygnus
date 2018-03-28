@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Robot extends IterativeRobot {
@@ -118,7 +119,12 @@ public class Robot extends IterativeRobot {
 				intake.down();
 			}
 		} else if(leftJoystick.getRisingEdge(2)){
-			intake.drop();
+			if (Math.abs(elevator.getHeight() - 0.54) < 0.2) {
+				intake.openIntaking();
+			}
+			else {
+				intake.drop();
+			}
 		} else if(leftJoystick.getFallingEdge(2)) {
 			intake.intake();
 		}
@@ -132,7 +138,7 @@ public class Robot extends IterativeRobot {
 		//right joystick controls
 		if(rightJoystick.getRisingEdge(1)) {
 			if(fastShoot) {
-				intake.ejectFast();
+				intake.ejectCustom(SmartDashboard.getNumber("DB/Slider 0", 1.0));
 			} else {
 				intake.ejectSlow();
 			}		

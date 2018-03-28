@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 
 public class IntakeV2 {
-	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, SPINNING_RIGHT, SPINNING_LEFT, DROPPING, DISABLED};
+	private static enum Mode_Type {INTAKING, EJECTING, HOLDING, SPINNING_RIGHT, SPINNING_LEFT, DROPPING, DISABLED, OPEN_INTAKING};
 	private Mode_Type mode = Mode_Type.DISABLED;
 	private VictorSPX leftClawMotor, rightClawMotor;
 	private AnalogInput leftClawSensor, rightClawSensor;
@@ -46,6 +46,10 @@ public class IntakeV2 {
 		mode = Mode_Type.INTAKING;
 		}
 	
+	public void openIntaking(){
+		mode = Mode_Type.OPEN_INTAKING;
+		}
+	
 	/**
 	 * ejects a cube at full speed
 	 */
@@ -60,6 +64,12 @@ public class IntakeV2 {
 	 */
 	public void ejectSlow(){
 		ejectSpeed = 0.6875;
+		mode= Mode_Type.EJECTING;
+		lastTime = Timer.getFPGATimestamp();
+		}
+	
+	public void ejectCustom(double speed){
+		ejectSpeed = speed;
 		mode= Mode_Type.EJECTING;
 		lastTime = Timer.getFPGATimestamp();
 		}
@@ -215,6 +225,28 @@ public class IntakeV2 {
 			isClamped = false;
 			isTensioned = false;
 			break;
+			
+		case OPEN_INTAKING:
+		     leftSpeed = 1.0;
+		     rightSpeed = 1.0;
+		     
+		     if(tiltedLeft()) {
+		    	 lastTime = Timer.getFPGATimestamp();
+		    	 mode = Mode_Type.SPINNING_LEFT;
+		     }
+			
+		     if(tiltedRight()) {
+		    	 lastTime = Timer.getFPGATimestamp();
+		    	 mode = Mode_Type.SPINNING_RIGHT;
+		     }
+		     
+		     if(hasCube()) { //get rid off lastHasCube
+			 	mode = Mode_Type.HOLDING; //once we have the cube, we prepare to hold and clamp
+			 }
+			isClamped = false; //solenoid only clamps once it is holding 
+			isTensioned = true; 
+			break;
+			
 		}
 		
 		leftClawMotor.set(ControlMode.PercentOutput, leftSpeed);
