@@ -17,7 +17,7 @@ public class LooperV2 {
     public LooperV2(double period) {
         notifier = new Notifier(this::update);
         methods = new Vector<Runnable>();
-        kPeriod = period;
+        kPeriod = period/1000.0;
     }
 
 
