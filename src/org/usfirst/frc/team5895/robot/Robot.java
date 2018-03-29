@@ -125,6 +125,13 @@ public class Robot extends IterativeRobot {
 			else {
 				intake.drop();
 			}
+		} else if(leftJoystick.getRisingEdge(2)){
+			if (Math.abs(elevator.getHeight() - 0.54) < 0.2 || Math.abs(elevator.getHeight() - 15.0/12) < 0.2) {
+				intake.openIntaking();
+			}
+			else {
+				intake.drop();
+			}
 		} else if(leftJoystick.getFallingEdge(2)) {
 			intake.intake();
 		}
