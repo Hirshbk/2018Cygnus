@@ -26,9 +26,9 @@ public class GameData {
 	public String getAutoRoutine() {
 
 		//gets the side that we start on from the dashboard
-		side = SmartDashboard.getString("DB/String 0", "C");
+		side = SmartDashboard.getString("DB/String 0", "L");
 		doSwitch = SmartDashboard.getString("DB/String 1", "Y");
-		doScale = SmartDashboard.getString("DB/String 2", "N");
+		doScale = SmartDashboard.getString("DB/String 2", "Y");
 		
 		//gets the game data from the field
 		gameData = getGameData();

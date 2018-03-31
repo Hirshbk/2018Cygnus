@@ -16,7 +16,6 @@ public class Recorder {
 	private Formatter f;
 	private Vector<Supplier<Object>> methods;
 	private Vector<String> names;
-	private Looper loop;
 	
 	
 	/**
@@ -27,9 +26,6 @@ public class Recorder {
 		recordFile = false;
 		methods = new Vector<Supplier<Object>>();
 		names = new Vector<String>();
-		loop = new Looper(time);
-		loop.add(this::record);
-		loop.start();
 	}
 
 	/** 
@@ -96,7 +92,7 @@ public class Recorder {
     /**
      * Writes the data into assigned columns 
      */
-    private void record() {
+    public void record() {
     	if (recordFile==true) {
     		boolean first = true;
     		StringBuilder line = new StringBuilder();

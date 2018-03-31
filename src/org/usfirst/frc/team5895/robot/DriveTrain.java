@@ -22,7 +22,7 @@ public class DriveTrain {
 	private TrajectoryDriveController pStraight, pBackwards, pTest;
 	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale, pCenterRightSwitchCube;
 	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
-	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube;
+	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube, pSecondScaleCube, pRightScaleBackwards, pRightScaleCubeBack;
 	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE, AUTO_MIRROR_BACKWARDS_SPLINE, AUTO_DRIVE};
 	private Mode_Type mode = Mode_Type.TELEOP;
@@ -31,8 +31,8 @@ public class DriveTrain {
 	private boolean turning;
 	private PID drivePID;
 	
-	public static final double TURN_P = 0.013; 
-	public static final double TURN_I = 0.00000;
+	public static final double TURN_P = 0.030; 
+	public static final double TURN_I = 0.00000001;
 	private static final double capSpeed = 0.5;
 	
 	private static final double DRIVE_KP = 0.1;
@@ -64,14 +64,14 @@ public class DriveTrain {
 		navX = new NavX();
 		
 		// initialize PID
-		turnPID = new PID(TURN_P, TURN_I, 0, 6);
+		turnPID = new PID(TURN_P, TURN_I, 0, 6, true, 1.0, true);
 		drivePID = new PID(DRIVE_KP, DRIVE_KI, 0, 6);
 		
 		//initializes trajectory generator from auto files
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
 			pBackwards = new TrajectoryDriveController("/home/lvuser/AutoFiles/Backwards.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			//test splines
 			pTest = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
@@ -87,6 +87,9 @@ public class DriveTrain {
 			pRightScaleLeftSwitch = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleLeftSwitch.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.07);
 			//pRightSwitchBlock = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightSwitchBlock.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01); // haven't test
 			pRightScaleCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleCube.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pSecondScaleCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/SecondScaleCube.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
+			pRightScaleBackwards = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleBackwards.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
+			pRightScaleCubeBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleCubeBack.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
 			
 			//start at Center
 			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
@@ -353,9 +356,22 @@ public class DriveTrain {
 	public void autoLeftScaleCube() {
 		resetEncoders();
 		pInUse = pRightScaleCube;
-		mode = Mode_Type.AUTO_SPLINE;
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
+	public void autoLeftScaleCubeBack() {
+		resetEncoders();
+		pInUse = pRightScaleCubeBack;
+		pInUse.reset();
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
+	
+	public void autRightScaleCubeBack() {
+		resetEncoders();
+		pInUse = pRightScaleCubeBack;
+		pInUse.reset();
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
 	//start at Center
 	/**
 	 * go to front of right switch, drive forwards
@@ -445,12 +461,37 @@ public class DriveTrain {
 		pInUse.reset();
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
-	
 	public void autoForwardsShort() {
 		resetEncoders();
 		pInUse = pBackwards;
 		pInUse.reset();
 		mode = Mode_Type.AUTO_SPLINE;
+	}
+	public void autoRightScaleBackwards() {
+		resetEncoders();
+		pInUse = pRightScaleBackwards;
+		pInUse.reset();
+		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
+	}
+	
+	public void autoLeftScaleBackwards() {
+		resetEncoders();
+		pInUse = pRightScaleBackwards;
+		pInUse.reset();
+		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
+	}
+	public void autoRightScaleForwards() {
+		resetEncoders();
+		pInUse = pRightScaleBackwards;
+		pInUse.reset();
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	public void autoLeftScaleForwards() {
+		resetEncoders();
+		pInUse = pRightScaleBackwards;
+		pInUse.reset();
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	
 	/**

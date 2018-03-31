@@ -21,7 +21,8 @@ public class S00 {
 		intake.intake();
 		Waiter.waitFor(200);
 		drive.autoForwardStraight();
-		
+		Waiter.waitFor(drive::isPFinished, 5000);
+		drive.arcadeDrive(0, 0);
 	}
 
 }

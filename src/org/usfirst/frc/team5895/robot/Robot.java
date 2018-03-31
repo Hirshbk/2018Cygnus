@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.usfirst.frc.team5895.robot.auto.*;
 import org.usfirst.frc.team5895.robot.framework.Looper;
+import org.usfirst.frc.team5895.robot.framework.LooperV2;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends IterativeRobot {
 
-	Looper loop;
+	LooperV2 loop;
 	Elevator elevator;
 	IntakeV2 intake;
 	DriveTrain drive;
@@ -30,7 +31,7 @@ public class Robot extends IterativeRobot {
 	boolean fastShoot = false;
 	boolean isDown = false;
 
-//	Recorder r;
+	Recorder r;
 	HashMap<String, Runnable> autoRoutines;
 	
 	BetterJoystick leftJoystick;
@@ -53,20 +54,13 @@ public class Robot extends IterativeRobot {
 		
 		lime.setLedMode(Limelight.LedMode.ON);
 		blinkin.lightsNormal();
-		
-		loop = new Looper(10);
-		loop.add(elevator::update);
-		loop.add(intake::update);
-		loop.add(drive::update);
-		loop.add(lime::update);
-		loop.start();
-
-/*		//set up recorder
-		r = new Recorder(100);
+	
+		//set up recorder
+		r = new Recorder(10);
 		r.add("Time", Timer::getFPGATimestamp);
 		r.add("Drive Distance", drive::getDistanceTraveled);
 		r.add("Drive Velocity", drive::getVelocity);
-		r.add("Elevator Height", elevator::getHeight);
+/*		r.add("Elevator Height", elevator::getHeight);
 		r.add("Elevator State", elevator::getState);
 		r.add("Intake LeftClawSensor", intake::getLeftVoltage);
 		r.add("Intake RightClawSensor", intake::getRightVoltage);
@@ -76,8 +70,16 @@ public class Robot extends IterativeRobot {
 			r.add("Current " + i, () -> pdp.getCurrent(x));
 		}
 		r.add("Auto Routine", gameData::getAutoRoutine);
-		r.add("Game Data", gameData::getGameData);
-*/		
+*/		r.add("Game Data", gameData::getGameData);
+		
+		loop = new LooperV2(10);
+		loop.add(elevator::update);
+		loop.add(intake::update);
+		loop.add(drive::update);
+		loop.add(lime::update);
+		loop.add(r::record);
+		loop.start();
+		
 		//set up auto map
 		autoRoutines = new HashMap<String, Runnable>();
 		autoRoutines.put("CR0", () -> CR0.run(drive, elevator, lime, intake, blinkin));
@@ -87,12 +89,13 @@ public class Robot extends IterativeRobot {
 		autoRoutines.put("R0R", () -> R0R.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("R0L", () -> R0L.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("S00", () -> S00.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("LLL", () -> LLL.run(drive, elevator, lime, intake, blinkin));
 		
 	}
 
 	public void autonomousInit() {
 
-//		r.startRecording();
+		r.startRecording();
 		
 		String autoRoutine = gameData.getAutoRoutine();
 		
@@ -108,6 +111,8 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 
+		DriverStation.reportError("" + elevator.getHeight(), false);
+		
 		//teleop drive
 		drive.arcadeDrive(leftJoystick.getRawAxis(1), rightJoystick.getRawAxis(0));
 		
@@ -119,14 +124,7 @@ public class Robot extends IterativeRobot {
 				intake.down();
 			}
 		} else if(leftJoystick.getRisingEdge(2)){
-			if (Math.abs(elevator.getHeight() - 0.54) < 0.2) {
-				intake.openIntaking();
-			}
-			else {
-				intake.drop();
-			}
-		} else if(leftJoystick.getRisingEdge(2)){
-			if (Math.abs(elevator.getHeight() - 0.54) < 0.2 || Math.abs(elevator.getHeight() - 15.0/12) < 0.2) {
+			if ((Math.abs(elevator.getHeight() - 0.54) < 0.2) || (Math.abs(elevator.getHeight() - 15.0/12) < 0.2)) {
 				intake.openIntaking();
 			}
 			else {

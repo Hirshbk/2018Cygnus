@@ -95,6 +95,9 @@ public class Elevator {
 	 */
 	public void setTargetPosition(double targetHeight) {
 		targetPos = (targetHeight - carriageOffset) / footConversion;
+		if(targetPos < 0.0) {
+			targetPos = 0.0;
+		}
 		brakeTimestamp = Timer.getFPGATimestamp();
 		mode = Mode_Type.DISENGAGING;
 	}	

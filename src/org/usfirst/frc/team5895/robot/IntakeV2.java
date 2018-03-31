@@ -62,8 +62,8 @@ public class IntakeV2 {
 	/**
 	 * ejects a cube at half speed
 	 */
-	public void ejectSlow(){
-		ejectSpeed = 0.6875;
+	public void ejectSlow() {
+		ejectSpeed = 0.55;
 		mode= Mode_Type.EJECTING;
 		lastTime = Timer.getFPGATimestamp();
 		}
