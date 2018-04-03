@@ -3,6 +3,8 @@ package org.usfirst.frc.team5895.robot;
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -25,7 +27,7 @@ public class Limelight {
 	private LedMode led = LedMode.ON;
 	private CamMode cam = CamMode.VISION_PROCESSING; // operation mode
 	private double pipeline = 0; // current pipeline
-
+	private VideoMode videoMode;
 	/**
 	 * Sets enum types of LED mode: ON, OFF, BLINKING
 	 * 
@@ -65,7 +67,7 @@ public class Limelight {
 	/**
 	 * Start NetworkTable
 	 * Initialize NetworkTable of Limelight
-	 * 
+	 * Run UsbCamera
 	 */
 	public Limelight() {
 		NetworkTableInstance.getDefault().startClient(); //
@@ -73,7 +75,21 @@ public class Limelight {
 		
 		// usb camera
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-		camera.setResolution(640, 360);
+		//camera.setResolution(640, 360); //only works for 640 x 360
+		videoMode = new VideoMode(PixelFormat.kYUYV, 800, 448, 30);
+		//set DriverStation resolution to:
+		//320 x 240 for ~15 fps
+		//160 x 120 for ~20 fps
+		camera.setFPS(30);
+		camera.setVideoMode(videoMode);
+		//usable width/height values: 
+		//176 x 144
+		//320 x 180
+		//640 x 360 
+		//640 x 480 
+		//800 x 448 
+		//1024 x 576 
+		//1280 x 720
 	}
 
 	/**
