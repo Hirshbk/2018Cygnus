@@ -95,11 +95,17 @@ public class Main {
    
     //drive straight for 10 feet 
     { 
+    	config.dt = .01;
+        config.max_acc = 7.0;
+        config.max_jerk = 60.0;
+        config.max_vel = 9.0;
+        
+    	
       final String path_name = "Straight"; 
       
       WaypointSequence p = new WaypointSequence(10);
       p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-      p.addWaypoint(new WaypointSequence.Waypoint(0, 10, 0));
+      p.addWaypoint(new WaypointSequence.Waypoint(0, 15, 0));
 
       Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
       serializeAndWrite(path, path_name);
@@ -108,7 +114,7 @@ public class Main {
     //start at Center spline
     { 
     	config.dt = .01;
-        config.max_acc = 60.0;
+        config.max_acc = 10.0;
         config.max_jerk = 60.0;
         config.max_vel = 5.0;
         
@@ -213,7 +219,7 @@ public class Main {
     {
     	
     	config.dt = .01;
-        config.max_acc = 7.0;
+        config.max_acc = 6.0;
         config.max_jerk = 60.0;
         config.max_vel = 11.0;
         
@@ -223,7 +229,7 @@ public class Main {
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
         p.addWaypoint(new WaypointSequence.Waypoint(0, 16, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2, 20, -30));
+        p.addWaypoint(new WaypointSequence.Waypoint(-1, 20, -30));
         
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);
@@ -338,7 +344,7 @@ public class Main {
       }
     {
     	config.dt = .01;
-        config.max_acc = 60.0;
+        config.max_acc = 6.0;
         config.max_jerk = 60.0;
         config.max_vel = 5.0;
     	
@@ -347,15 +353,30 @@ public class Main {
         WaypointSequence p = new WaypointSequence(10);
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, -60));
-        p.addWaypoint(new WaypointSequence.Waypoint(-2 * Math.sqrt(3.0), 2, -60));
+        p.addWaypoint(new WaypointSequence.Waypoint(-1.5 * Math.sqrt(3.0), 1.5, -60));
 
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);
       }
-    
     {
     	config.dt = .01;
-        config.max_acc = 60.0;
+        config.max_acc = 6.0;
+        config.max_jerk = 60.0;
+        config.max_vel = 5.0;
+    	
+    	final String path_name = "CenterRightSwitchRev";
+        
+        WaypointSequence p = new WaypointSequence(10);
+
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 0, -60));
+        p.addWaypoint(new WaypointSequence.Waypoint(-1 * Math.sqrt(3.0), 1, -60));
+
+        Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
+        serializeAndWrite(path, path_name);
+      }
+    {
+    	config.dt = .01;
+        config.max_acc = 6.0;
         config.max_jerk = 60.0;
         config.max_vel = 5.0;
     	
@@ -364,7 +385,7 @@ public class Main {
         WaypointSequence p = new WaypointSequence(10);
 
         p.addWaypoint(new WaypointSequence.Waypoint(0, 0, 0));
-        p.addWaypoint(new WaypointSequence.Waypoint(0, 3, 0));
+        p.addWaypoint(new WaypointSequence.Waypoint(0, 3.5, 0));
 
         Path path = PathGenerator.makePath(p, config, kWheelbaseWidth, path_name);
         serializeAndWrite(path, path_name);

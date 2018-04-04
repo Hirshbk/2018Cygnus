@@ -20,7 +20,7 @@ public class DriveTrain {
 	private double leftspeed, rightspeed;
 	private NavX navX;
 	private TrajectoryDriveController pStraight, pBackwards, pTest;
-	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale, pCenterRightSwitchCube;
+	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale, pCenterRightSwitchCube, pCenterRightSwitchRev;
 	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
 	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube, pSecondScaleCube, pRightScaleBackwards, pRightScaleCubeBack;
 	private TrajectoryDriveController pInUse;
@@ -71,7 +71,7 @@ public class DriveTrain {
 		//IF ONE ISN'T ON THE ROBOT ALL THE ONES AFTER IT WON'T WORK
 		try { 
 			// drive straight
-			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
+			pStraight = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.0, 0, 0, 1.0/11.5, 1.0/50.0, -0.05);
 			pBackwards = new TrajectoryDriveController("/home/lvuser/AutoFiles/Backwards.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			//test splines
 			pTest = new TrajectoryDriveController("/home/lvuser/AutoFiles/Straight.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
@@ -96,6 +96,7 @@ public class DriveTrain {
 			//pCenterRightSwitchSide = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchSide.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01); //don't have
 			pCenterRightScale = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightScale.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			pCenterRightSwitchCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchCube.txt", 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
+			pCenterRightSwitchRev = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchRev.txt", 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			
 		}catch (Exception e) {
 			DriverStation.reportError("All auto files not on robot!", false);
@@ -366,7 +367,7 @@ public class DriveTrain {
 		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
 	}
 	
-	public void autRightScaleCubeBack() {
+	public void autoRightScaleCubeBack() {
 		resetEncoders();
 		pInUse = pRightScaleCubeBack;
 		pInUse.reset();
@@ -443,14 +444,14 @@ public class DriveTrain {
 	
 	public void autoCenterRightSwitchRev() {
 		resetEncoders();
-		pInUse = pCenterRightSwitchCube;
+		pInUse = pCenterRightSwitchRev;
 		pInUse.reset();
 		mode = Mode_Type.AUTO_BACKWARDS_SPLINE;
 	}
 	
 	public void autoCenterLeftSwitchRev() {
 		resetEncoders();
-		pInUse = pCenterRightSwitchCube;
+		pInUse = pCenterRightSwitchRev;
 		pInUse.reset();
 		mode = Mode_Type.AUTO_MIRROR_BACKWARDS_SPLINE;
 	}

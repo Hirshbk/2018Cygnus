@@ -60,7 +60,9 @@ public class Robot extends IterativeRobot {
 		r.add("Time", Timer::getFPGATimestamp);
 		r.add("Drive Distance", drive::getDistanceTraveled);
 		r.add("Drive Velocity", drive::getVelocity);
-/*		r.add("Elevator Height", elevator::getHeight);
+/*		r.add("Drive Left Velocity", drive::getLeftVelocity);
+		r.add("Drive Right Velocity", drive::getRightVelocity);
+		r.add("Elevator Height", elevator::getHeight);
 		r.add("Elevator State", elevator::getState);
 		r.add("Intake LeftClawSensor", intake::getLeftVoltage);
 		r.add("Intake RightClawSensor", intake::getRightVoltage);
@@ -70,8 +72,8 @@ public class Robot extends IterativeRobot {
 			r.add("Current " + i, () -> pdp.getCurrent(x));
 		}
 		r.add("Auto Routine", gameData::getAutoRoutine);
-*/		r.add("Game Data", gameData::getGameData);
-		
+		r.add("Game Data", gameData::getGameData);
+*/		
 		loop = new LooperV2(10);
 		loop.add(elevator::update);
 		loop.add(intake::update);
@@ -89,14 +91,19 @@ public class Robot extends IterativeRobot {
 		autoRoutines.put("R0R", () -> R0R.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("R0L", () -> R0L.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("S00", () -> S00.run(drive, elevator, lime, intake, blinkin));
-		autoRoutines.put("LLL", () -> LLL.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("RRR", () -> RRR.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("LRL", () -> L0L.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("LRR", () -> L0R.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("RLL", () -> R0L.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("RLR", () -> R0R.run(drive, elevator, lime, intake, blinkin));
 		
 	}
 
 	public void autonomousInit() {
-
-		r.startRecording();
 		
+		r.startRecording();
+//		drive.resetNavX();
+//		drive.autoForwardStraight();
 		String autoRoutine = gameData.getAutoRoutine();
 		
 		DriverStation.reportError("" + gameData.getAutoRoutine(), false);

@@ -8,9 +8,10 @@ import org.usfirst.frc.team5895.robot.IntakeV2;
 import org.usfirst.frc.team5895.robot.Limelight;
 import org.usfirst.frc.team5895.robot.framework.Waiter;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 /**
  * center of field, left switch, & left scale.
- * @author lalewis-19
  */
 public class CL0 {
 	
@@ -19,7 +20,6 @@ public class CL0 {
 		
 		drive.resetNavX();
 		intake.intake();
-		Waiter.waitFor(200);
 		elevator.setTargetPosition(40.0/12);
 		intake.down();
 		drive.autoCenterLeftSwitchFront();
@@ -27,30 +27,52 @@ public class CL0 {
 		drive.arcadeDrive(0, 0);
 		intake.ejectSlow();
 		drive.autoBackwards();
+		elevator.setTargetPosition(15.0/12);
 		Waiter.waitFor(drive::isPFinished, 2000);
 		drive.arcadeDrive(0, 0);
 		drive.turnTo(60);
 		Waiter.waitFor(drive::atAngle, 2000);
 		drive.arcadeDrive(0, 0);
-		elevator.setTargetPosition(15.0/12);
 		intake.intake();
-		Waiter.waitFor(200);
 		drive.autoCenterLeftSwitchCube();
 		Waiter.waitFor(drive::isPFinished, 2000);
 		drive.arcadeDrive(0, 0);
-		Waiter.waitFor(500);
+		Waiter.waitFor(200);
 		drive.autoCenterLeftSwitchRev();
-		Waiter.waitFor(300);
-		elevator.setTargetPosition(40.0/12);
 		Waiter.waitFor(drive::isPFinished, 2000);
+		elevator.setTargetPosition(40.0/12);
 		drive.arcadeDrive(0, 0);
 		drive.turnTo(0);
+		DriverStation.reportError("" + drive.getAngle(), false);
 		Waiter.waitFor(drive::atAngle, 2000);
 		drive.arcadeDrive(0, 0);
-		drive.arcadeDrive(-0.3, 0);
-		Waiter.waitFor(750);
+		drive.arcadeDrive(-0.5, 0);
+		Waiter.waitFor(550);
 		drive.arcadeDrive(0, 0);
-//		intake.ejectSlow();
+		intake.ejectSlow();
+		drive.autoBackwards();
+		elevator.setTargetPosition(0.54);
+		Waiter.waitFor(drive::isPFinished, 2000);
+		drive.arcadeDrive(0, 0);
+		drive.turnTo(60);
+		Waiter.waitFor(drive::atAngle, 2000);
+		drive.arcadeDrive(0, 0);
+		intake.intake();
+		drive.autoCenterLeftSwitchCube();
+		Waiter.waitFor(drive::isPFinished, 2000);
+		drive.arcadeDrive(0, 0);
+		Waiter.waitFor(700);
+		drive.autoCenterLeftSwitchRev();
+		Waiter.waitFor(drive::isPFinished, 2000);
+		elevator.setTargetPosition(40.0/12);
+		drive.arcadeDrive(0, 0);
+		drive.turnTo(0);
+		DriverStation.reportError("" + drive.getAngle(), false);
+		Waiter.waitFor(drive::atAngle, 2000);
+		drive.arcadeDrive(0, 0);
+		drive.arcadeDrive(-0.5, 0);
+		Waiter.waitFor(400);
+		drive.arcadeDrive(0, 0);
 	}
 
 }
