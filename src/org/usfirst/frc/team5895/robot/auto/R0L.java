@@ -19,6 +19,10 @@ public class R0L {
 		Waiter.waitFor(3000);
 		elevator.setTargetPosition(82/12);
 		Waiter.waitFor(drive::isPFinished, 4000);
-		intake.ejectSlow();
+		Waiter.waitFor(1000);
+		intake.ejectCustom(0.7);
+		drive.autoLeftScaleBackwards();
+		Waiter.waitFor(drive::isPFinished, 4000);
+		drive.arcadeDrive(0, 0);
 }
 }

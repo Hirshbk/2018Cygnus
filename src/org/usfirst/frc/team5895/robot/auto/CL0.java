@@ -61,18 +61,7 @@ public class CL0 {
 		drive.autoCenterLeftSwitchCube();
 		Waiter.waitFor(drive::isPFinished, 2000);
 		drive.arcadeDrive(0, 0);
-		Waiter.waitFor(700);
-		drive.autoCenterLeftSwitchRev();
-		Waiter.waitFor(drive::isPFinished, 2000);
-		elevator.setTargetPosition(40.0/12);
-		drive.arcadeDrive(0, 0);
-		drive.turnTo(0);
-		DriverStation.reportError("" + drive.getAngle(), false);
-		Waiter.waitFor(drive::atAngle, 2000);
-		drive.arcadeDrive(0, 0);
-		drive.arcadeDrive(-0.5, 0);
-		Waiter.waitFor(400);
-		drive.arcadeDrive(0, 0);
+
 	}
 
 }

@@ -33,11 +33,11 @@ public class RRR {
 		intake.down();
 		intake.intake();
 		Waiter.waitFor(drive::isPFinished, 2000);
-		drive.turnTo(-145);
+		drive.turnTo(-160);
 		Waiter.waitFor(drive::atAngle, 4000);
 		drive.stopTurning(); 
 		drive.arcadeDrive(0, 0);
-		drive.autoLeftScaleCube();
+		drive.autoRightScaleCube();
 		Waiter.waitFor(drive::isPFinished, 5000);
 		drive.autoRightScaleCubeBack();
 		Waiter.waitFor(drive::isPFinished, 5000);

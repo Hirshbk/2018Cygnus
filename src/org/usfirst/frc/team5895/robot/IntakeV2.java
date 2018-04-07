@@ -74,16 +74,6 @@ public class IntakeV2 {
 		lastTime = Timer.getFPGATimestamp();
 		}
 	
-	public void spinRight() {
-		mode = Mode_Type.SPINNING_RIGHT;
-		lastTime = Timer.getFPGATimestamp();
-	}
-	
-	public void spinLeft() {
-		mode = Mode_Type.SPINNING_LEFT;
-		lastTime = Timer.getFPGATimestamp();
-	}
-	
 	public void drop() {
 		mode = Mode_Type.DROPPING;
 	}
@@ -118,17 +108,7 @@ public class IntakeV2 {
 	/**
 	 * @return true if the cube is turned left in the intake, false otherwise
 	 */
-	public boolean tiltedLeft() {
-		return (leftClawSensor.getVoltage() < 2.7 && rightClawSensor.getVoltage() > 2.7);
-	}
-	
-	/**
-	 * @return true if the cube is turned right in the intake, false otherwise
-	 */
-	public boolean tiltedRight() {
-		return (leftClawSensor.getVoltage() > 2.7 && rightClawSensor.getVoltage() < 2.7);
-	}
-	
+
 	public double getLeftVoltage() {
 		return leftClawSensor.getVoltage();
 	}
@@ -151,16 +131,6 @@ public class IntakeV2 {
 		     
 		     leftSpeed = 1.0;
 		     rightSpeed = 1.0;
-		     
-		     if(tiltedLeft()) {
-		    	 lastTime = Timer.getFPGATimestamp();
-		    	 mode = Mode_Type.SPINNING_LEFT;
-		     }
-			
-		     if(tiltedRight()) {
-		    	 lastTime = Timer.getFPGATimestamp();
-		    	 mode = Mode_Type.SPINNING_RIGHT;
-		     }
 		     
 		     if(hasCube()) { //get rid off lastHasCube
 			 	mode = Mode_Type.HOLDING; //once we have the cube, we prepare to hold and clamp
@@ -190,28 +160,6 @@ public class IntakeV2 {
             }
 			break; 
 		
-		case SPINNING_RIGHT:
-			leftSpeed = -0.1;
-			rightSpeed = 0.1;
-			double spinRightTime = Timer.getFPGATimestamp(); //stamps current time 
-            if (spinRightTime - lastTime > 0.4) { //compares the time we started waiting to current time
-            	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
-            } else {
-            	mode = Mode_Type.SPINNING_RIGHT; //if not, it keeps waiting
-            }
-			break;
-			
-		case SPINNING_LEFT:
-			leftSpeed = 0.1;
-			rightSpeed = -0.1;
-			double spinLeftTime = Timer.getFPGATimestamp(); //stamps current time 
-            if (spinLeftTime - lastTime > 0.5) { //compares the time we started waiting to current time
-            	mode = Mode_Type.INTAKING; //if it has been waiting for 200ms, it begins to hold
-            } else {
-            	mode = Mode_Type.SPINNING_LEFT; //if not, it keeps waiting
-            }
-			break;
-			
 		case DROPPING:
 			leftSpeed = 0;
 			rightSpeed = 0;
@@ -229,16 +177,6 @@ public class IntakeV2 {
 		case OPEN_INTAKING:
 		     leftSpeed = 1.0;
 		     rightSpeed = 1.0;
-		     
-		     if(tiltedLeft()) {
-		    	 lastTime = Timer.getFPGATimestamp();
-		    	 mode = Mode_Type.SPINNING_LEFT;
-		     }
-			
-		     if(tiltedRight()) {
-		    	 lastTime = Timer.getFPGATimestamp();
-		    	 mode = Mode_Type.SPINNING_RIGHT;
-		     }
 		     
 		     if(hasCube()) { //get rid off lastHasCube
 			 	mode = Mode_Type.HOLDING; //once we have the cube, we prepare to hold and clamp

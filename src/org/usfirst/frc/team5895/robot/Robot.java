@@ -79,29 +79,35 @@ public class Robot extends IterativeRobot {
 		loop.add(intake::update);
 		loop.add(drive::update);
 		loop.add(lime::update);
-		loop.add(r::record);
+//		loop.add(r::record);
 		loop.start();
 		
 		//set up auto map
 		autoRoutines = new HashMap<String, Runnable>();
+		autoRoutines.put("S00", () -> S00.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("CR0", () -> CR0.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("CL0", () -> CL0.run(drive, elevator, lime, intake, blinkin));
+		
 		autoRoutines.put("L0R", () -> L0R.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("L0L", () -> L0L.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("R0R", () -> R0R.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("R0L", () -> R0L.run(drive, elevator, lime, intake, blinkin));
-		autoRoutines.put("S00", () -> S00.run(drive, elevator, lime, intake, blinkin));
+		
+		autoRoutines.put("LLL", () -> LLL.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("LRL", () -> LLL.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("LRR", () -> L0D.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("LLR", () -> L0D.run(drive, elevator, lime, intake, blinkin));
+		
 		autoRoutines.put("RRR", () -> RRR.run(drive, elevator, lime, intake, blinkin));
-		autoRoutines.put("LRL", () -> L0L.run(drive, elevator, lime, intake, blinkin));
-		autoRoutines.put("LRR", () -> L0R.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("RLL", () -> R0L.run(drive, elevator, lime, intake, blinkin));
-		autoRoutines.put("RLR", () -> R0R.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("RLR", () -> RRR.run(drive, elevator, lime, intake, blinkin));
+		autoRoutines.put("RRL", () -> R0L.run(drive, elevator, lime, intake, blinkin));
 		
 	}
 
 	public void autonomousInit() {
 		
-		r.startRecording();
+//		r.startRecording();
 //		drive.resetNavX();
 //		drive.autoForwardStraight();
 		String autoRoutine = gameData.getAutoRoutine();
@@ -118,7 +124,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopPeriodic() {
 
-		DriverStation.reportError("" + elevator.getHeight(), false);
+		DriverStation.reportError("" + intake.getLeftVoltage(), false);
 		
 		//teleop drive
 		drive.arcadeDrive(leftJoystick.getRawAxis(1), rightJoystick.getRawAxis(0));
@@ -175,12 +181,6 @@ public class Robot extends IterativeRobot {
 			fastShoot = false;
 		}
 		
-		if(intake.hasCube() || intake.tiltedLeft() || intake.tiltedRight()) {
-			blinkin.lightsHasCube();
-		}
-		else {
-			blinkin.lightsNormal();
-		}
 	}
 
 	public void disabledInit() {

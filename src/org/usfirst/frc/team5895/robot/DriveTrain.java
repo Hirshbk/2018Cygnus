@@ -21,7 +21,7 @@ public class DriveTrain {
 	private NavX navX;
 	private TrajectoryDriveController pStraight, pBackwards, pTest;
 	private TrajectoryDriveController pCenterRightSwitchFront, pCenterRightSwitchSide, pCenterRightScale, pCenterRightSwitchCube, pCenterRightSwitchRev;
-	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale;
+	private TrajectoryDriveController pRightRightSwitchFront, pRightRightSwitchSide, pRightLeftSwitchBack, pRightLeftSwitchFront, pRightRightScale, pRightLeftScale, pRightScaleForwards, pRightLeftDrive;
 	private TrajectoryDriveController pLeftScaleRightSwitch, pRightScaleLeftSwitch, pRightSwitchBlock, pRightScaleCube, pSecondScaleCube, pRightScaleBackwards, pRightScaleCubeBack;
 	private TrajectoryDriveController pInUse;
 	private enum Mode_Type {TELEOP,AUTO_SPLINE, AUTO_BACKWARDS_SPLINE, AUTO_MIRROR_SPLINE, AUTO_MIRROR_BACKWARDS_SPLINE, AUTO_DRIVE};
@@ -89,7 +89,9 @@ public class DriveTrain {
 			pRightScaleCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleCube.txt", 0.01, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
 			pSecondScaleCube = new TrajectoryDriveController("/home/lvuser/AutoFiles/SecondScaleCube.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
 			pRightScaleBackwards = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleBackwards.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
+			pRightScaleForwards = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleForwards.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
 			pRightScaleCubeBack = new TrajectoryDriveController("/home/lvuser/AutoFiles/RightScaleCubeBack.txt", 0.15, 0, 0, 1.0/11.5, 1.0/50.0, -0.0);
+			pRightLeftDrive= new TrajectoryDriveController("/home/lvuser/AutoFiles/RightLeftDrive.txt", 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.009); 
 			
 			//start at Center
 			pCenterRightSwitchFront = new TrajectoryDriveController("/home/lvuser/AutoFiles/CenterRightSwitchFront.txt", 0.1, 0, 0, 1.0/13.75, 1.0/75.0, -0.01);
@@ -483,15 +485,27 @@ public class DriveTrain {
 	}
 	public void autoRightScaleForwards() {
 		resetEncoders();
-		pInUse = pRightScaleBackwards;
+		pInUse = pRightScaleForwards;
 		pInUse.reset();
 		mode = Mode_Type.AUTO_SPLINE;
 	}
 	
 	public void autoLeftScaleForwards() {
 		resetEncoders();
-		pInUse = pRightScaleBackwards;
+		pInUse = pRightScaleForwards;
 		pInUse.reset();
+		mode = Mode_Type.AUTO_MIRROR_SPLINE;
+	}
+	
+	public void autoRightLeftDrive() {
+		resetEncoders();
+		pInUse = pRightLeftDrive;
+		mode = Mode_Type.AUTO_SPLINE;
+	}
+	
+	public void autoLeftRightDrive() {
+		resetEncoders();
+		pInUse = pRightLeftDrive;
 		mode = Mode_Type.AUTO_MIRROR_SPLINE;
 	}
 	

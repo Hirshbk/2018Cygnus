@@ -23,7 +23,7 @@ public class LLL {
 		drive.autoLeftLeftScale();
 		Waiter.waitFor(1000);
 		elevator.setTargetPosition(82/12);
-		Waiter.waitFor(drive::isPFinished, 2500);
+		Waiter.waitFor(drive::isPFinished, 2500);		
 		Waiter.waitFor(500);
 		intake.ejectSlow();
 		DriverStation.reportError("" + drive.getAngle(), false);
@@ -33,7 +33,7 @@ public class LLL {
 		intake.down();
 		intake.intake();
 		Waiter.waitFor(drive::isPFinished, 2000);
-		drive.turnTo(145);
+		drive.turnTo(160);
 		Waiter.waitFor(drive::atAngle, 4000);
 		drive.stopTurning(); 
 		drive.arcadeDrive(0, 0);
@@ -41,7 +41,6 @@ public class LLL {
 		Waiter.waitFor(drive::isPFinished, 5000);
 		drive.autoLeftScaleCubeBack();
 		Waiter.waitFor(drive::isPFinished, 5000);
-		intake.up();
 		drive.turnTo(30);
 		elevator.setTargetPosition(82/12);
 		Waiter.waitFor(drive::atAngle, 4000);
