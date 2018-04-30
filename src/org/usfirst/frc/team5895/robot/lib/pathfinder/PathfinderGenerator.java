@@ -14,7 +14,7 @@ import jaci.pathfinder.Waypoint;
 
 public class PathfinderGenerator {
 	private boolean saveCSV;
-	private final String CSVLocation = "/home/lvuser/PathFinderFiles/"; 
+	private final String CSVLocation = "/home/lvuser/PathfinderFiles/"; 
 	
 	public PathfinderGenerator(boolean saveCSV){
 		this.saveCSV = saveCSV;
@@ -36,7 +36,6 @@ public class PathfinderGenerator {
 	}
 	
 	public Trajectory Straight() {
-		String name = "Straight";
 		double dt = 0.01; // in second
 		double max_vel = 5; // in f/s
 		double max_acc = 10; // in f/s/s
@@ -56,13 +55,13 @@ public class PathfinderGenerator {
 		Trajectory trajectory = Pathfinder.generate(points, config);
     	
 		//create CSV file
+		String name = Thread.currentThread().getStackTrace()[1].getMethodName(); // get current method name
     	makeCSV(trajectory, name);
     	
     	return trajectory;		
 	}
 	
 	public Trajectory RightLeftScale() {
-		String name = "RightLeftScale";
 		double dt = 0.01; // in second
 		double max_vel = 8; // in f/s
 		double max_acc = 10; // in f/s/s
@@ -86,14 +85,13 @@ public class PathfinderGenerator {
 		Trajectory trajectory = Pathfinder.generate(points, config);
     	
 		//create CSV file
+		String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
     	makeCSV(trajectory, name);
-    	//DriverStation.reportError("Finish Trajectory: "+ name, false);
     	
     	return trajectory;		
 	}
 	
 	public Trajectory RightRightScale() {
-		String name = "RightRightScale";
 		double dt = 0.01; // in second
 		double max_vel = 6; // in f/s
 		double max_acc = 11; // in f/s/s
@@ -114,14 +112,13 @@ public class PathfinderGenerator {
 		Trajectory trajectory = Pathfinder.generate(points, config);
     	
 		//create CSV file
+		String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
     	makeCSV(trajectory, name);
-    	//DriverStation.reportError("Finish Trajectory: "+ name, false);
     	
     	return trajectory;		
 	}
 	
 	public Trajectory CenterRightSwitchFront() {
-		String name = "CenterRightSwitchFront";
 		double dt = 0.01; // in second
 		double max_vel = 6; // in f/s
 		double max_acc = 11; // in f/s/s
@@ -141,8 +138,8 @@ public class PathfinderGenerator {
 		Trajectory trajectory = Pathfinder.generate(points, config);
     	
 		//create CSV file
+		String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
     	makeCSV(trajectory, name);
-    	//DriverStation.reportError("Finish Trajectory: "+ name, false);
     	
     	return trajectory;		
 	}
