@@ -48,7 +48,7 @@ public class PathfinderGenerator {
 		 */
 		Waypoint[] points = new Waypoint[] { 
     		    new Waypoint(0, 0, d2r(0)),     
-    		    new Waypoint(5, 0, d2r(0)),                        
+    		    new Waypoint(10, 0, d2r(0)),                        
 		};
 
 		Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_QUINTIC, Trajectory.Config.SAMPLES_HIGH, dt, max_vel, max_acc, max_jer);

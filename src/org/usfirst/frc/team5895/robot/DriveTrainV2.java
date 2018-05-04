@@ -116,7 +116,7 @@ public class DriveTrainV2 {
 		try {
 			DriverStation.reportError("Start generating paths with pathfinder", false);
 			//kp ki kd kv ka kturn
-			p_straight = new PathfinderFollower(pathMaster.Straight(), 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.009);
+			p_straight = new PathfinderFollower(pathMaster.Straight(), 0.045, 0, 0, 1.0/13.75, 1.0/75.0, -0.009); //kp tuned from 0.15 to 0.045
 			p_right_rightScale  = new PathfinderFollower(pathMaster.RightRightScale(), 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.009);
 			p_right_leftScale = new PathfinderFollower(pathMaster.RightLeftScale(), 0.15, 0, 0, 1.0/13.75, 1.0/75.0, -0.009);
 			

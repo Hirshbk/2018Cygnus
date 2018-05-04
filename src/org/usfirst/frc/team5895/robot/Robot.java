@@ -6,6 +6,7 @@ import org.usfirst.frc.team5895.robot.auto.*;
 import org.usfirst.frc.team5895.robot.framework.Looper;
 import org.usfirst.frc.team5895.robot.framework.LooperV2;
 import org.usfirst.frc.team5895.robot.framework.Recorder;
+import org.usfirst.frc.team5895.robot.framework.Waiter;
 import org.usfirst.frc.team5895.robot.lib.BetterJoystick;
 
 import edu.wpi.cscore.UsbCamera;
@@ -22,7 +23,7 @@ public class Robot extends IterativeRobot {
 	LooperV2 loop;
 	Elevator elevator;
 	IntakeV2 intake;
-	DriveTrain drive;
+	DriveTrainCygnus drive;
 	Blinkin blinkin;
 	Limelight lime;
 	GameData gameData;
@@ -46,7 +47,7 @@ public class Robot extends IterativeRobot {
 		
 		intake = new IntakeV2();
 		elevator = new Elevator();
-		drive = new DriveTrain();
+		drive = new DriveTrainCygnus();
 		blinkin = new Blinkin();
 		gameData = new GameData();
 		lime = new Limelight();
@@ -71,7 +72,7 @@ public class Robot extends IterativeRobot {
 			final int x = i;
 			r.add("Current " + i, () -> pdp.getCurrent(x));
 		}
-		r.add("Auto Routine", gameData::getAutoRoutine);
+		r.add("AVuto Routine", gameData::getAutoRoutine);
 		r.add("Game Data", gameData::getGameData);
 */		
 		loop = new LooperV2(10);
@@ -83,7 +84,7 @@ public class Robot extends IterativeRobot {
 		loop.start();
 		
 		//set up auto map
-		autoRoutines = new HashMap<String, Runnable>();
+		/*autoRoutines = new HashMap<String, Runnable>();
 		autoRoutines.put("S00", () -> S00.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("CR0", () -> CR0.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("CL0", () -> CL0.run(drive, elevator, lime, intake, blinkin));
@@ -102,7 +103,7 @@ public class Robot extends IterativeRobot {
 		autoRoutines.put("RLL", () -> R0L.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("RLR", () -> RRR.run(drive, elevator, lime, intake, blinkin));
 		autoRoutines.put("RRL", () -> R0L.run(drive, elevator, lime, intake, blinkin));
-		
+		*/
 	}
 
 	public void autonomousInit() {
@@ -110,16 +111,20 @@ public class Robot extends IterativeRobot {
 //		r.startRecording();
 //		drive.resetNavX();
 //		drive.autoForwardStraight();
-		String autoRoutine = gameData.getAutoRoutine();
+		/*String autoRoutine = gameData.getAutoRoutine();
 		
 		DriverStation.reportError("" + gameData.getAutoRoutine(), false);
+		DriverStation.reportError("" + drive.getDistanceTraveled(), false);
 		
 		if (autoRoutines.containsKey(autoRoutine)) {
 			autoRoutines.get(autoRoutine).run();
 		} else {
 			DriverStation.reportError("Auto Error: " + autoRoutine, false);
 			S00.run(drive, elevator, lime, intake, blinkin);
-		}	
+		}	*/
+		drive.resetNavX();
+		drive.auto_forward_straight();
+		
 	}
 
 	public void teleopPeriodic() {
