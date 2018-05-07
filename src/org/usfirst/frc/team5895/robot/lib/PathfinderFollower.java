@@ -19,11 +19,11 @@ public class PathfinderFollower {
     private double[] error_sum = new double[2]; 
     private double goalHeading;
 
-    private int[] segment = new int[2];
+    private int segment;
     private Trajectory trajectory;
     private Trajectory left_trajectory, right_trajectory;
-    private TankModifier modifier; 
-    private final double wheelbase_width = 27.0/12; // Basan uses 27.0/12, Cygnus uses 25.0/12 
+    private TankModifier modifier;
+    private final double wheelbase_width = 25.0/12; // Basan uses 27.0/12, Cygnus uses 25.0/12 
     private final double direction = 1.0;
     
 
@@ -72,8 +72,7 @@ public class PathfinderFollower {
      * Reset the follower to start again. Encoders must be reconfigured.
      */
     public void reset() {
-        segment[0] = 0;
-        
+        segment = 0;
     }
 
     /**
@@ -124,8 +123,8 @@ public class PathfinderFollower {
     public double calculate(Trajectory trajectory_in_use, double distance_covered, int error_control) {
     	int i = error_control;
     	
-    	if (segment[i] < trajectory_in_use.length()) {
-            Trajectory.Segment seg = trajectory_in_use.get(segment[i]);
+    	if (segment < trajectory_in_use.length()) {
+            Trajectory.Segment seg = trajectory_in_use.get(segment);
             double error = seg.position - distance_covered;
             double calculated_value =
                     kp * error +                                    // Proportional
@@ -136,7 +135,7 @@ public class PathfinderFollower {
             error_sum[i] += error * seg.dt; // integrate error
             last_error[i] = error; // save last_error
             goalHeading = seg.heading;
-            segment[i]++;
+            segment++;
             
             return calculated_value;
         }
@@ -156,14 +155,14 @@ public class PathfinderFollower {
      * @return the current segment being operated on
      */
     public Trajectory.Segment getSegment() {
-        return trajectory.get(segment[0]);
+        return trajectory.get(segment);
     }
 
     /**
      * @return whether we have finished tracking this trajectory or not.
      */
     public boolean isFinished() {
-        return segment[0] >= trajectory.length();
+        return segment >= trajectory.length();
     }
 
 }
