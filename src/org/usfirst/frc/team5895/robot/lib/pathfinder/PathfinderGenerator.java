@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import trajectory.WaypointSequence;
 
 /**
  * FitMethod: HERMITE.CUBIC or HERMITE.QUINTIC
@@ -146,7 +145,6 @@ public class PathfinderGenerator {
 	}
     
     public Trajectory CenterRightScale() {
-        String name = "CenterRightScale";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -167,14 +165,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
     
     public Trajectory RightRightSwitchFront() {
-        String name = "RightRightSwitchFront";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -193,14 +190,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
     
     public Trajectory RightLeftSwitchBack() {
-        String name = "RightLeftSwitchBack";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -222,14 +218,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
     
     public Trajectory RightLeftSwitchFront() {
-        String name = "RightLeftSwitchFront";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -249,14 +244,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
     
     public Trajectory RightRightSwitchSide() {
-        String name = "RightRightSwitchSide";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -276,14 +270,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
     
     public Trajectory RightSwitchBlock() {
-        String name = "RightSwitchBlock";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -303,14 +296,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
     
     public Trajectory RightRightScale2() {
-        String name = "RightRightScale2";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -330,14 +322,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
         
         return trajectory;      
     }
    
     public Trajectory RightScaleLeftSwitch() {
-        String name = "RightScaleLeftSwitch";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -358,14 +349,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory RightLeftScale2() {
-        String name = "RightLeftScale2";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -388,14 +378,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory RightLeftDrive() {
-        String name = "RightLeftDrive";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -415,14 +404,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory LeftScaleRightSwitch() {
-        String name = "LeftScaleRightSwitch";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -445,14 +433,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory RightScaleCube() {
-        String name = "RightScaleCube";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -471,14 +458,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory RightScaleCubeBack() {
-        String name = "RightScaleCubeBack";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -497,14 +483,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory SCurve() {
-        String name = "SCurve";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -523,14 +508,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory CenterRightSwitchCube() {
-        String name = "CenterRightSwitchCube";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -549,14 +533,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory CenterRightSwitchRev() {
-        String name = "CenterRightSwitchRev";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -575,14 +558,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory RightScaleBackwards() {
-        String name = "RightScaleBackwards";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -601,14 +583,13 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
     
     public Trajectory SecondScaleCube() {
-        String name = "SecondScaleCube";
         double dt = 0.01; // in second
         double max_vel = 6; // in f/s
         double max_acc = 11; // in f/s/s
@@ -627,8 +608,8 @@ public class PathfinderGenerator {
         Trajectory trajectory = Pathfinder.generate(points, config);
         
         //create CSV file
-        makeCSV(trajectory, name);
-        //DriverStation.reportError("Finish Trajectory: "+ name, false);
+        String name = Thread.currentThread().getStackTrace()[1].getMethodName(); //get current method name
+    	makeCSV(trajectory, name);
          
         return trajectory;      
     }
