@@ -23,7 +23,7 @@ public class Robot extends IterativeRobot {
 	LooperV2 loop;
 	Elevator elevator;
 	IntakeV2 intake;
-	DriveTrainCygnus drive;
+	DriveTrainV2 drive;
 	Blinkin blinkin;
 	Limelight lime;
 	GameData gameData;
@@ -47,7 +47,7 @@ public class Robot extends IterativeRobot {
 		
 		intake = new IntakeV2();
 		elevator = new Elevator();
-		drive = new DriveTrainCygnus();
+		drive = new DriveTrainV2();
 		blinkin = new Blinkin();
 		gameData = new GameData();
 		lime = new Limelight();

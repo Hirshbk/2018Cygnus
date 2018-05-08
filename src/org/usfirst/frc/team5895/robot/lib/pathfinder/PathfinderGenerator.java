@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
-import trajectory.WaypointSequence;
 
 /**
  * FitMethod: HERMITE.CUBIC or HERMITE.QUINTIC
